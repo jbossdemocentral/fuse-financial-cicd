@@ -5,13 +5,7 @@
 
 
     <!-- Discovers the ActiveMQ service dynamically -->
-    <bean id="jmsConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
-
-        <!--
-            The following properties can be customized in the application.properties file.
-            Values can be changed using external environment variables (see application.properties for details).
-        -->
-
+    <!--  <bean id="jmsConnectionFactory" class="org.apache.activemq.ActiveMQConnectionFactory">
         <property name="brokerURL" value="${activemq.broker.url}"/>
         <property name="userName" value="${activemq.broker.username:#null}"/>
         <property name="password" value="${activemq.broker.password:#null}"/>
@@ -25,10 +19,18 @@
     <bean id="jmsConfig" class="org.apache.activemq.camel.component.ActiveMQConfiguration">
         <property name="connectionFactory" ref="pooledConnectionFactory"/>
         <property name="concurrentConsumers" value="${activemq.concurrent.consumers}"/>
-    </bean>
+    </bean> 
 
     <bean id="amq" class="org.apache.activemq.camel.component.ActiveMQComponent">
         <property name="configuration" ref="jmsConfig"/>
     </bean>
+    -->
+    
+    <bean id="amqConnectionFactory" class="io.fabric8.mq.core.MQConnectionFactory">
+		<property name="userName" value="admin"/>
+		<property name="password" value="admin"/>
+	</bean>
+	<bean id="amq" class="io.fabric8.mq.camel.AMQComponent"></bean>
+    
 
 </beans>
