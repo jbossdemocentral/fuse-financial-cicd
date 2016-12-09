@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:camel="http://camel.apache.org/schema/spring"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation=" http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd             http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring-2.18.1.xsd">
+    <bean class="com.redhat.fisdemoblockchain.MockBitcoinApp" id="mockBitcoinApp"/>
+    <camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
+        <restConfiguration apiContextPath="api-docs" bindingMode="auto"
+            component="jetty" contextPath="/demos" enableCORS="true" port="8082">
+            <apiProperty key="host" value="0.0.0.0"/>
+            <apiProperty key="cors" value="true"/>
+            <apiProperty key="api.title" value="Healthcare demo clinical API"/>
+            <apiProperty key="api.version" value="1.0.0"/>
+            <corsHeaders key="Access-Control-Allow-Origin" value="*"/>
+            <corsHeaders key="Access-Control-Allow-Methods" value="GET, HEAD, POST, PUT, DELETE, TRACE, OPTIONS, CONNECT, PATCH"/>
+            <corsHeaders key="Access-Control-Allow-Headers" value="Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers"/>
+        </restConfiguration>
+        <rest path="/bitcoinaccount">
+            <get uri="/balance/{acctid}">
+                <to uri="direct:getBalance"/>
+            </get>
+            <get uri="/transfer/{acctid}/{amt}/{recptid}">
+                <to uri="direct:dotransfer"/>
+            </get>
+        </rest>
+        <!-- Camel Routes -->
+        <route id="balanceRoute">
+            <from id="_from1" uri="direct:getBalance"/>
+            <log id="log_1" message="Get balance from ${headers.acctid}"/>
+            <setBody id="_setBody2">
+                <simple>${headers.acctid}</simple>
+            </setBody>
+            <to id="_tobalanceq" uri="amq:queue:balance"/>
+        </route>
+        <route id="transferRoute">
+            <!-- <to id="route-to-incoming-orders" uri="amq:incomingOrders"/>-->
+            <from id="_from1" uri="direct:dotransfer"/>
+            <log id="log_2" message="Transfering from ${headers.acctid} to ${headers.recptid} with ${headers.amt}"/>
+            <setBody id="_setBodyTempMap">
+                <simple>${headers.acctid},${headers.amt},${headers.recptid}</simple>
+            </setBody>
+            <to id="_totransferq" uri="amq:queue:transfer"/>
+        </route>
+        <route id="mockbalance">
+            <from id="_from2" uri="amq:queue:balance"/>
+            <log id="log_3" message="${body}"/>
+            <doTry id="_doTry1">
+                <bean id="toBlockchain" method="getBalance" ref="mockBitcoinApp"/>
+                <setBody id="_setBody3">
+                    <simple>Account ${header.acctid} has balance of : ${body}</simple>
+                </setBody>
+                <doCatch id="_doCatch1">
+                    <exception>com.redhat.fisdemoblockchain.exception.NoAccountFoundException</exception>
+                    <log id="log_5" message="No Account!!"/>
+                    <setBody id="_setBody1">
+                        <constant>No Account Found!</constant>
+                    </setBody>
+                </doCatch>
+            </doTry>
+        </route>
+        <route id="mocktransfer">
+            <from id="_from3" uri="amq:queue:transfer"/>
+            <log id="log_4" message="Tokenized ${body}"/>
+            <bean id="_bean1" method="transfer(${body})" ref="mockBitcoinApp"/>
+        </route>
+    </camelContext>
+</beans>
