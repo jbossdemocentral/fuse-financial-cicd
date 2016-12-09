@@ -1,0 +1,50 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: mysql
+  labels:
+    template: mysql-ephemeral
+spec:
+  ports:
+    - name: mysql
+      protocol: TCP
+      port: 3306
+      targetPort: 3306
+      nodePort: 0
+  selector:
+    name: mysql
+  portalIP:
+  type: ClusterIP,
+  sessionAffinity: None
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: mysql
+spec:
+  strategy:
+    type: Recreate
+  template:
+    metadata:
+      name: mysql
+    spec:
+      containers:
+      - image: mysql:5.6
+        name: mysql
+        ports:
+        - containerPort: 3306
+          protocol: TCP
+        env:
+        - name : MYSQL_USER
+          value: ${MYSQL_USER}
+        - name: MYSQL_PASSWORD
+          value: ${MYSQL_PASSWORD}
+        - name: MYSQL_DATABASE
+          value: ${MYSQL_DATABASE}
+        volumeMounts:
+        - name: mysql-data
+          mountPath: /var/lib/mysql/data
+      volumes:
+      - name: mysql-data
+        emptyDir:
+          medium:

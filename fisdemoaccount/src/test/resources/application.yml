@@ -1,0 +1,7 @@
+camel:
+  springboot:
+    name: CamelRestSql
+
+quickstart:
+  generateOrderPeriod: 1s
+  processOrderPeriod: 3s

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd        http://camel.apache.org/schema/spring       http://camel.apache.org/schema/spring/camel-spring-2.18.1.xsd">
+    <bean
+        class="org.apache.camel.component.servlet.CamelHttpTransportServlet" id="camelHttpTransportServlet"/>
+    <bean
+        class="org.springframework.boot.web.servlet.ServletRegistrationBean" id="servlet">
+        <property name="name" value="CamelServlet"/>
+        <property name="servlet" ref="camelHttpTransportServlet"/>
+        <property name="urlMappings" value="/demos/*"/>
+    </bean>
+    <bean
+        class="org.springframework.jdbc.datasource.DataSourceTransactionManager" id="txManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    <camelContext id="camelContext-e10768f5-36e3-4032-a00c-9a26349cd88c" xmlns="http://camel.apache.org/schema/spring">
+        <restConfiguration apiContextPath="api-docs" bindingMode="json"
+            component="servlet" contextPath="/demos">
+            <apiProperty key="cors" value="true"/>
+            <apiProperty key="api.title" value="Healthcare demo clinical API"/>
+            <apiProperty key="api.version" value="1.0.0"/>
+            <corsHeaders key="Access-Control-Allow-Origin" value="*"/>
+            <corsHeaders key="Access-Control-Allow-Methods" value="GET, HEAD, POST, PUT, DELETE, TRACE, OPTIONS, CONNECT, PATCH"/>
+            <corsHeaders key="Access-Control-Allow-Headers" value="Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers"/>
+        </restConfiguration>
+        <rest path="/account">
+            <get uri="balance/{acctid}">
+                <to uri="direct:getbalance"/>
+            </get>
+        </rest>
+        <rest path="/account">
+            <get uri="profile/{acctid}">
+                <to uri="direct:getprofile"/>
+            </get>
+        </rest>
+        <rest path="/account">
+            <get uri="transfer/{acctid}/{amt}/{recepid}">
+                <to uri="direct:dotransfer"/>
+            </get>
+        </rest>
+        <route id="profileroute">
+            <from id="_from1" uri="direct:getprofile"/>
+            <log id="_log1" message="Account ${headers.acctid}"/>
+            <to id="_to1" uri="sql:select * from accounts where id=:#acctid?outputClass=com.redhat.myfispipeline.Accounts&amp;dataSource=dataSource&amp;outputType=SelectOne"/>
+            <log id="_log2" message="output: ${body}"/>
+        </route>
+        <route id="balanceroute">
+            <from id="_from1" uri="direct:getbalance"/>
+            <to id="_to2" uri="direct:getprofile"/>
+            <setBody id="_setBody1">
+                <simple>${body.balance}</simple>
+            </setBody>
+        </route>
+        <route id="transferroute">
+            <from id="_from1" uri="direct:dotransfer"/>
+            <transacted id="_transacted1">
+                <to id="_to4" uri="sql:update accounts set balance =  (select balance from accounts where id = :#acctid ) -:#amt where id =:#acctid?dataSource=dataSource"/>
+                <to id="_to4" uri="sql:update accounts set balance =  (select balance from accounts where id = :#recepid ) +:#amt where id =:#recepid?dataSource=dataSource"/>
+                <to id="_to5" uri="sql:select * from accounts where id=:#acctid?outputClass=com.redhat.myfispipeline.Accounts&amp;dataSource=dataSource&amp;outputType=SelectOne"/>
+            </transacted>
+        </route>
+    </camelContext>
+</beans>
