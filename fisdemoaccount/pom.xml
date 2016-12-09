@@ -3,10 +3,10 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.redhat</groupId>
-  <artifactId>myfispipeline</artifactId>
+  <artifactId>fisaccount-service</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <name>Fabric8 :: Quickstarts :: Spring-Boot :: Camel REST / SQL</name>
-  <description>Spring Boot example running a Camel REST route connecting to a SQL database</description>
+  <name>Fuse Integration Service :: Finance :: Account</name>
+  <description>Fuse Integration Service - Traditional Account </description>
   <properties>
     <spring-boot.version>1.4.1.RELEASE</spring-boot.version>
     <fabric8.version>2.2.170.redhat-000004</fabric8.version>
