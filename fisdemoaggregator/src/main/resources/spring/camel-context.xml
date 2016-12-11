@@ -39,7 +39,7 @@
                     <simple>${header.moneysource} == 'bitcoin'</simple>
                     <log id="_log3" message="Bitcoin it is!"/>
                     <recipientList id="_recipientList1">
-                        <simple>http://fisblockchain-service/bitcoinaccount/account/balance/${header.acctid}?bridgeEndpoint=true</simple>
+                        <simple>http://fisblockchain-service/demos/bitcoinaccount/balance/${header.acctid}?bridgeEndpoint=true</simple>
                     </recipientList>
                     <convertBodyTo id="_convertBodyTo1" type="java.lang.String"/>
                     <log id="_log4" message="${body}"/>
