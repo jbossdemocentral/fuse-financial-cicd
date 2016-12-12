@@ -19,7 +19,7 @@
             <corsHeaders key="Access-Control-Allow-Methods" value="GET, HEAD, POST, PUT, DELETE, TRACE, OPTIONS, CONNECT, PATCH"/>
             <corsHeaders key="Access-Control-Allow-Headers" value="Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers"/>
         </restConfiguration>
-        <rest path="/sourcegateways">
+        <rest path="/sourcegateway">
             <get uri="balance/{acctid}">
                 <to uri="direct:getbalance"/>
             </get>
