@@ -1,42 +1,58 @@
-# Binding health checks to an internal port
-management.port=8081
+camel:
+  springboot:
+    # The Camel context name
+    name: CamelActiveMQ
+    main-run-controller: true
+
+# Binding health checks to a different port
+management:
+  port: 8081
 
 # disable all management enpoints except health
-endpoints.enabled = false
-endpoints.health.enabled = true
+endpoints:
+  enabled: false
+  health:
+    enabled: true
 
-logging.config=classpath:logback.xml
 
-# The name of the Camel app
-camel.springboot.name=CamelActiveMQ
+# The application configuration properties
+quickstart:
+  generateOrderPeriod: 10s
+  processOrderPeriod: 30s
 
-# Keeps the application alive
-camel.springboot.main-run-controller=true
+  
+
+logging:
+  config: classpath:logback.xml
+
 
 # The name of the service hosting the ActiveMQ broker or message gateway
 # Can be customized using the 'ACTIVEMQ_SERVICE_NAME' variable to use a different broker.
-activemq.service.name=activemq
-
+activemq:
+  service:
+    name: activemq
 # The following properties can be customized using the 'ACTIVEMQ_SERVICE_HOST' and 'ACTIVEMQ_SERVICE_PORT' environment variables.
 # This is indeed done automatically by Kubernetes when the application is deployed in a namespace containing an instance of ActiveMQ named 'activemq'.
 # The service defaults to localhost. You need to change these properties for development purposes only.
-activemq.service.host=127.0.0.1
-activemq.service.port=61616
-
-activemq.broker.username=admin
-activemq.broker.password=admin
-
-
+    host: 127.0.0.1
+    port: 61616
+  broker: 
+    username: admin
+    password: admin
+    
 # The following property binds all previous configurations together
-activemq.broker.url=tcp://${${activemq.service.name}.service.host}:${${activemq.service.name}.service.port}
+    url: tcp://${${activemq.service.name}.service.host}:${${activemq.service.name}.service.port}
+  concurrent: 
+    consumers: 10
+  pool: 
+     max:
+      connections: 8
 
-# Set the number of concurrent consumers for the ActiveMQ ('ACTIVEMQ_CONCURRENT_CONSUMERS')
-activemq.concurrent.consumers=10
 
-# Set the number of connections created by the connection pool ('ACTIVEMQ_POOL_MAX_CONNECTIONS')
-activemq.pool.max.connections=8
+
 
 # If required, you can set the broker credentials using environment variables.
 # Variable names are 'ACTIVEMQ_BROKER_USERNAME' and 'ACTIVEMQ_BROKER_PASSWORD'.
 #activemq.broker.username=theuser
 #activemq.broker.password=thepassword
+  

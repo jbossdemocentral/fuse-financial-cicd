@@ -14,14 +14,15 @@
         <property name="dataSource" ref="dataSource"/>
     </bean>
     <camelContext id="camelContext-e10768f5-36e3-4032-a00c-9a26349cd88c" xmlns="http://camel.apache.org/schema/spring">
+        <endpoint id="convertaccount" uri="dozer:convertaccount?sourceModel=com.redhat.myfispipeline.Accounts&amp;targetModel=generated_1481590729110.Profile&amp;marshalId=generated_1481590729110&amp;mappingFile=transformation.xml"/>
+        <dataFormats>
+            <jaxb contextPath="generated_1481590729110" id="generated_1481590729110"/>
+        </dataFormats>
         <restConfiguration apiContextPath="api-docs" bindingMode="json"
             component="servlet" contextPath="/demos">
             <apiProperty key="cors" value="true"/>
             <apiProperty key="api.title" value="Healthcare demo clinical API"/>
             <apiProperty key="api.version" value="1.0.0"/>
-            <corsHeaders key="Access-Control-Allow-Origin" value="*"/>
-            <corsHeaders key="Access-Control-Allow-Methods" value="GET, HEAD, POST, PUT, DELETE, TRACE, OPTIONS, CONNECT, PATCH"/>
-            <corsHeaders key="Access-Control-Allow-Headers" value="Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers"/>
         </restConfiguration>
         <rest path="/account">
             <get uri="balance/{acctid}">
@@ -46,7 +47,7 @@
         </route>
         <route id="balanceroute">
             <from id="_from1" uri="direct:getbalance"/>
-            <to id="_to2" uri="direct:getprofile"/>
+            <to id="_to88" uri="direct:getprofile"/>
             <setBody id="_setBody1">
                 <simple>${body.balance}</simple>
             </setBody>
@@ -55,8 +56,8 @@
             <from id="_from1" uri="direct:dotransfer"/>
             <transacted id="_transacted1">
                 <to id="_to4" uri="sql:update accounts set balance =  (select balance from accounts where id = :#acctid ) -:#amt where id =:#acctid?dataSource=dataSource"/>
-                <to id="_to4" uri="sql:update accounts set balance =  (select balance from accounts where id = :#recepid ) +:#amt where id =:#recepid?dataSource=dataSource"/>
-                <to id="_to5" uri="sql:select * from accounts where id=:#acctid?outputClass=com.redhat.myfispipeline.Accounts&amp;dataSource=dataSource&amp;outputType=SelectOne"/>
+                <to id="_to5" uri="sql:update accounts set balance =  (select balance from accounts where id = :#recepid ) +:#amt where id =:#recepid?dataSource=dataSource"/>
+                <to id="_to6" uri="sql:select * from accounts where id=:#acctid?outputClass=com.redhat.myfispipeline.Accounts&amp;dataSource=dataSource&amp;outputType=SelectOne"/>
             </transacted>
         </route>
     </camelContext>

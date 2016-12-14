@@ -6,12 +6,12 @@
   <artifactId>fisaccount-service</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <name>Fuse Integration Service :: Finance :: Account</name>
-  <description>Fuse Integration Service - Traditional Account </description>
+  <description>Fuse Integration Service - Traditional Account</description>
   <properties>
     <spring-boot.version>1.4.1.RELEASE</spring-boot.version>
     <fabric8.version>2.2.170.redhat-000004</fabric8.version>
-    <maven-compiler-plugin.version>3.3</maven-compiler-plugin.version>
     <fabric8.maven.plugin.version>3.1.80.redhat-000004</fabric8.maven.plugin.version>
+    <maven-compiler-plugin.version>3.3</maven-compiler-plugin.version>
     <run.profiles>dev</run.profiles>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven-surefire-plugin.version>2.18.1</maven-surefire-plugin.version>
@@ -50,6 +50,14 @@
     </dependency>
     <dependency>
       <groupId>org.apache.camel</groupId>
+      <artifactId>camel-dozer-starter</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.camel</groupId>
+      <artifactId>camel-jaxb-starter</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.camel</groupId>
       <artifactId>camel-jackson-starter</artifactId>
     </dependency>
     <dependency>
@@ -80,21 +88,7 @@
       <artifactId>arquillian-junit-container</artifactId>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>io.fabric8</groupId>
-      <artifactId>fabric8-arquillian</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.httpcomponents</groupId>
-      <artifactId>httpclient</artifactId>
-      <scope>test</scope>
-    </dependency>
-    <dependency>
-      <groupId>org.apache.camel</groupId>
-      <artifactId>camel-sql</artifactId>
-      <version>2.17.3</version>
-    </dependency>
+    
   </dependencies>
   <build>
     <defaultGoal>spring-boot:run</defaultGoal>
@@ -140,6 +134,17 @@
             </goals>
           </execution>
         </executions>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.felix</groupId>
+        <artifactId>maven-bundle-plugin</artifactId>
+        <version>3.2.0</version>
+        <extensions>true</extensions>
+        <configuration>
+          <instructions>
+            <Import-Package>*,com.sun.el;version="[2,3)"</Import-Package>
+          </instructions>
+        </configuration>
       </plugin>
     </plugins>
   </build>

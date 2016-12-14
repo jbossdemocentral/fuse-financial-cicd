@@ -17,6 +17,6 @@ spec:
           - name: MYSQL_SERVICE_DATABASE
             value: sampledb
           - name: MYSQL_SERVICE_USERNAME
-            value: ${mysql-service-username}
+            value: dbuser
           - name: MYSQL_SERVICE_PASSWORD
-            value: ${mysql-service-password}
+            value: password

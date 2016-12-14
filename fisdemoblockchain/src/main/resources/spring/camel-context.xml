@@ -2,17 +2,21 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
     xmlns:camel="http://camel.apache.org/schema/spring"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation=" http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd             http://camel.apache.org/schema/spring http://camel.apache.org/schema/spring/camel-spring-2.18.1.xsd">
+    <bean
+        class="org.apache.camel.component.servlet.CamelHttpTransportServlet" id="camelHttpTransportServlet"/>
+    <bean
+        class="org.springframework.boot.web.servlet.ServletRegistrationBean" id="servlet">
+        <property name="name" value="CamelServlet"/>
+        <property name="servlet" ref="camelHttpTransportServlet"/>
+        <property name="urlMappings" value="/demos/*"/>
+    </bean>
     <bean class="com.redhat.fisdemoblockchain.MockBitcoinApp" id="mockBitcoinApp"/>
     <camelContext id="camel" xmlns="http://camel.apache.org/schema/spring">
-        <restConfiguration apiContextPath="api-docs" bindingMode="auto"
-            component="jetty" contextPath="/demos" enableCORS="true" port="8082">
-            <apiProperty key="host" value="0.0.0.0"/>
+        <restConfiguration apiContextPath="api-docs" bindingMode="json"
+            component="servlet" contextPath="/demos">
             <apiProperty key="cors" value="true"/>
             <apiProperty key="api.title" value="Healthcare demo clinical API"/>
             <apiProperty key="api.version" value="1.0.0"/>
-            <corsHeaders key="Access-Control-Allow-Origin" value="*"/>
-            <corsHeaders key="Access-Control-Allow-Methods" value="GET, HEAD, POST, PUT, DELETE, TRACE, OPTIONS, CONNECT, PATCH"/>
-            <corsHeaders key="Access-Control-Allow-Headers" value="Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers"/>
         </restConfiguration>
         <rest path="/bitcoinaccount">
             <get uri="/balance/{acctid}">
@@ -32,7 +36,6 @@
             <to id="_tobalanceq" uri="amq:queue:balance"/>
         </route>
         <route id="transferRoute">
-            <!-- <to id="route-to-incoming-orders" uri="amq:incomingOrders"/>-->
             <from id="_from1" uri="direct:dotransfer"/>
             <log id="log_2" message="Transfering from ${headers.acctid} to ${headers.recptid} with ${headers.amt}"/>
             <setBody id="_setBodyTempMap">

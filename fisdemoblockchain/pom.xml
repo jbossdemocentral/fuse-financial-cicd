@@ -3,9 +3,9 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.redhat</groupId>
-  <artifactId>fisdemoblockchain</artifactId>
+  <artifactId>fisblockchain-service</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <name>Fabric8 :: Quickstarts :: Spring Boot :: Camel and ActiveMQ</name>
+  <name>Fuse Integration Service :: Finance :: Mocked Block Chain</name>
   <description>Spring Boot example running a Camel route connecting to ActiveMQ</description>
   <properties>
     <spring-boot.version>1.4.1.RELEASE</spring-boot.version>
@@ -37,7 +37,11 @@
     </dependency>
     <dependency>
       <groupId>org.apache.camel</groupId>
-      <artifactId>camel-jetty-starter</artifactId>
+      <artifactId>camel-servlet-starter</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.camel</groupId>
+      <artifactId>camel-jackson-starter</artifactId>
     </dependency>
     <dependency>
       <groupId>org.apache.camel</groupId>
@@ -64,12 +68,8 @@
       <artifactId>arquillian-junit-container</artifactId>
       <scope>test</scope>
     </dependency>
-    <dependency>
-      <groupId>io.fabric8</groupId>
-      <artifactId>fabric8-arquillian</artifactId>
-      <scope>test</scope>
-    </dependency>
     
+   
   </dependencies>
   <build>
     <testResources>
