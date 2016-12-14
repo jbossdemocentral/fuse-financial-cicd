@@ -1,17 +1,22 @@
-# Spring Boot Camel REST / SQL QuickStart
+# Fuse Integration Service 2.0 Finance Demo - Traditional Banking
 
-This example demonstrates how to use SQL via JDBC along with Camel's REST DSL to expose a RESTful API.
+This demo demonstrates how to use SQL via JDBC along with Camel's REST DSL to expose a RESTful API.
 
-This example relies on the [Fabric8 Maven plugin](https://maven.fabric8.io) for its build configuration
-and uses the [fabric8 Java base image](https://github.com/fabric8io/base-images#java-base-images).
+This example relies on the [Fabric8 Maven plugin](https://maven.fabric8.io) for its build configuration 
+and uses the FIS Java base image
 
-### Building
+## Background
 
-The example can be built with:
 
-    $ mvn install
 
-This automatically generates the application resource descriptors and builds the Docker image, so it requires access to a Docker daemon, relying on the `DOCKER_HOST` environment variable by default.
+Account Table 
+| ID     | ACCTNAME | BALANCE | SSN       | PHONE      | ADDR                        | STATE  |
+| ------ | -------- | -------:| --------- | ---------- | ----------------------------| -- |
+| 223455 | Chris L  |   $1600 | 749980000 | 6364858533 | 4 BLACK DEER ST, STONE      | TX |
+| 123456 | Simon C  |   $5000 | 987655663 | 7264947276 | 43 SLIVER EAGLE ST, RIVER   | MA |
+| 234567 | Amber K  |    $700 | 424676543 | 4274558382 | 67 RED LION ST, ROCK        | NY |
+| 345678 | Kelly J  |   $4400 | 987676543 | 3530880835 | 8 GREEN SHARK ST, MOUNTAIN  | CA |
+
 
 ### Running the example locally
 
