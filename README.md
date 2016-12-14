@@ -89,7 +89,8 @@ And here are some of the ways you can play with it!
 A. Starting up the pipeline, and update it. 
 This project includes a pre-built outline that builds the image from SCM, in this case, it's github. and deploy an instance onto the platform. Then a pre-UAT test is done by a QA, after his/her verification, they can then reject the change or promote it to UAT for further UAT to Production workflow. When promoted, the pipeline will automatically copy the image from the registry and deploy it to openshift, with UAT access. 
 
-![alt text](images/outline.png "outline")
+![alt text](images/pipeline.png "pipeline")
+
 TODO: Videos
 
 B. Blue/Green Testing 
