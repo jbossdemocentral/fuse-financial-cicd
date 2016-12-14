@@ -1,15 +1,16 @@
 # FIS 2.0 Financial Demo
 
 This Financial demo is a simple gateway that redirect the incoming request of 
- - checking balance
- - transfer money 
-to different money source, one pass to a triditional banking microservice app, which interact directly with MySQL database, and pass the bitcoin request to the other microservice application connecting to a mock-blockchain through messaging broker. 
+ - Checking balance
+ - Transfer money 
+to different money source, one pass to a traditional banking microservice app, which interact directly with MySQL database, and pass the bitcoin request to the other microservice application connecting to a mock-blockchain through messaging broker. 
+
+![alt text](images/outline.png "outline")
 
 There are many aspect with this demo, 
 1. Source to Image (S2i) build and deploy process
-2. Exposing RESTAPI using Camel, and export API doc to swagger
-3. Building a pipeline to support automated CI/CD
-4. 
+2. Building a pipeline to support automated CI/CD
+3. Exposing RESTAPI using Camel, and export API doc to swagger
 
 but first, let's start with setting up the application. 
 
@@ -86,6 +87,11 @@ Congradulations! You can now start playing with the demo!
 And here are some of the ways you can play with it! 
 
 A. Starting up the pipeline, and update it. 
+This project includes a pre-built outline that builds the image from SCM, in this case, it's github. and deploy an instance onto the platform. Then a pre-UAT test is done by a QA, after his/her verification, they can then reject the change or promote it to UAT for further UAT to Production workflow. When promoted, the pipeline will automatically copy the image from the registry and deploy it to openshift, with UAT access. 
+
+![alt text](images/outline.png "outline")
+TODO: Videos
+
 B. Blue/Green Testing 
 C. A/B Testing
 
