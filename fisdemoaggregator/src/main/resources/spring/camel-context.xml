@@ -23,6 +23,9 @@
             <get uri="balance/{acctid}">
                 <to uri="direct:getbalance"/>
             </get>
+            <get uri="profile">
+                <to uri="direct:getprofile"/>
+            </get>
             <get uri="transfer/{acctid}/{amt}/{recptid}">
                 <to uri="direct:dotransfer"/>
             </get>
@@ -71,10 +74,27 @@
                 <otherwise id="_otherwise2">
                     <log id="_log8" message="Traditional banking"/>
                     <recipientList id="_recipientList4">
-                        <simple>&gt;http://fisaccount-service/demos/account/transfer/${header.acctid}/${header.amt}/${header.recptid}?bridgeEndpoint=true</simple>
+                        <simple>http://fisaccount-service/demos/account/transfer/${header.acctid}/${header.amt}/${header.recptid}?bridgeEndpoint=true</simple>
                     </recipientList>
                     <convertBodyTo id="_convertBodyTo4" type="java.lang.String"/>
                     <log id="_log7" message="${body}"/>
+                </otherwise>
+            </choice>
+        </route>
+        <route id="_getprofileroute">
+            <from id="_from3" uri="direct:getprofile"/>
+            <choice id="_choice3">
+                <when id="_when3">
+                    <simple>${headers.moneysource} == 'bitcoin'</simple>
+                    <setBody id="_setBody1">
+                        <constant>Bitcoint does not support porfile</constant>
+                    </setBody>
+                </when>
+                <otherwise id="_otherwise3">
+                    <recipientList id="_recipientList5">
+                        <simple>http://fisaccount-service/demos/account/profile/${header.acctid}?bridgeEndpoint=true</simple>
+                    </recipientList>
+                    <convertBodyTo id="_convertBodyTo5" type="java.lang.String"/>
                 </otherwise>
             </choice>
         </route>
