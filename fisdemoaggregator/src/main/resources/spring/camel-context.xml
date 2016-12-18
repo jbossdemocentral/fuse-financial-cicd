@@ -22,7 +22,10 @@
         <rest path="/sourcegateway">
             <get uri="balance/{acctid}">
                 <to uri="direct:getbalance"/>
-            </get>    
+            </get>
+            <get uri="profile">
+                <to uri="direct:getprofile"/>
+            </get>
             <get uri="transfer/{acctid}/{amt}/{recptid}">
                 <to uri="direct:dotransfer"/>
             </get>
@@ -78,6 +81,22 @@
                 </otherwise>
             </choice>
         </route>
-        
+        <route id="_getprofileroute">
+            <from id="_from3" uri="direct:getprofile"/>
+            <choice id="_choice3">
+                <when id="_when3">
+                    <simple>${header.moneysource} == 'bitcoin'</simple>
+                    <setBody id="_setBody1">
+                        <constant>Bitcoint does not support profile</constant>
+                    </setBody>
+                </when>
+                <otherwise id="_otherwise3">
+                    <recipientList id="_recipientList5">
+                        <simple>http://fisaccount-service:8080/demos/account/profile/${header.acctid}?bridgeEndpoint=true</simple>
+                    </recipientList>
+                    <convertBodyTo id="_convertBodyTo5" type="java.lang.String"/>
+                </otherwise>
+            </choice>
+        </route>
     </camelContext>
 </beans>
