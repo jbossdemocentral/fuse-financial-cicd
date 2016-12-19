@@ -84,6 +84,9 @@
         <route id="_getprofileroute">
             <from id="_from3" uri="direct:getprofile"/>
             <removeHeaders id="_removeHeaders3" pattern="Camel*"/>
+            <setHeader headerName="CamelHttpMethod" id="_setHeader3">
+                <constant>GET</constant>
+            </setHeader>
             <choice id="_choice3">
                 <when id="_when3">
                     <simple>${header.moneysource} == 'bitcoin'</simple>
