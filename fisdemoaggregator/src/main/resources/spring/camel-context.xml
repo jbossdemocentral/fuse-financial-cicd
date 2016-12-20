@@ -23,6 +23,9 @@
             <get uri="balance/{acctid}">
                 <to uri="direct:getbalance"/>
             </get>
+            <get uri="profile/{acctid}">
+                <to uri="direct:getprofile"/>
+            </get>
             <get uri="transfer/{acctid}/{amt}/{recptid}">
                 <to uri="direct:dotransfer"/>
             </get>
@@ -39,7 +42,7 @@
                     <simple>${header.moneysource} == 'bitcoin'</simple>
                     <log id="_log3" message="Bitcoin it is!"/>
                     <recipientList id="_recipientList1">
-                        <simple>http://fisblockchain-service/demos/bitcoinaccount/balance/${header.acctid}?bridgeEndpoint=true</simple>
+                        <simple>http://fisblockchain-service:8080/demos/bitcoinaccount/balance/${header.acctid}?bridgeEndpoint=true</simple>
                     </recipientList>
                     <convertBodyTo id="_convertBodyTo1" type="java.lang.String"/>
                     <log id="_log4" message="${body}"/>
@@ -47,7 +50,7 @@
                 <otherwise id="_otherwise1">
                     <log id="_log4" message="Traditional money source"/>
                     <recipientList id="_recipientList2">
-                        <simple>http://fisaccount-service/demos/account/balance/${header.acctid}?bridgeEndpoint=true</simple>
+                        <simple>http://fisaccount-service:8080/demos/account/balance/${header.acctid}?bridgeEndpoint=true</simple>
                     </recipientList>
                     <convertBodyTo id="_convertBodyTo3" type="java.lang.String"/>
                     <log id="_log5" message="${body}"/>
@@ -63,7 +66,7 @@
                     <simple>${header.moneysource} == 'bitcoin'</simple>
                     <log id="_log6" message="Bitcoin transfer "/>
                     <recipientList id="_recipientList3">
-                        <simple>http://fisblockchain-service/demos/bitcoinaccount/transfer/${header.acctid}/${header.amt}/${header.recptid}?bridgeEndpoint=true</simple>
+                        <simple>http://fisblockchain-service:8080/demos/bitcoinaccount/transfer/${header.acctid}/${header.amt}/${header.recptid}?bridgeEndpoint=true</simple>
                     </recipientList>
                     <convertBodyTo id="_convertBodyTo2" type="java.lang.String"/>
                     <log id="_log7" message="${body}"/>
@@ -71,10 +74,31 @@
                 <otherwise id="_otherwise2">
                     <log id="_log8" message="Traditional banking"/>
                     <recipientList id="_recipientList4">
-                        <simple>&gt;http://fisaccount-service/demos/account/transfer/${header.acctid}/${header.amt}/${header.recptid}?bridgeEndpoint=true</simple>
+                        <simple>http://fisaccount-service:8080/demos/account/transfer/${header.acctid}/${header.amt}/${header.recptid}?bridgeEndpoint=true</simple>
                     </recipientList>
                     <convertBodyTo id="_convertBodyTo4" type="java.lang.String"/>
                     <log id="_log7" message="${body}"/>
+                </otherwise>
+            </choice>
+        </route>
+        <route id="_getprofileroute">
+            <from id="_from3" uri="direct:getprofile"/>
+            <removeHeaders id="_removeHeaders3" pattern="Camel*"/>
+            <setHeader headerName="CamelHttpMethod" id="_setHeader3">
+                <constant>GET</constant>
+            </setHeader>
+            <choice id="_choice3">
+                <when id="_when3">
+                    <simple>${header.moneysource} == 'bitcoin'</simple>
+                    <setBody id="_setBody1">
+                        <constant>Bitcoint does not support profile</constant>
+                    </setBody>
+                </when>
+                <otherwise id="_otherwise3">
+                    <recipientList id="_recipientList5">
+                        <simple>http://fisaccount-service:8080/demos/account/profile/${header.acctid}?bridgeEndpoint=true</simple>
+                    </recipientList>
+                    <convertBodyTo id="_convertBodyTo5" type="java.lang.String"/>
                 </otherwise>
             </choice>
         </route>
