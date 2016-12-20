@@ -24,7 +24,7 @@
                 <to uri="direct:getbalance"/>
             </get>
             <get uri="profile/{acctid}">
-                <to uri="direct:getprofile"/>
+            	<to uri="direct:getprofile"/>
             </get>
             <get uri="transfer/{acctid}/{amt}/{recptid}">
                 <to uri="direct:dotransfer"/>
