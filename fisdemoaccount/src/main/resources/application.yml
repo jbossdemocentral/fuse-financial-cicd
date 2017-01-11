@@ -20,7 +20,9 @@ mysql:
     name:     mysql
     # The database to use, can be customized using the 'MYSQL_SERVICE_DATABASE' env variable
     database: sampledb
-
+    username: 
+    password: 
+    
 spring:
   # Spring JDBC configuration
   datasource:

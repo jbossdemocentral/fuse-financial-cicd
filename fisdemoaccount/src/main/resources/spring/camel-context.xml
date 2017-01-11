@@ -14,7 +14,6 @@
         <property name="dataSource" ref="dataSource"/>
     </bean>
     <camelContext id="camelContext-e10768f5-36e3-4032-a00c-9a26349cd88c" xmlns="http://camel.apache.org/schema/spring">
-        <endpoint id="convertaccount" uri="dozer:convertaccount?sourceModel=com.redhat.myfispipeline.Accounts&amp;targetModel=generated_1481590729110.Profile&amp;marshalId=generated_1481590729110&amp;mappingFile=transformation.xml"/>
         <dataFormats>
             <jaxb contextPath="generated_1481590729110" id="generated_1481590729110"/>
         </dataFormats>
@@ -25,32 +24,21 @@
             <apiProperty key="api.version" value="1.0.0"/>
         </restConfiguration>
         <rest path="/account">
-            <get uri="balance/{acctid}">
-                <to uri="direct:getbalance"/>
-            </get>
-        </rest>
-        <rest path="/account">
             <get uri="profile/{acctid}">
                 <to uri="direct:getprofile"/>
             </get>
-        </rest>
-        <rest path="/account">
-            <get uri="transfer/{acctid}/{amt}/{recepid}">
+            <put uri="profile/{acctid}">
+                <to uri="direct:createprofile"/>
+            </put>
+            <post uri="transfer/{acctid}/">
                 <to uri="direct:dotransfer"/>
-            </get>
+            </post>
         </rest>
         <route id="profileroute">
             <from id="_from1" uri="direct:getprofile"/>
             <log id="_log1" message="Account ${headers.acctid}"/>
             <to id="_to1" uri="sql:select * from accounts where id=:#acctid?outputClass=com.redhat.myfispipeline.Accounts&amp;dataSource=dataSource&amp;outputType=SelectOne"/>
             <log id="_log2" message="output: ${body}"/>
-        </route>
-        <route id="balanceroute">
-            <from id="_from1" uri="direct:getbalance"/>
-            <to id="_to88" uri="direct:getprofile"/>
-            <setBody id="_setBody1">
-                <simple>${body.balance}</simple>
-            </setBody>
         </route>
         <route id="transferroute">
             <from id="_from1" uri="direct:dotransfer"/>

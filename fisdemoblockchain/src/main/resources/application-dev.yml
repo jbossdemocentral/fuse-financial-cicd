@@ -1,0 +1,51 @@
+camel:
+  springboot:
+    # The Camel context name
+    name: CamelActiveMQ
+    main-run-controller: true
+
+# Binding health checks to a different port
+management:
+  port: 8081
+
+# disable all management enpoints except health
+endpoints:
+  enabled: false
+  health:
+    enabled: true
+
+  
+
+logging:
+  config: classpath:logback.xml
+
+
+# The name of the service hosting the ActiveMQ broker or message gateway
+# Can be customized using the 'ACTIVEMQ_SERVICE_NAME' variable to use a different broker.
+activemq:
+  service:
+    name: activemq
+# The following properties can be customized using the 'ACTIVEMQ_SERVICE_HOST' and 'ACTIVEMQ_SERVICE_PORT' environment variables.
+# This is indeed done automatically by Kubernetes when the application is deployed in a namespace containing an instance of ActiveMQ named 'activemq'.
+# The service defaults to localhost. You need to change these properties for development purposes only.
+    host: localhost
+  broker: 
+    username: admin
+    password: admin
+    
+# The following property binds all previous configurations together
+    url: vm://${${activemq.service.name}.service.host}?broker.persistent=false
+  concurrent: 
+    consumers: 10
+  pool: 
+     max:
+      connections: 8
+
+
+
+
+# If required, you can set the broker credentials using environment variables.
+# Variable names are 'ACTIVEMQ_BROKER_USERNAME' and 'ACTIVEMQ_BROKER_PASSWORD'.
+#activemq.broker.username=theuser
+#activemq.broker.password=thepassword
+  

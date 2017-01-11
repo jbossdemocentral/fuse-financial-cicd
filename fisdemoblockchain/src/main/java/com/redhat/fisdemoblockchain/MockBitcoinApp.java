@@ -3,6 +3,7 @@ package com.redhat.fisdemoblockchain;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.redhat.fisdemoblockchain.exception.AccountFormatException;
 import com.redhat.fisdemoblockchain.exception.NoAccountFoundException;
 
 public class MockBitcoinApp {
@@ -25,7 +26,9 @@ public class MockBitcoinApp {
 		
 	}
 	
-	public Integer getBalance(String acctid) throws NoAccountFoundException{
+	public Integer getBalance(String acctid) throws NoAccountFoundException, AccountFormatException{
+		if(acctid.length()<6)
+			throw new AccountFormatException();
 		Integer balance = accounts.get(acctid);
 		
 		if(balance == null) 

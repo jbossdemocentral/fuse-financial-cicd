@@ -10,8 +10,8 @@
   <properties>
     <spring-boot.version>1.4.1.RELEASE</spring-boot.version>
     <fabric8.version>2.2.170.redhat-000004</fabric8.version>
-    <fabric8.maven.plugin.version>3.1.80.redhat-000004</fabric8.maven.plugin.version>
     <maven-compiler-plugin.version>3.3</maven-compiler-plugin.version>
+    <fabric8.maven.plugin.version>3.1.80.redhat-000004</fabric8.maven.plugin.version>
     <run.profiles>dev</run.profiles>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <maven-surefire-plugin.version>2.18.1</maven-surefire-plugin.version>
@@ -88,7 +88,6 @@
       <artifactId>arquillian-junit-container</artifactId>
       <scope>test</scope>
     </dependency>
-    
   </dependencies>
   <build>
     <defaultGoal>spring-boot:run</defaultGoal>

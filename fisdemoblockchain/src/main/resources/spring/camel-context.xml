@@ -19,12 +19,15 @@
             <apiProperty key="api.version" value="1.0.0"/>
         </restConfiguration>
         <rest path="/bitcoinaccount">
-            <get uri="/balance/{acctid}">
+            <get uri="balance/{acctid}">
                 <to uri="direct:getBalance"/>
             </get>
-            <get uri="/transfer/{acctid}/{amt}/{recptid}">
+            <post uri="transfer/{acctid}">
                 <to uri="direct:dotransfer"/>
-            </get>
+            </post>
+            <post uri="test/{acctid}/">
+                <to uri="direct:doTest"/>
+            </post>
         </rest>
         <!-- Camel Routes -->
         <route id="balanceRoute">
@@ -34,12 +37,15 @@
                 <simple>${headers.acctid}</simple>
             </setBody>
             <to id="_tobalanceq" uri="amq:queue:balance"/>
+            <setHeader headerName="camelhttpresponsecode" id="_setHeader1">
+                <simple>${headers.balancestatus}</simple>
+            </setHeader>
         </route>
         <route id="transferRoute">
             <from id="_from1" uri="direct:dotransfer"/>
-            <log id="log_2" message="Transfering from ${headers.acctid} to ${headers.recptid} with ${headers.amt}"/>
+            <log id="log_2" message="Transfering from ${header.acctid} to ${header.recptid} with ${header.amt}"/>
             <setBody id="_setBodyTempMap">
-                <simple>${headers.acctid},${headers.amt},${headers.recptid}</simple>
+                <simple>${header.acctid},${header.amt},${header.recptid}</simple>
             </setBody>
             <to id="_totransferq" uri="amq:queue:transfer"/>
         </route>
@@ -51,6 +57,9 @@
                 <setBody id="_setBody3">
                     <simple>Account ${header.acctid} has balance of : ${body}</simple>
                 </setBody>
+                <setHeader headerName="balancestatus" id="_setHeader2">
+                    <constant>200</constant>
+                </setHeader>
                 <doCatch id="_doCatch1">
                     <exception>com.redhat.fisdemoblockchain.exception.NoAccountFoundException</exception>
                     <log id="log_5" message="No Account!!"/>
@@ -58,12 +67,28 @@
                         <constant>No Account Found!</constant>
                     </setBody>
                 </doCatch>
+                <doCatch id="_doCatch2">
+                    <exception>com.redhat.fisdemoblockchain.exception.AccountFormatException</exception>
+                    <log id="log_6" message="Account Format error!!"/>
+                    <setBody id="_setBody1">
+                        <constant>Account Format Error!</constant>
+                    </setBody>
+                    <setHeader headerName="balancestatus" id="_setHeader3">
+                        <constant>400</constant>
+                    </setHeader>
+                </doCatch>
             </doTry>
         </route>
         <route id="mocktransfer">
             <from id="_from3" uri="amq:queue:transfer"/>
             <log id="log_4" message="Tokenized ${body}"/>
             <bean id="_bean1" method="transfer(${body})" ref="mockBitcoinApp"/>
+        </route>
+        <route id="doTest">
+            <from id="_from3" uri="direct:doTest"/>
+            <log id="log_10" message="body ${body}"/>
+            <log id="log_11" message="amt ${header.amt}"/>
+            <log id="log_11" message="recptid ${header.recptid}"/>
         </route>
     </camelContext>
 </beans>

@@ -23,10 +23,10 @@
             <get uri="balance/{acctid}">
                 <to uri="direct:getbalance"/>
             </get>
-            <get uri="profile/{acctid}">
+            <get uri="profile">
                 <to uri="direct:getprofile"/>
             </get>
-            <get uri="transfer">
+            <get uri="transfer/{acctid}/{amt}/{recptid}">
                 <to uri="direct:dotransfer"/>
             </get>
         </rest>
@@ -74,7 +74,11 @@
                 <otherwise id="_otherwise2">
                     <log id="_log8" message="Traditional banking"/>
                     <recipientList id="_recipientList4">
-                        <simple>http://fisaccount-service:8080/demos/account/transfer/${header.acctid}/${header.amt}/${header.recptid}?bridgeEndpoint=true</simple>
+<<<<<<< HEAD
+                        <simple>http://fisaccount-service/demos/account/transfer/${header.acctid}/${header.amt}/${header.recptid}?bridgeEndpoint=true</simple>
+=======
+                        <simple>&gt;http://fisaccount-service:8080/demos/account/transfer/${header.acctid}/${header.amt}/${header.recptid}?bridgeEndpoint=true</simple>
+>>>>>>> 9227ff13f04ba3ce1dcbf8d92691bfbc3126065f
                     </recipientList>
                     <convertBodyTo id="_convertBodyTo4" type="java.lang.String"/>
                     <log id="_log7" message="${body}"/>
@@ -83,10 +87,6 @@
         </route>
         <route id="_getprofileroute">
             <from id="_from3" uri="direct:getprofile"/>
-            <removeHeaders id="_removeHeaders3" pattern="Camel*"/>
-            <setHeader headerName="CamelHttpMethod" id="_setHeader3">
-                <constant>GET</constant>
-            </setHeader>
             <choice id="_choice3">
                 <when id="_when3">
                     <simple>${header.moneysource} == 'bitcoin'</simple>
@@ -96,7 +96,7 @@
                 </when>
                 <otherwise id="_otherwise3">
                     <recipientList id="_recipientList5">
-                        <simple>http://fisaccount-service:8080/demos/account/profile/${header.acctid}?bridgeEndpoint=true</simple>
+                        <simple>http://fisaccount-service/demos/account/profile/${header.acctid}?bridgeEndpoint=true</simple>
                     </recipientList>
                     <convertBodyTo id="_convertBodyTo5" type="java.lang.String"/>
                 </otherwise>
