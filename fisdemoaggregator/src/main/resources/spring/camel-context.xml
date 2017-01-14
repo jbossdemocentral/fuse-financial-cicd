@@ -13,7 +13,7 @@
         <restConfiguration apiContextPath="api-docs" bindingMode="json"
             component="servlet" contextPath="/demos">
             <apiProperty key="cors" value="true"/>
-            <apiProperty key="api.title" value="Healthcare demo clinical API"/>
+            <apiProperty key="api.title" value="FIS Gateway"/>
             <apiProperty key="api.version" value="1.0.0"/>
             <corsHeaders key="Access-Control-Allow-Origin" value="*"/>
             <corsHeaders key="Access-Control-Allow-Methods" value="GET, HEAD, POST, PUT, DELETE, TRACE, OPTIONS, CONNECT, PATCH"/>
@@ -50,10 +50,15 @@
                 <otherwise id="_otherwise1">
                     <log id="_log4" message="Traditional money source"/>
                     <recipientList id="_recipientList2">
-                        <simple>http://fisaccount-service:8080/demos/account/balance/${header.acctid}?bridgeEndpoint=true</simple>
+                        <simple>http://fisaccount-service:8080/demos/account/profile/${header.acctid}?bridgeEndpoint=true</simple>
                     </recipientList>
                     <convertBodyTo id="_convertBodyTo3" type="java.lang.String"/>
-                    <log id="_log5" message="${body}"/>
+                    <unmarshal >
+                    	<json library="Jackson"/>
+                    </unmarshal>
+                    <setBody>
+                     <simple>Account ${header.acctid} has balance of :${body['balance']}</simple>
+                    </setBody>
                 </otherwise>
             </choice>
         </route>
