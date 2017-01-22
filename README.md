@@ -64,7 +64,7 @@ Go to your traditional banking account project folder, and run
 	
 ```
 cd fisdemoaccount
-mvn fabric8:deploy
+mvn fabric8:deploy -Dmysql.service.username=dbuser -Dmysql.service.password=password
 ```
 
 Do the same to the bitcoin gateway under it's project folder 
