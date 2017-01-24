@@ -67,6 +67,12 @@ cd fisdemoaccount
 mvn fabric8:deploy -Dmysql-service-username=dbuser -Dmysql-service-password=password
 ```
 
+or if you prefer Source S2i to upload the application, simple install it with the template include. 
+
+```
+oc new-app -f fisdemo-template-account.json
+```
+
 Do the same to the bitcoin gateway under it's project folder 
 
 	
@@ -74,6 +80,11 @@ Do the same to the bitcoin gateway under it's project folder
 cd ..
 cd fisdemoblockchain
 mvn fabric8:deploy
+```
+or if you prefer Source S2i to upload the application, simple install it with the template include. 
+
+```
+oc new-app -f fisdemo-template-blockchain.json
 ```
 
 After successfully install the application, it's time to deploy the API Gateway. This time, we are going to build a pipeline, that goes through and automated the CI/CD process from staging to UAT. 
