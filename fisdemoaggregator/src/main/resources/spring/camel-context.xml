@@ -53,11 +53,11 @@
                         <simple>http://fisaccount-service:8080/demos/account/profile/${header.acctid}?bridgeEndpoint=true</simple>
                     </recipientList>
                     <convertBodyTo id="_convertBodyTo3" type="java.lang.String"/>
-                    <unmarshal >
-                    	<json library="Jackson"/>
+                    <unmarshal id="_unmarshal1">
+                        <json library="Jackson"/>
                     </unmarshal>
-                    <setBody>
-                     <simple>Account ${header.acctid} has balance of :${body['balance']}</simple>
+                    <setBody id="_setBody2">
+                        <simple>Account ${header.acctid} has balance of :${body['balance']}</simple>
                     </setBody>
                 </otherwise>
             </choice>
@@ -78,8 +78,11 @@
                 </when>
                 <otherwise id="_otherwise2">
                     <log id="_log8" message="Traditional banking"/>
+                    <setHeader headerName="HTTP_METHOD">
+                        <constant>POST</constant>
+                    </setHeader>
                     <recipientList id="_recipientList4">
-                        <simple>http://fisaccount-service:8080/demos/account/transfer/${header.acctid}/${header.amt}/${header.recptid}?bridgeEndpoint=true</simple>
+                        <simple>http://fisaccount-service:8080/demos/account/transfer/${header.acctid}?amt=${header.amt}&amp;recepid=${header.recptid}&amp;bridgeEndpoint=true</simple>
                     </recipientList>
                     <convertBodyTo id="_convertBodyTo4" type="java.lang.String"/>
                     <log id="_log7" message="${body}"/>
