@@ -73,7 +73,7 @@ Do the same to the bitcoin gateway under it's project folder
 ```
 cd ..
 cd fisdemoblockchain
-mvn fabric8:deploy
+mvn fabric8:deploy -Dactivemq.service.name=broker-amq-tcp -Dbroker-amq-tcp.service.host=fisdemo
 ```
 
 After successfully install the application, it's time to deploy the API Gateway. This time, we are going to build a pipeline, that goes through and automated the CI/CD process from staging to UAT. 
