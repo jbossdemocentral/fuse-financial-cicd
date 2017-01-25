@@ -37,7 +37,6 @@ This uses an embedded in-memory HSQLDB database. You can use the default Spring 
 
 You can then access the REST API directly from your Web browser, e.g.:
 
-- <http://localhost:8080/demos/account/balance/223455>
 - <http://localhost:8080/demos/account/profile/223455>
 - <http://localhost:8080/demos/account/transfer/123456/15/223455>
 

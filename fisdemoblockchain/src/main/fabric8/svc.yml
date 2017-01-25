@@ -1,0 +1,7 @@
+metadata:
+  name: fisblockchain-service
+
+spec:
+  ports:
+    - port: 80
+      targetPort: 8080
