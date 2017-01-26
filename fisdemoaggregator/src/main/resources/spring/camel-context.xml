@@ -81,9 +81,12 @@
                     <setHeader headerName="CamelHttpMethod">
                         <constant>POST</constant>
                     </setHeader>
+                    <to id="traditionalTransfer" uri="http://fisaccount-service:8080/demos/account/transfer/${header.acctid}?amt=${header.amt}&amp;recepid=${header.recptid}&amp;bridgeEndpoint=true"</>
+                    <!-->
                     <recipientList id="_recipientList4">
                         <simple>http://fisaccount-service:8080/demos/account/transfer/${header.acctid}?amt=${header.amt}&amp;recepid=${header.recptid}&amp;bridgeEndpoint=true</simple>
                     </recipientList>
+                    -->
                     <convertBodyTo id="_convertBodyTo4" type="java.lang.String"/>
                     <log id="_log7" message="${body}"/>
                 </otherwise>

@@ -42,12 +42,10 @@
         </route>
         <route id="transferroute">
             <from id="_from1" uri="direct:dotransfer"/>
+            <log id="transferSQL" loggingLevel="WARN" message="sql:update accounts set balance = balance -:#amt where id =:#acctid?dataSource=dataSource"/>
             <transacted id="_transacted1">
                 <to id="_to4" uri="sql:update accounts set balance = balance -:#amt where id =:#acctid?dataSource=dataSource"/>
                 <to id="_to5" uri="sql:update accounts set balance = balance +:#amt where id =:#recepid?dataSource=dataSource"/>
-                <!-- 
-                <to id="_to4" uri="sql:update accounts set balance =  (select balance from (select balance from accounts where id = :#acctid ) AS A) AS B -:#amt where id =:#acctid?dataSource=dataSource"/>
-                -->
                 <to id="_to6" uri="sql:select * from accounts where id=:#acctid?outputClass=com.redhat.myfispipeline.Accounts&amp;dataSource=dataSource&amp;outputType=SelectOne"/>
             </transacted>
         </route>
