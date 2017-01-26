@@ -78,7 +78,7 @@
                 </when>
                 <otherwise id="_otherwise2">
                     <log id="_log8" message="Traditional banking"/>
-                    <setHeader headerName="HTTP_METHOD">
+                    <setHeader headerName="CamelHttpMethod">
                         <constant>POST</constant>
                     </setHeader>
                     <recipientList id="_recipientList4">
