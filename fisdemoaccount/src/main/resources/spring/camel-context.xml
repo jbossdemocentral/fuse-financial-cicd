@@ -42,6 +42,7 @@
         </route>
         <route id="transferroute">
             <from id="_from1" uri="direct:dotransfer"/>
+            <log id="_log1" message="Account :#acctid"/>
             <log id="transferSQL" loggingLevel="WARN" message="sql:update accounts set balance = balance -:#amt where id =:#acctid?dataSource=dataSource"/>
             <transacted id="_transacted1">
                 <to id="_to4" uri="sql:update accounts set balance = balance -:#amt where id =:#acctid?dataSource=dataSource"/>
