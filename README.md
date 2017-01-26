@@ -79,7 +79,7 @@ Do the same to the bitcoin gateway under it's project folder
 ```
 cd ..
 cd fisdemoblockchain
-mvn fabric8:deploy
+mvn fabric8:deploy -Dactivemq.service.name=broker-amq-tcp -Dbroker-amq-tcp.service.host=fisdemo
 ```
 or if you prefer Source S2i to upload the application, simple install it with the template include. 
 
