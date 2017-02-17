@@ -64,7 +64,13 @@ Go to your traditional banking account project folder, and run
 	
 ```
 cd fisdemoaccount
-mvn fabric8:deploy
+mvn fabric8:deploy -Dmysql-service-username=dbuser -Dmysql-service-password=password
+```
+
+or if you prefer Source S2i to upload the application, simple install it with the template include. 
+
+```
+oc new-app -f fisdemo-template-account.json
 ```
 
 Do the same to the bitcoin gateway under it's project folder 
@@ -74,6 +80,11 @@ Do the same to the bitcoin gateway under it's project folder
 cd ..
 cd fisdemoblockchain
 mvn fabric8:deploy
+```
+or if you prefer Source S2i to upload the application, simple install it with the template include. 
+
+```
+oc new-app -f fisdemo-template-blockchain.json
 ```
 
 After successfully install the application, it's time to deploy the API Gateway. This time, we are going to build a pipeline, that goes through and automated the CI/CD process from staging to UAT. 
@@ -89,9 +100,7 @@ And here are some of the ways you can play with it!
 A. Starting up the pipeline, and update it. 
 This project includes a pre-built outline that builds the image from SCM, in this case, it's github. and deploy an instance onto the platform. Then a pre-UAT test is done by a QA, after his/her verification, they can then reject the change or promote it to UAT for further UAT to Production workflow. When promoted, the pipeline will automatically copy the image from the registry and deploy it to openshift, with UAT access. 
 
-![alt text](images/pipeline.png "pipeline")
-
-TODO: Videos
+[![Alt video](images/video.png)](https://player.vimeo.com/video/196763352)
 
 B. Blue/Green Testing 
 C. A/B Testing
