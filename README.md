@@ -91,8 +91,7 @@ After successfully install the application, it's time to deploy the API Gateway.
 
 	
 ```
-oc create -f https://raw.githubusercontent.com/weimeilin79/financepipeline/master/fisdemo-template.json
-oc new-app --template=fisgateway-service
+oc process -f fisdemo-template.json | oc create -f -
 ```
 Congradulations! You can now start playing with the demo! 
 And here are some of the ways you can play with it! 

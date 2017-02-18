@@ -109,7 +109,7 @@
 		            "weight": 100
 		        },
 		        "port": {
-		            "targetPort": 8080
+		            "targetPort": 80
 		        },
 		        "wildcardPolicy": "None"
 		    }
@@ -139,7 +139,7 @@
 		            "weight": 100
 		        },
 		        "port": {
-		            "targetPort": 8080
+		            "targetPort": 80
 		        },
 		        "wildcardPolicy": "None"
 		    }
@@ -164,7 +164,7 @@
         "deprecatedPublicIPs": [],
         "ports": [
           {
-            "port": 8080,
+            "port": 80,
             "protocol": "TCP",
             "targetPort": 8080
           }
@@ -197,7 +197,7 @@
         "deprecatedPublicIPs": [],
         "ports": [
           {
-            "port": 8080,
+            "port": 80,
             "protocol": "TCP",
             "targetPort": 8080
           }
