@@ -53,7 +53,7 @@ Download the git repository by either forking it, or simply cloning it.
 (My suggesting is to fork it, if you want to play with the code)
 	
 ```
-git https://github.com/YOUR_RPEO/financepipeline.git
+git https://github.com/YOUR_RPEO/fuse-financial-cicd.git
 ```
 For the two microservice 
  - Traditional Bankling
@@ -85,6 +85,13 @@ oc process -f fisdemo-template.json | oc create -f -
 ```
 Congradulations! You can now start playing with the demo! 
 And here are some of the ways you can play with it! 
+In your browser test the following links
+
+```
+http://fisgateway-service-fisdemo.192.168.99.100.xip.io/demos/sourcegateway/balance/234567?moneysource=bitcoin
+http://fisgateway-service-fisdemo.192.168.99.100.xip.io/demos/sourcegateway/balance/234567
+```
+
 
 A. Starting up the pipeline, and update it. 
 This project includes a pre-built outline that builds the image from SCM, in this case, it's github. and deploy an instance onto the platform. Then a pre-UAT test is done by a QA, after his/her verification, they can then reject the change or promote it to UAT for further UAT to Production workflow. When promoted, the pipeline will automatically copy the image from the registry and deploy it to openshift, with UAT access. 
