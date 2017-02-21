@@ -27,7 +27,7 @@ Then login as system admin to install the FIS 2.0 Tech preview image stream. (NO
 ```
 oc login -u system:admin
 oc project openshift
-oc create -f https://raw.githubusercontent.com/jboss-fuse/application-templates/application-templates-2.0.redhat-000026/fis-image-streams.json
+oc create -f https://raw.githubusercontent.com/jboss-fuse/application-templates/master/fis-image-streams.json
 ```
 
 And log back in as developer, install the messaging template that we will use later in the process. 
