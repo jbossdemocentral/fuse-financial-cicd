@@ -78,9 +78,15 @@
                 </when>
                 <otherwise id="_otherwise2">
                     <log id="_log8" message="Traditional banking"/>
+                    <setHeader headerName="CamelHttpMethod" id="_setHeader1">
+                        <constant>POST</constant>
+                    </setHeader>
+                    <to id="account-transfer" url="rest:post:fisaccount-service/demos/account/transfer/${header.acctid}?amt=${header.amt}&amp;recepid=${header.recptid}?bridgeEndpoint=true"/>
+                    <!-->
                     <recipientList id="_recipientList4">
-                        <simple>http://fisaccount-service/demos/account/transfer/${header.acctid}/${header.amt}/${header.recptid}?bridgeEndpoint=true</simple>
+                        <simple>http://fisaccount-service/demos/account/transfer/${header.acctid}?amt=${header.amt}&amp;recepid=${header.recptid}?bridgeEndpoint=true</simple>
                     </recipientList>
+                    -->
                     <convertBodyTo id="_convertBodyTo4" type="java.lang.String"/>
                     <log id="_log7" message="${body}"/>
                 </otherwise>
