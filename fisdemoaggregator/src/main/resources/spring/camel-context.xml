@@ -81,7 +81,7 @@
                     <setHeader headerName="CamelHttpMethod" id="_setHeader1">
                         <constant>POST</constant>
                     </setHeader>
-                    <to id="account-transfer" url="http://fisaccount-service/demos/account/transfer/${header.acctid}?amt=${header.amt}&amp;recepid=${header.recptid}?bridgeEndpoint=true"/>
+                    <to id="account-transfer" uri="http://fisaccount-service/demos/account/transfer/${header.acctid}?amt=${header.amt}&amp;recepid=${header.recptid}?bridgeEndpoint=true"/>
                     <!-->
                     <recipientList id="_recipientList4">
                         <simple>http://fisaccount-service/demos/account/transfer/${header.acctid}?amt=${header.amt}&amp;recepid=${header.recptid}?bridgeEndpoint=true</simple>
