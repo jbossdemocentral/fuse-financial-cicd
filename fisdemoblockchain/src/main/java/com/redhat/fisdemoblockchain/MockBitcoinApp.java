@@ -61,12 +61,12 @@ public class MockBitcoinApp {
 		
 		if(acctBalance != null && recptBalance != null){
 			accounts.put(acctid, acctBalance-amt);
-			accounts.put(acctid, recptBalance+amt);
+			accounts.put(recptid, recptBalance+amt);
 		}else{
 			return "Transfer: ONE of the account NOT FOUND!";
 		}
 		ledger.transfer(acctid, amt, recptid);
-		return "Successfully transfered $"+amt+"from "+acctid+"to "+recptid+" remaining balance are: $"+(acctBalance-amt);
+		return "Successfully transfered $"+amt+" from "+acctid+" to "+recptid+" remaining balance are: $"+(acctBalance-amt);
 	}
 
 }

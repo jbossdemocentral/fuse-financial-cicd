@@ -60,6 +60,6 @@ public class ApplicationTest {
         ResponseEntity<String> transferResponse = restTemplate.postForEntity("/demos/bitcoinaccount/transfer/123456", headers ,String.class);
         
         assertThat(transferResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(transferResponse.getBody()).isEqualTo("\"Successfully transfered $30from 123456to 345678 remaining balance are: $2970\"");
+        assertThat(transferResponse.getBody()).isEqualTo("\"Successfully transfered $30 from 123456 to 345678 remaining balance are: $2970\"");
     }
 }
