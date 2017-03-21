@@ -30,7 +30,7 @@
             <put uri="profile/{acctid}">
                 <to uri="direct:createprofile"/>
             </put>
-            <post uri="transfer/{acctid}/">
+            <post uri="transfer/{acctid}">
                 <to uri="direct:dotransfer"/>
             </post>
         </rest>
@@ -42,9 +42,10 @@
         </route>
         <route id="transferroute">
             <from id="_from1" uri="direct:dotransfer"/>
+            <log id="_log99" message="Transfer ${headers.amt} from ${headers.acctid} to ${headers.recepid} "/>
             <transacted id="_transacted1">
-                <to id="_to4" uri="sql:update accounts set balance =  (select balance from accounts where id = :#acctid ) -:#amt where id =:#acctid?dataSource=dataSource"/>
-                <to id="_to5" uri="sql:update accounts set balance =  (select balance from accounts where id = :#recepid ) +:#amt where id =:#recepid?dataSource=dataSource"/>
+                <to id="_to4" uri="sql:update accounts set balance = balance -:#amt where id =:#acctid?dataSource=dataSource"/>
+                <to id="_to5" uri="sql:update accounts set balance = balance +:#amt where id =:#recepid?dataSource=dataSource"/>
                 <to id="_to6" uri="sql:select * from accounts where id=:#acctid?outputClass=com.redhat.myfispipeline.Accounts&amp;dataSource=dataSource&amp;outputType=SelectOne"/>
             </transacted>
         </route>

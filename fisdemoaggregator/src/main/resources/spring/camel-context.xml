@@ -64,22 +64,29 @@
         </route>
         <route id="gatewaytransfer">
             <from id="_from2" uri="direct:dotransfer"/>
-            <log id="_log2" message="do balance ${header.acctid} ${header.amt} ${header.recptid} ${header.moneysource}"/>
+            <log id="_log2" message="transfer from ${header.acctid} for ${header.amt} to ${header.recptid} using type ${header.moneysource}"/>
             <removeHeaders id="_removeHeaders2" pattern="Camel*"/>
             <choice id="_choice2">
                 <when id="_when2">
                     <simple>${header.moneysource} == 'bitcoin'</simple>
                     <log id="_log6" message="Bitcoin transfer "/>
+                    <setHeader headerName="CamelHttpMethod" id="_setHeader2">
+                        <constant>POST</constant>
+                    </setHeader>
                     <recipientList id="_recipientList3">
-                        <simple>http://fisblockchain-service/demos/bitcoinaccount/transfer/${header.acctid}/${header.amt}/${header.recptid}?bridgeEndpoint=true</simple>
+                        <simple>http://fisblockchain-service/demos/bitcoinaccount/transfer/${header.acctid}?bridgeEndpoint=true</simple>
                     </recipientList>
                     <convertBodyTo id="_convertBodyTo2" type="java.lang.String"/>
                     <log id="_log7" message="${body}"/>
                 </when>
                 <otherwise id="_otherwise2">
                     <log id="_log8" message="Traditional banking"/>
+                    <setHeader headerName="CamelHttpMethod" id="_setHeader2">
+                        <constant>POST</constant>
+                    </setHeader>
                     <recipientList id="_recipientList4">
-                        <simple>http://fisaccount-service/demos/account/transfer/${header.acctid}/${header.amt}/${header.recptid}?bridgeEndpoint=true</simple>
+                        <!-- Note we only need to define the recepid in the payload below because it's a new query parameetr (i.e. not the same as recptid), amt carries over from headers in Exchange-->
+                        <simple>http://fisaccount-service/demos/account/transfer/${header.acctid}?recepid=${header.recptid}&amp;bridgeEndpoint=true</simple>
                     </recipientList>
                     <convertBodyTo id="_convertBodyTo4" type="java.lang.String"/>
                     <log id="_log7" message="${body}"/>
