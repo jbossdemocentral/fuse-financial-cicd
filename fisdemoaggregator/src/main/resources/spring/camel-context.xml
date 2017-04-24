@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="        http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd        http://camel.apache.org/schema/spring       http://camel.apache.org/schema/spring/camel-spring-2.18.1.xsd">
-    <bean
-        class="org.apache.camel.component.servlet.CamelHttpTransportServlet" id="camelHttpTransportServlet"/>
+    <bean  class="org.apache.camel.component.servlet.CamelHttpTransportServlet" id="camelHttpTransportServlet"/>
+    <bean  class="org.apache.camel.component.hystrix.metrics.servlet.HystrixEventStreamServlet" id="hystrixEventStreamServlet"/>
     <bean
         class="org.springframework.boot.web.servlet.ServletRegistrationBean" id="servlet">
         <property name="name" value="CamelServlet"/>
         <property name="servlet" ref="camelHttpTransportServlet"/>
         <property name="urlMappings" value="/demos/*"/>
+    </bean>
+    <bean
+        class="org.springframework.boot.web.servlet.ServletRegistrationBean" id="hystrixservlet">
+        <property name="name" value="HystrixServlet"/>
+        <property name="servlet" ref="hystrixEventStreamServlet"/>
+        <property name="urlMappings" value="/hystrix.stream"/>
     </bean>
     <camelContext id="camelContext-a73e7fe1-456e-4e15-9926-fae906325f11" xmlns="http://camel.apache.org/schema/spring">
         <restConfiguration apiContextPath="api-docs" bindingMode="json"
