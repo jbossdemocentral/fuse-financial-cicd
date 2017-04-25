@@ -101,6 +101,38 @@ objects:
       project: ${APP_NAME}
       provider: s2i
 - apiVersion: v1
+  kind: BuildConfig
+  metadata:
+    annotations:
+      pipeline.alpha.openshift.io/uses: '[{"name": "${APP_NAME}", "namespace": "",
+        "kind": "DeploymentConfig"}]'
+    creationTimestamp: null
+    labels:
+      name: fisdemo-pipeline
+    name: fisdemo-pipeline
+  spec:
+    strategy:
+      jenkinsPipelineStrategy:
+        jenkinsfile: "node('maven') { \n  stage('build') { \n    print 'build'\n     openshiftBuild(buildConfig:
+          'fisgateway-service', showBuildLogs: 'true')\n  }           \n  stage('staging')
+          {\n    print 'stage' \n    openshiftDeploy(deploymentConfig: 'fisgateway-service')\n
+          \ } \n  stage ('promotionCheck') { \n      def userInput = input( id: 'userInput',
+          message: 'Promote to UAT?', parameters: [ [$class: 'TextParameterDefinition',
+          defaultValue: 'Comments?', description: 'comments', name: 'comments'] ])
+          \ \n      print 'promotionCheck' \n  \t\topenshiftTag(namespace: 'fisdemo',
+          sourceStream: 'fisgateway-service',  sourceTag: 'latest', destinationStream:
+          'fisgateway-service-uat', destinationTag: 'uatready')   \n  } \n  \n  stage('UAT')
+          { \n    print 'UAT'\n    openshiftDeploy(deploymentConfig: 'fisgateway-service-uat')\n\t}
+          \ \n}"
+      type: JenkinsPipeline
+    triggers:
+    - github:
+        secret: secret101
+      type: GitHub
+    - generic:
+        secret: secret101
+      type: Generic
+- apiVersion: v1
   kind: ImageStream
   metadata:
     creationTimestamp: null
