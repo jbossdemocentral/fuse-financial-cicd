@@ -1,8 +1,4 @@
-echo "This script prepare the PROD env for you"
-
-
-echo "Create fisdemoprod project to work in, and load the A-MQ 6.2 template"
-echo 
+g
 #oc login -u developer
 oc new-project fisdemoprod --display-name="Fuse Banking Demo - PROD" --description="Production environment for Agile Integration Banking Demo - Power by Red Hat Fuse"
 #oc create -f https://raw.githubusercontent.com/jboss-openshift/application-templates/master/amq/amq62-basic.json

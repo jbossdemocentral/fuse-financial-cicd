@@ -1,0 +1,6 @@
+{
+	"moneysource":"bitcoin",
+	"acctid": "234567",
+	"recepid": "345678",
+	"amt": 1000
+}
