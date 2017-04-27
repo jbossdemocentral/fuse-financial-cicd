@@ -34,6 +34,9 @@
             <get uri="profile/{acctid}">
                 <to uri="direct:getprofile"/>
             </get>
+            <get uri="newpromote">
+                <to uri="direct:newpromote"/>
+            </get>
             <post uri="transfer">
                 <to uri="direct:dotransfer"/>
             </post>
@@ -169,20 +172,26 @@
             <marshal id="_marshal1">
                 <json library="Jackson" prettyPrint="true"/>
             </marshal>
-            <setHeader headerName="acctid">
-            	<jsonpath>acctid</jsonpath>
+            <setHeader headerName="acctid" id="_setHeader4">
+                <jsonpath>acctid</jsonpath>
             </setHeader>
-            <setHeader headerName="amt">
-            	<jsonpath>amt</jsonpath>
+            <setHeader headerName="amt" id="_setHeader5">
+                <jsonpath>amt</jsonpath>
             </setHeader>
-            <setHeader headerName="recepid">
-            	<jsonpath>recepid</jsonpath>
+            <setHeader headerName="recepid" id="_setHeader6">
+                <jsonpath>recepid</jsonpath>
             </setHeader>
-            <setHeader headerName="moneysource">
-            	<jsonpath>moneysource</jsonpath>
+            <setHeader headerName="moneysource" id="_setHeader7">
+                <jsonpath>moneysource</jsonpath>
             </setHeader>
             <log id="_log12" message="moneysource-- ${headers.moneysource}, acctid-- ${headers.acctid}, recepid-- {headers.recepid}, amt-- {headers.amt}"/>
-        	<to uri="direct:dotransfer" />
+            <to id="_to1" uri="direct:dotransfer"/>
+        </route>
+        <route id="newpromoteroute">
+            <from id="_from4" uri="direct:newpromote"/>
+            <setBody id="_setBody4">
+                <constant>New Added endpoint</constant>
+            </setBody>
         </route>
     </camelContext>
 </beans>
