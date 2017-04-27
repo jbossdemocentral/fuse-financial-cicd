@@ -34,9 +34,6 @@
             <get uri="profile/{acctid}">
                 <to uri="direct:getprofile"/>
             </get>
-            <get uri="newpromote">
-                <to uri="direct:newpromote"/>
-            </get>
             <post uri="transfer">
                 <to uri="direct:dotransfer"/>
             </post>
@@ -186,12 +183,6 @@
             </setHeader>
             <log id="_log12" message="moneysource-- ${headers.moneysource}, acctid-- ${headers.acctid}, recepid-- {headers.recepid}, amt-- {headers.amt}"/>
             <to id="_to1" uri="direct:dotransfer"/>
-        </route>
-        <route id="newpromoteroute">
-            <from id="_from4" uri="direct:newpromote"/>
-            <setBody id="_setBody4">
-                <constant>New Added endpoint</constant>
-            </setBody>
         </route>
     </camelContext>
 </beans>
