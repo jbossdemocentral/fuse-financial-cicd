@@ -100,6 +100,8 @@ http://fisgateway-service-fisdemo.192.168.99.100.xip.io/demos/sourcegateway/bala
 
 ##Addtional notes for Summit version
 
+###IMPORTANT!!! Please make sure you have 3scale setup in-order for A-B Testing to work. 
+
 Create a Production project for FISDEMO
 
 ```
@@ -134,14 +136,14 @@ oc create -f support/pipeline-uat.yml
 oc create -f support/pipeline-ab.yml
 oc create -f support/pipeline-allprod.yml
 ```
+The Banking pipeline project includes 3 pipelines demonstrate the possible flow of an integration application of Fuse. 
 
-A. Starting up the pipeline, and update it. 
-This project includes a pre-built outline that builds the image from SCM, in this case, it's github. and deploy an instance onto the platform. Then a pre-UAT test is done by a QA, after his/her verification, they can then reject the change or promote it to UAT for further UAT to Production workflow. When promoted, the pipeline will automatically copy the image from the registry and deploy it to openshift, with UAT access. 
+A. The pre-built UAT pipeline builds the image from SCM (github). and deploy a testing instance onto the platform. Then a pre-UAT test is done by a QA (you), after verification, you can choose to reject the change or promote it to UAT, by tagging the image with uatready flag. When promoted, the pipeline will deploy the uat tagged image on openshift, with UAT route linked to it. 
 
-[![Alt video](images/video.png)](https://player.vimeo.com/video/196763352)
+B. A/B Testing pipeline will move UAT image from the UAT project to Production project by tagging and deploying the image, and allocate 30% of traffic to the new service and 70% to existing stable service. Also updates all traffics from API management layer to 25 calls per minutes. 
 
-B. Blue/Green Testing 
-C. A/B Testing
+C. Ready for full release. The all production pipeline will do the rolling update, old service will be replace by the new service as now become the stable version. All traffic will then redirect to the stable new version of running instance. 
 
+![alt text](images/allpipelines.png "allpipelines")
 
 
