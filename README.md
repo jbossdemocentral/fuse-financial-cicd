@@ -98,9 +98,9 @@ http://fisgateway-service-fisdemo.192.168.99.100.xip.io/demos/sourcegateway/bala
 ```
 
 
-##Addtional notes for Summit version
+## Addtional notes for Summit version
 
-###IMPORTANT!!! Please make sure you have 3scale setup in-order for A-B Testing to work. 
+### IMPORTANT!!! Please make sure you have 3scale setup in-order for A-B Testing to work. 
 
 Create a Production project for FISDEMO
 
