@@ -19,7 +19,7 @@
     </bean>
     <camelContext id="camelContext-a73e7fe1-456e-4e15-9926-fae906325f11" xmlns="http://camel.apache.org/schema/spring">
         <restConfiguration apiContextPath="api-docs" bindingMode="json"
-            component="servlet" contextPath="/demos" host="api-2445581718657.staging.apicast.io">
+            component="servlet" contextPath="/demos" host="fisgateway-service-threescaleprod.apps.mkt2go.com/">
             <apiProperty key="cors" value="true"/>
             <apiProperty key="api.title" value="FIS Gateway"/>
             <apiProperty key="api.version" value="1.0.0"/>
@@ -28,6 +28,7 @@
             <corsHeaders key="Access-Control-Allow-Headers" value="Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers"/>
         </restConfiguration>
         <rest path="/sourcegateway">
+            <description>Banking Gateway</description>
             <get uri="balance/{acctid}">
                 <to uri="direct:getbalance"/>
             </get>
@@ -40,6 +41,9 @@
             <post uri="transferwithjson">
                 <to uri="direct:transferwithjson"/>
             </post>
+            <get uri="summit">
+                <to uri="direct:printsomething"/>
+            </get>
         </rest>
         <route id="gatewaybalance">
             <from id="_from1" uri="direct:getbalance"/>
@@ -54,7 +58,7 @@
                     <log id="_log2" message="Bitcoin it is!"/>
                     <hystrix id="_hystrix1">
                         <hystrixConfiguration
-                            circuitBreakerSleepWindowInMilliseconds="8000" executionTimeoutInMilliseconds="5000"/>
+                            circuitBreakerSleepWindowInMilliseconds="10000" executionTimeoutInMilliseconds="5000"/>
                         <recipientList id="_recipientList1">
                             <simple>http://fisblockchain-service/demos/bitcoinaccount/balance/${header.acctid}?bridgeEndpoint=true</simple>
                         </recipientList>
@@ -64,7 +68,7 @@
                     </hystrix>
                     <convertBodyTo id="_convertBodyTo1" type="java.lang.String"/>
                     <unmarshal id="_unmarshal2">
-                          <json library="Jackson"/>
+                        <json library="Jackson"/>
                     </unmarshal>
                     <log id="_log3" message="${body}"/>
                 </when>
@@ -72,7 +76,7 @@
                     <log id="_log4" message="Traditional money source"/>
                     <hystrix id="_hystrix2">
                         <hystrixConfiguration
-                            circuitBreakerSleepWindowInMilliseconds="8000" executionTimeoutInMilliseconds="5000"/>
+                            circuitBreakerSleepWindowInMilliseconds="10000" executionTimeoutInMilliseconds="5000"/>
                         <recipientList id="_recipientList2">
                             <simple>http://fisaccount-service/demos/account/profile/${header.acctid}?bridgeEndpoint=true</simple>
                         </recipientList>
@@ -100,7 +104,7 @@
                     <log id="_log6" message="Bitcoin transfer "/>
                     <hystrix id="_hystrix3">
                         <hystrixConfiguration
-                            circuitBreakerSleepWindowInMilliseconds="8000" executionTimeoutInMilliseconds="5000"/>
+                            circuitBreakerSleepWindowInMilliseconds="10000" executionTimeoutInMilliseconds="5000"/>
                         <recipientList id="_recipientList3">
                             <simple>http://fisblockchain-service/demos/bitcoinaccount/transfer/${header.acctid}/${header.amt}/${header.recptid}?bridgeEndpoint=true</simple>
                         </recipientList>
@@ -144,7 +148,7 @@
                 <otherwise id="_otherwise3">
                     <hystrix id="_hystrix5">
                         <hystrixConfiguration
-                            circuitBreakerSleepWindowInMilliseconds="8000" executionTimeoutInMilliseconds="5000"/>
+                            circuitBreakerSleepWindowInMilliseconds="10000" executionTimeoutInMilliseconds="5000"/>
                         <recipientList id="_recipientList5">
                             <simple>http://fisaccount-service/demos/account/profile/${header.acctid}?bridgeEndpoint=true</simple>
                         </recipientList>
@@ -186,6 +190,12 @@
             </setHeader>
             <log id="_log12" message="moneysource-- ${headers.moneysource}, acctid-- ${headers.acctid}, recepid-- {headers.recepid}, amt-- {headers.amt}"/>
             <to id="_to1" uri="direct:dotransfer"/>
+        </route>
+        <route id="_route1">
+            <from id="_from4" uri="direct:printsomething"/>
+            <setBody id="_setBody4">
+                <constant>Hello Summit!</constant>
+            </setBody>
         </route>
     </camelContext>
 </beans>
