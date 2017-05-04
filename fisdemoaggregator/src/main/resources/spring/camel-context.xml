@@ -63,6 +63,9 @@
                         </onFallback>
                     </hystrix>
                     <convertBodyTo id="_convertBodyTo1" type="java.lang.String"/>
+                    <unmarshal id="_unmarshal2">
+                          <json library="Jackson"/>
+                    </unmarshal>
                     <log id="_log3" message="${body}"/>
                 </when>
                 <otherwise id="_otherwise1">
