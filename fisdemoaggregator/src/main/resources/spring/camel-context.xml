@@ -145,7 +145,7 @@
                         <recipientList id="_recipientList5">
                             <simple>http://fisaccount-service/demos/account/profile/${header.acctid}?bridgeEndpoint=true</simple>
                         </recipientList>
-                        <!--  <convertBodyTo id="_convertBodyTo5" type="java.lang.String"/>-->
+                        <convertBodyTo id="_convertBodyTo5" type="java.lang.String"/>
                         <onFallback id="_onFallback5">
                             <to id="_handelerro05" uri="direct:doNoresponse"/>
                         </onFallback>
