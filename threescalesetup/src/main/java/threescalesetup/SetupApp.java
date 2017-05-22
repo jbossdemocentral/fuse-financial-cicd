@@ -9,8 +9,8 @@ public class SetupApp {
 		String servicename = args[3];
 		String isSelfmanage = args[4];
 		Boolean isSelfmanageBoolean = false;
-		String description = args[5];
-		String applicationplanname = args[6];
+		String applicationplanname = args[5];
+		String description = args[6];
 		
 		String serviceid="2555417742499";
 		String applicationplanid="2357355894898";
