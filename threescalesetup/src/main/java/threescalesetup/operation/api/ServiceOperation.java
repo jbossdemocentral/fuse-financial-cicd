@@ -1,10 +1,11 @@
-package threescalesetup;
+package threescalesetup.operation.api;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import threescalesetup.dto.Service;
-import threescalesetup.dto.Threescale;
+import threescalesetup.dto.api.Service;
+import threescalesetup.dto.api.Threescale;
+import threescalesetup.operation.ThreescaleManagment;
 
 public class ServiceOperation{
 	

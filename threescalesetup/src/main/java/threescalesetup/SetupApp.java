@@ -1,5 +1,10 @@
 package threescalesetup;
 
+import threescalesetup.operation.api.ApplicationPlanOperation;
+import threescalesetup.operation.api.LimitOperation;
+import threescalesetup.operation.api.MetricsOperation;
+import threescalesetup.operation.api.ServiceOperation;
+
 public class SetupApp {
 
 	public static void main(String[] args) {

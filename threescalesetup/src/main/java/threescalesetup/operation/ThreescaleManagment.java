@@ -1,4 +1,4 @@
-package threescalesetup;
+package threescalesetup.operation;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

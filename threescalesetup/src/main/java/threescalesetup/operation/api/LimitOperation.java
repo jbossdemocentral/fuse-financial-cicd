@@ -1,10 +1,11 @@
-package threescalesetup;
+package threescalesetup.operation.api;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import threescalesetup.dto.Limit;
-import threescalesetup.dto.Threescale;
+import threescalesetup.dto.api.Limit;
+import threescalesetup.dto.api.Threescale;
+import threescalesetup.operation.ThreescaleManagment;
 
 public class LimitOperation {
 	String SERVICE_URL = "admin/api/application_plans/";

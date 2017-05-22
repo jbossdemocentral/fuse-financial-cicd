@@ -1,4 +1,4 @@
-package threescalesetup.dto;
+package threescalesetup.dto.api;
 
 import java.util.List;
 

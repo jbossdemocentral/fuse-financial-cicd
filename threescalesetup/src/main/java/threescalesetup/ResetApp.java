@@ -1,7 +1,11 @@
 package threescalesetup;
 
-public class ResetApp {
+import threescalesetup.operation.api.ApplicationPlanOperation;
+import threescalesetup.operation.api.LimitOperation;
+import threescalesetup.operation.api.ServiceOperation;
 
+public class ResetApp {
+	
 	public static void main(String[] args) {
 		String threescalehost=args[0];
 		String accessToken=args[1];
@@ -21,5 +25,4 @@ public class ResetApp {
 		
 		
 	}
-
 }
