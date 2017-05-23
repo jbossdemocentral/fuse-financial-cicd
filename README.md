@@ -1,4 +1,4 @@
-# FIS 2.0 Financial Demo
+# FIS 2.0 Financial Agile Integration Demo
 
 This Financial demo is a simple gateway that redirect the incoming request of 
  - Checking balance
@@ -23,7 +23,7 @@ but first, let's start with setting up the application.
 Start up your local OpenShift environment by running 
 	
 ```
-oc cluster up --host-pv-dir={YOUR_PREFERENCE}/openshift.local.pv
+oc cluster up 
 ```
 
 Then login as system admin to install the FIS 2.0 image stream.
@@ -122,20 +122,25 @@ https://www.3scale.net/signup/
 You will receive a administration domain to manage APIs. 
 
    **Option TWO:** Spin up local 3scale environment
+   
    **WARNING!!! You need at LEAST 16 GB of memories assgined to CDK**
-	1. Create a project
+   
+   A.  Create a project
+	
 	```
 	oc new-project threescaleonprem
 	```
-	2. Setup persistence volume (if you are running with CDK V3/Minishift V1, this is optional)
+   B.  Setup persistence volume (if you are running with CDK V3/Minishift V1, this is optional)
 	```
 	oc new-project threescaleonprem
 	```
-	3. Install 3scale into the project by excuting following command. The WILDCARD_DOMAIN parameter set to the domain of the OpenShift for your CDK:
+   C.  Install 3scale into the project by excuting following command. The WILDCARD_DOMAIN parameter set to the domain of the OpenShift for your CDK:
+   
 	```
 	oc new-app -f support/amptemplates/amp.yml --param WILDCARD_DOMAIN=<WILDCARD_DOMAIN>
 	```
-	For detail installation, please visit the official installation page. 
+   
+   For detail installation, please visit the official installation page. 
 	
 2. Retreive Access token 
 	
@@ -160,14 +165,18 @@ You will receive a administration domain to manage APIs.
 3. Configure 3scale setting, run following script along with your credentials to setup 3scale
 
 	```
-	./setup3scaleconfig.sh <ACCESS_TOKEN>
+	cd threescalesetup
+	mvn exec:java -Dexec.mainClass=threescalesetup.SetupApp -Dexec.args="<3SCALE_HOST_DOMAIN> <ACCESS_TOKEN> financeapidemo financeapidemo true productiondemo 'Finance API Demo for Agile Integration'" 
+	cd ..
 	```
 	![alt text](images/threescaleapiconfig.png "3scale configuration")
 
 4. Setup accounts to access the API service.
 
 	```
-	./setup3scaleaccount.sh <ACCESS_TOKEN>
+	cd threescalesetup
+	mvn exec:java -Dexec.mainClass=threescalesetup.SetupAccount -Dexec.args=<3SCALE_HOST_DOMAIN> <ACCESS_TOKEN> <APPLICATION_PLAN_ID> financedemoapp 'The Finance Demo Application'
+	cd ..
 	```
 
 	
@@ -182,7 +191,7 @@ You will receive a administration domain to manage APIs.
 
 	![alt text](images/threescaleinstall.png "3scale install")
 
-
+6. Update 3scale Integration configuration address
 
 ## CI/CD across integration solution
 
