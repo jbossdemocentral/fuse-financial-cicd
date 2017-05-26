@@ -57,7 +57,7 @@ public class ApplicationTest {
         headers.set("amt", "30");
         headers.set("recptid", "345678");
       
-        ResponseEntity<String> transferResponse = restTemplate.postForEntity("/demos/bitcoinaccount/transfer/123456/30/345678", headers ,String.class);
+        ResponseEntity<String> transferResponse = restTemplate.getForEntity("/demos/bitcoinaccount/transfer/123456/30/345678",String.class);
         
         assertThat(transferResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
         assertThat(transferResponse.getBody()).isEqualTo("\"Transfered Completed! $30 from 123456 to 345678 the remaining balance is: $2970\"");
