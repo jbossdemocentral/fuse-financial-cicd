@@ -1,14 +1,19 @@
 package threescalesetup.operation.account;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import threescalesetup.dto.account.Application;
-import threescalesetup.dto.api.ApplicationPlan;
 import threescalesetup.dto.api.Threescale;
 import threescalesetup.operation.ThreescaleManagment;
 
 public class ApplicationOperation {
+	
+	Logger log = Logger.getLogger(ApplicationOperation.class.getName());
+	
 	String SERVICE_URL = "admin/api/accounts/";
 	String apiurl = "";
 	ThreescaleManagment threescalemanagement;
@@ -32,14 +37,15 @@ public class ApplicationOperation {
 		try {
 			String response = threescalemanagement.sendPost(url, application.getAllParam());
 		
-			System.out.println(response);
+			//System.out.println(response);
+			log.fine(response);
 			
 			ObjectMapper objectMapper = new ObjectMapper();
 			JsonNode rootNode = objectMapper.readTree(response);
 			JsonNode applicationNode = rootNode.path("application");
 			applicationid = applicationNode.get("id").asText();
-			System.out.println("Application Created with id:["+applicationid+"]");
-				
+			//System.out.println("Application created. ID :["+applicationid+"]");
+			log.log(Level.FINE, "Application created. ID :[{0}]", applicationid);	
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

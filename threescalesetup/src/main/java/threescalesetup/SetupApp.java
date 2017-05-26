@@ -1,5 +1,8 @@
 package threescalesetup;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import threescalesetup.operation.api.ApplicationPlanOperation;
 import threescalesetup.operation.api.LimitOperation;
 import threescalesetup.operation.api.MetricsOperation;
@@ -8,6 +11,10 @@ import threescalesetup.operation.api.ServiceOperation;
 public class SetupApp {
 
 	public static void main(String[] args) {
+		
+		Logger log = Logger.getLogger(SetupApp.class.getName()); 
+		
+		
 		String threescalehost = args[0];
 		String accessToken = args[1];
 		String name = args[2];
@@ -35,7 +42,16 @@ public class SetupApp {
 		hitsMetricsid = metricsOperation.get(accessToken).get("hits");
 		
 		LimitOperation limitOperation = new LimitOperation(threescalehost,applicationplanid,hitsMetricsid);
-		limitOperation.create(accessToken);
+		String limitid =  limitOperation.create(accessToken);
+		
+		log.info("-----------------IMPROTANT REFERENCE-------------------");
+		log.info("--Successfully setup 3scale Service API..");
+		log.log(Level.INFO,"--Created service [{0}] id: [{1}]....",new Object[]{ name, serviceid });
+		log.log(Level.INFO,"--Created application plan [{0}] id: [{1}]....",new Object[]{ applicationplanname, applicationplanid });
+		log.log(Level.INFO,"--Created limit for Hits Metrics [{0}] id: [{1}]....",new Object[]{ hitsMetricsid, limitid });
+		log.info("-----------------IMPROTANT REFERENCE-------------------");
+		
+		
 	}
 
 }

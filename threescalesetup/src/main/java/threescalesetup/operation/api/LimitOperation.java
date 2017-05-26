@@ -1,5 +1,8 @@
 package threescalesetup.operation.api;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -8,6 +11,7 @@ import threescalesetup.dto.api.Threescale;
 import threescalesetup.operation.ThreescaleManagment;
 
 public class LimitOperation {
+	Logger log = Logger.getLogger(LimitOperation.class.getName());
 	String SERVICE_URL = "admin/api/application_plans/";
 	String apiurl = "";
 	ThreescaleManagment threescalemanagement;
@@ -30,13 +34,15 @@ public class LimitOperation {
 		try {
 			String response = threescalemanagement.sendPost(url, limit.getAllParam());
 		
-			System.out.println(response);
+			//System.out.println(response);
+			log.fine(response);
 			
 			ObjectMapper objectMapper = new ObjectMapper();
 			JsonNode rootNode = objectMapper.readTree(response);
 			JsonNode limitNode = rootNode.path("limit");
 			limitPlanid = limitNode.get("id").asText();
-			System.out.println("Limit Created with id:["+limitPlanid+"]");
+			//System.out.println("Limit created with id:["+limitPlanid+"]");
+			log.log(Level.FINE, "Limit created. ID :[{0}]", limitPlanid);	
 				
 		} catch (Exception e) {
 			e.printStackTrace();

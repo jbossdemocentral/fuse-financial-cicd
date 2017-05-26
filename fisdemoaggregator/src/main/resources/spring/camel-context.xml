@@ -41,9 +41,6 @@
             <post uri="transferwithjson">
                 <to uri="direct:transferwithjson"/>
             </post>
-            <get uri="summit">
-                <to uri="direct:printsomething"/>
-            </get>
         </rest>
         <route id="gatewaybalance">
             <from id="_from1" uri="direct:getbalance"/>
@@ -98,6 +95,9 @@
             <from id="_from2" uri="direct:dotransfer"/>
             <log id="_log5" message="do balance ${header.acctid} ${header.amt} ${header.recptid} ${header.moneysource}"/>
             <removeHeaders id="_removeHeaders2" pattern="Camel*"/>
+            <setHeader headerName="CamelHttpMethod" id="_setHeader8">
+                <constant>GET</constant>
+            </setHeader>
             <choice id="_choice2">
                 <when id="_when2">
                     <simple>${header.moneysource} == 'bitcoin'</simple>
@@ -119,13 +119,18 @@
                     <log id="_log8" message="Traditional banking"/>
                     <hystrix id="_hystrix4">
                         <hystrixConfiguration
-                            circuitBreakerSleepWindowInMilliseconds="8000" executionTimeoutInMilliseconds="5000"/>
+                            circuitBreakerSleepWindowInMilliseconds="10000" executionTimeoutInMilliseconds="5000"/>
                         <recipientList id="_recipientList4">
                             <simple>http://fisaccount-service/demos/account/transfer/${header.acctid}/${header.amt}/${header.recptid}?bridgeEndpoint=true</simple>
                         </recipientList>
                         <convertBodyTo id="_convertBodyTo4" type="java.lang.String"/>
-                        <log id="_log9" message="${body}"/>
-                        <onFallback id="_onFallback4">
+                        <unmarshal id="_unmarshal4">
+                            <json library="Jackson"/>
+                        </unmarshal>
+                        <setBody id="_setBody4">
+                            <simple>Transfer completed, account ${header.acctid} has balance of :${body['balance']}</simple>
+                        </setBody>
+                     <onFallback id="_onFallback4">
                             <to id="_handelerro04" uri="direct:doNoresponse"/>
                         </onFallback>
                     </hystrix>
@@ -190,12 +195,6 @@
             </setHeader>
             <log id="_log12" message="moneysource-- ${headers.moneysource}, acctid-- ${headers.acctid}, recepid-- {headers.recepid}, amt-- {headers.amt}"/>
             <to id="_to1" uri="direct:dotransfer"/>
-        </route>
-        <route id="_route1">
-            <from id="_from4" uri="direct:printsomething"/>
-            <setBody id="_setBody4">
-                <constant>Hello Summit!</constant>
-            </setBody>
         </route>
     </camelContext>
 </beans>

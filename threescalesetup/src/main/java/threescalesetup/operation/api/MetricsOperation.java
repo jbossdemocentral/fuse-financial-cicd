@@ -3,6 +3,8 @@ package threescalesetup.operation.api;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -12,6 +14,8 @@ import threescalesetup.operation.ThreescaleManagment;
 
 public class MetricsOperation {
 
+	Logger log = Logger.getLogger(MetricsOperation.class.getName());
+	
 	String SERVICE_URL = "admin/api/services/";
 	ThreescaleManagment threescalemanagement;
 	
@@ -32,7 +36,8 @@ public class MetricsOperation {
 		try {
 			String response = threescalemanagement.sendGet(this.SERVICE_URL+threescale.getQuery());
 		
-			System.out.println(response);
+			//System.out.println(response);
+			log.fine(response);
 			
 			ObjectMapper objectMapper = new ObjectMapper();
 			JsonNode rootNode = objectMapper.readTree(response);
@@ -44,7 +49,8 @@ public class MetricsOperation {
 				String metricName = metricNode.get("metric").get("name").asText();
 				metricIds.put(metricName,metricId);
 				
-				System.out.println("Found metrics ["+metricName+"]:["+metricId+"]");
+				//System.out.println("Found metrics ["+metricName+"]:["+metricName+"]");
+				log.log(Level.FINE, "Found metrics [{0}]:[{1}]" , new Object[]{ metricName, metricName });
 			}
 				
 		} catch (Exception e) {

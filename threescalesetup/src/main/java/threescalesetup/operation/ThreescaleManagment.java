@@ -3,6 +3,8 @@ package threescalesetup.operation;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.NameValuePair;
@@ -13,7 +15,11 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.HttpClientBuilder;
 
+import threescalesetup.operation.api.MetricsOperation;
+
 public class ThreescaleManagment {
+	
+	Logger log = Logger.getLogger(ThreescaleManagment.class.getName());
 
 	private String hostName;
 	private HttpClient client = HttpClientBuilder.create().build();
@@ -33,7 +39,7 @@ public class ThreescaleManagment {
 
 		HttpResponse response = client.execute(request);
 
-		System.out.println("Response Code : "+ response.getStatusLine().getStatusCode());
+		log.log(Level.FINE, "Response Code : {0}", response.getStatusLine().getStatusCode());
 
 		BufferedReader rd = new BufferedReader(
 			new InputStreamReader(response.getEntity().getContent()));
@@ -61,9 +67,11 @@ public class ThreescaleManagment {
 
 			int responseCode = response.getStatusLine().getStatusCode();
 			
-			System.out.println("\nSending 'POST' request to URL : " + url);
-			System.out.println("Post parameters : " + postParams);
-			System.out.println("Response Code : " + responseCode);
+			
+			log.log(Level.FINE, "\nSending 'POST' request to URL : {0}", url);
+			log.log(Level.FINE, "Post parameters : [{0}]", postParams);
+			log.log(Level.FINE, "Response Code : [{0}]", responseCode);
+			
 
 
 			BufferedReader rd = new BufferedReader(
@@ -103,9 +111,9 @@ public class ThreescaleManagment {
 
 		int responseCode = response.getStatusLine().getStatusCode();
 
-		System.out.println("\nSending 'DELETE' request to URL : " + url);
-		System.out.println("Post parameters : " + deleteParams);
-		System.out.println("Response Code : " + responseCode);
+		log.log(Level.FINE, "\nSending 'DELETE' request to URL : {0}", url);
+		log.log(Level.FINE, "DELETE parameters : [{0}]", deleteParams);
+		log.log(Level.FINE, "Response Code : [{0}]", responseCode);
 
 		BufferedReader rd = new BufferedReader(
 	                new InputStreamReader(response.getEntity().getContent()));

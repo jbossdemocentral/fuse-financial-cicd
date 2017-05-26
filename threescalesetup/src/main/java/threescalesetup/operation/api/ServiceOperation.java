@@ -1,5 +1,8 @@
 package threescalesetup.operation.api;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -8,6 +11,8 @@ import threescalesetup.dto.api.Threescale;
 import threescalesetup.operation.ThreescaleManagment;
 
 public class ServiceOperation{
+	
+	Logger log = Logger.getLogger(ServiceOperation.class.getName());
 	
 	static final String SERVICE_URL = "admin/api/services";
 	String apiurl = "";
@@ -30,14 +35,15 @@ public class ServiceOperation{
 		try {
 			String response = threescalemanagement.sendPost(url, service.getAllParam());
 		
-			System.out.println(response);
-			
+			//System.out.println(response);
+			log.fine(response);
 			
 			ObjectMapper objectMapper = new ObjectMapper();
 			JsonNode rootNode = objectMapper.readTree(response);
 			JsonNode serviceNode = rootNode.path("service");
 			serviceid = serviceNode.get("id").asText();
-			System.out.println("Service Created with id:["+serviceid+"]");
+			//System.out.println("Service created with id:["+serviceid+"]");
+			log.log(Level.FINE, "Service created. ID :[{0}]", serviceid);	
 				
 		} catch (Exception e) {
 			e.printStackTrace();

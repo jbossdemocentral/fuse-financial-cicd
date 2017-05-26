@@ -30,9 +30,9 @@
             <put uri="profile/{acctid}">
                 <to uri="direct:createprofile"/>
             </put>
-            <post uri="transfer/{acctid}/">
+            <get uri="transfer/{acctid}/{amt}/{recptid}">
                 <to uri="direct:dotransfer"/>
-            </post>
+            </get>
         </rest>
         <route id="profileroute">
             <from id="_from1" uri="direct:getprofile"/>
@@ -42,11 +42,13 @@
         </route>
         <route id="transferroute">
             <from id="_from1" uri="direct:dotransfer"/>
+            <log id="_log3" message="Account ${headers.acctid} to ${headers.recptid} with amount ${headers.amt}"/>
             <transacted id="_transacted1">
                 <to id="_to4" uri="sql:update accounts set balance =  (select balance from accounts where id = :#acctid ) -:#amt where id =:#acctid?dataSource=dataSource"/>
-                <to id="_to5" uri="sql:update accounts set balance =  (select balance from accounts where id = :#recepid ) +:#amt where id =:#recepid?dataSource=dataSource"/>
+                <to id="_to5" uri="sql:update accounts set balance =  (select balance from accounts where id = :#recptid ) +:#amt where id =:#recptid?dataSource=dataSource"/>
                 <to id="_to6" uri="sql:select * from accounts where id=:#acctid?outputClass=com.redhat.myfispipeline.Accounts&amp;dataSource=dataSource&amp;outputType=SelectOne"/>
             </transacted>
+            <log id="_log4" message="output: ${body}"/>
         </route>
     </camelContext>
 </beans>
