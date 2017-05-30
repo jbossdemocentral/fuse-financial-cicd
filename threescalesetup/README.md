@@ -44,6 +44,15 @@ mvn exec:java -Dexec.mainClass=threescalesetup.SetupApp -Dexec.args="myfusedemo 
 
 If everything goes right, you should be able to get following response message. Remeber those as you might need it to reset your 3scale setting.
 
+```
+INFO: -----------------IMPROTANT REFERENCE-------------------
+INFO: --Successfully setup 3scale Service API..
+INFO: --Created service [financeapidemo] id: [xxxxxxxxx]....
+INFO: --Created application plan [Finance API Demo for Agile Integration] id: [xxxxxxxxx]....
+INFO: --Created limit for Hits Metrics [xxxxxxxxx] id: [xxxxxxxxx]....
+INFO: -----------------IMPROTANT REFERENCE-------------------
+```
+
 Now it's time to setup the application and add to an account, in this case, the tool will automatically find the default "Developer" account and create the application under it. 
 
 **Parameters**
@@ -62,6 +71,14 @@ For example:
 
 ```
 mvn exec:java -Dexec.mainClass=threescalesetup.SetupAccount -Dexec.args=myfusedemo 14sadasdasds1c34c21eaffc9f9906947962a 2357355899155 financedemoapp 'The Finance Demo Application'"
+```
+If everything goes right, you should be able to get following response message. Remeber those as you might need it to reset your 3scale account setting.
+
+```
+NFO: -----------------IMPROTANT REFERENCE-------------------
+INFO: --Successfully setup 3scale Accounts..
+INFO: --Application [financedemoapp] id: [xxxxxxx] created within Developer Account of ID [xxxxx]....
+INFO: -----------------IMPROTANT REFERENCE------------------
 ```
 
 ## Reset
