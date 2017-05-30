@@ -51,7 +51,7 @@ public class ApplicationTest {
         Map<String, String> param = new HashMap<String, String>(); 
         param.put("amt", "50");
         param.put("recepid", "345678");
-        ResponseEntity<Accounts> profileResponse = restTemplate.postForEntity("/demos/account/transfer/123456", param, Accounts.class);
+        ResponseEntity<Accounts> profileResponse = restTemplate.getForEntity("/demos/account/transfer/123456",  Accounts.class);
        
         assertThat(profileResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
         Accounts account = profileResponse.getBody();
