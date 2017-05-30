@@ -19,7 +19,7 @@
     </bean>
     <camelContext id="camelContext-a73e7fe1-456e-4e15-9926-fae906325f11" xmlns="http://camel.apache.org/schema/spring">
         <restConfiguration apiContextPath="api-docs" bindingMode="json"
-            component="servlet" contextPath="/demos" host="fisgateway-service-threescaleprod.apps.mkt2go.com/">
+            component="servlet" contextPath="/demos" enableCORS="true">
             <apiProperty key="cors" value="true"/>
             <apiProperty key="api.title" value="FIS Gateway"/>
             <apiProperty key="api.version" value="1.0.0"/>
