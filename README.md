@@ -89,11 +89,7 @@ After successfully install the application, it's time to deploy the API Gateway.
 oc process -f support/projecttemplates/template-uat.yml | oc create -f -
 ```
 
-This is optional step, you don't have to install unless you want to see the Hystrix Dashboard
-
-```
-oc process -f support/kubeflix.yml | oc create -f -
-```
+# TODO startign up GUI
 
 Congradulations! You can now start playing with the demo! 
 And here are some of the ways you can play with it! 
@@ -193,6 +189,22 @@ You will receive a administration domain to manage APIs.
 
 6. Update 3scale Integration configuration address
 
+	Now, these setups can only be set manually, go to your 3scale admin page, login, Select **API** tab on top, and click onto *Fuse Financial Agile Integration Demo Service*. On the left tabs, choose **Integration**, and delete **edit Apicast Configuration**
+
+![alt text](images/threescaleapicastconfigmenu.png "3scale APICast Config") 
+
+Here is where we tell Apicast where to look for our APIs and how the APIs can be accessed.
+
+- Set Private Base URL to : **http://fisgateway-service-stable:8080**
+- Set both your Public Basic URL to : **http://apicast-fisdemoprod.<OPENSHIFT_HOST>**
+- Set the three API endpoints accrodingly: 
+	- GET /demos/sourcegateway/balance
+	- GET /demos/sourcegateway/profile
+	- POST /demos/sourcegateway/transfer
+
+![alt text](images/threescaleapicastconfig.png "3scale APICast Config") 
+
+
 ## CI/CD across integration solution
 
 ### IMPORTANT!!! Please make sure you have 3scale account setup Following CI/CD A-B Testing pipeline to work. 
@@ -234,8 +246,22 @@ oc create -f support/pipelinetemplates/pipeline-ab.yml
 oc create -f support/pipelinetemplates/pipeline-allprod.yml
 
 oc new-app pipeline-uat
-oc new-app pipeline-ab
-oc new-app pipeline-allprod
+
+oc new-app pipeline-ab \
+--param=THREESCALE_URL=https://<3SCALE_HOST_DOMAIN>-admin.3scale.net \
+--param=API_TOKEN=<ACCESS_TOKEN> \
+--param=APP_PLAN_ID=<APPLICATION_PLAN_ID> \
+--param=METRICS_ID=<METRICS_ID> \
+--param=API_LIMITS=25 \
+--param=OPENSHIFT_HOST=<OPENSHIFT_HOST>
+
+oc new-app pipeline-allprod \
+--param=THREESCALE_URL=https://<3SCALE_HOST_DOMAIN>-admin.3scale.net \
+--param=API_TOKEN=<ACCESS_TOKEN> \
+--param=APP_PLAN_ID=<APPLICATION_PLAN_ID> \
+--param=METRICS_ID=<METRICS_ID> \
+--param=API_LIMITS=50 \
+--param=OPENSHIFT_HOST=<OPENSHIFT_HOST>
 ```
 The Banking pipeline project includes 3 pipelines demonstrate the possible flow of an integration application of Fuse. 
 
@@ -252,4 +278,4 @@ C. Ready for full release. The all production pipeline will do the rolling updat
 ## Version update notes, and TODOs
 - REMOVE UAT pipeline from UAT project into the pipeline Project
 - TODO: Add configmaps and secrets
-- TODO: An UI to view the result
+- TODO: UI Instructions

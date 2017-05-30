@@ -1,0 +1,35 @@
+apiVersion: v1
+items:
+- apiVersion: v1
+  kind: Route
+  metadata:
+    annotations:
+      openshift.io/host.generated: "true"
+    creationTimestamp: 2017-05-30T18:43:50Z
+    name: fisdemogui
+    namespace: gui
+    resourceVersion: "1438292"
+    selfLink: /oapi/v1/namespaces/gui/routes/fisdemogui
+    uid: ec5e409a-4567-11e7-8e87-126fb742b198
+  spec:
+    host: fisdemogui-gui.apps.mkt2go.com
+    port:
+      targetPort: 3000-tcp
+    to:
+      kind: Service
+      name: fisdemogui
+      weight: 100
+    wildcardPolicy: None
+  status:
+    ingress:
+    - conditions:
+      - lastTransitionTime: 2017-05-30T18:43:50Z
+        status: "True"
+        type: Admitted
+      host: fisdemogui-gui.apps.mkt2go.com
+      routerName: router
+      wildcardPolicy: None
+kind: List
+metadata: {}
+resourceVersion: ""
+selfLink: ""

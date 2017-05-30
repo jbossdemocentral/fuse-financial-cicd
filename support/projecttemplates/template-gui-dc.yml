@@ -1,0 +1,90 @@
+apiVersion: v1
+kind: DeploymentConfig
+metadata:
+  annotations:
+    openshift.io/generated-by: OpenShiftWebConsole
+  creationTimestamp: 2017-05-30T17:21:48Z
+  generation: 6
+  labels:
+    app: fisdemogui
+  name: fisdemogui
+  namespace: gui
+  resourceVersion: "1437996"
+  selfLink: /oapi/v1/namespaces/gui/deploymentconfigs/fisdemogui
+  uid: 76c1be52-455c-11e7-9ec7-0e776ebaa6e2
+spec:
+  replicas: 1
+  selector:
+    deploymentconfig: fisdemogui
+  strategy:
+    activeDeadlineSeconds: 21600
+    resources: {}
+    rollingParams:
+      intervalSeconds: 1
+      maxSurge: 25%
+      maxUnavailable: 25%
+      timeoutSeconds: 600
+      updatePeriodSeconds: 1
+    type: Rolling
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: fisdemogui
+        deploymentconfig: fisdemogui
+    spec:
+      containers:
+      - image: 172.30.79.239:5000/gui/fisdemogui@sha256:0cbc868d9c8cae1a75b71ff299c775ecdce9934529dcbd260e35e774a8656172
+        imagePullPolicy: Always
+        name: fisdemogui
+        ports:
+        - containerPort: 3000
+          protocol: TCP
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+  test: false
+  triggers:
+  - imageChangeParams:
+      automatic: true
+      containerNames:
+      - fisdemogui
+      from:
+        kind: ImageStreamTag
+        name: fisdemogui:latest
+        namespace: gui
+      lastTriggeredImage: 172.30.79.239:5000/gui/fisdemogui@sha256:0cbc868d9c8cae1a75b71ff299c775ecdce9934529dcbd260e35e774a8656172
+    type: ImageChange
+  - type: ConfigChange
+status:
+  availableReplicas: 1
+  conditions:
+  - lastTransitionTime: 2017-05-30T17:23:35Z
+    lastUpdateTime: 2017-05-30T17:23:35Z
+    message: Deployment config has minimum availability.
+    status: "True"
+    type: Available
+  - lastTransitionTime: 2017-05-30T18:39:38Z
+    lastUpdateTime: 2017-05-30T18:39:41Z
+    message: replication controller "fisdemogui-4" successfully rolled out
+    reason: NewReplicationControllerAvailable
+    status: "True"
+    type: Progressing
+  details:
+    causes:
+    - imageTrigger:
+        from:
+          kind: ImageStreamTag
+          name: fisdemogui:latest
+          namespace: gui
+      type: ImageChange
+    message: image change
+  latestVersion: 4
+  observedGeneration: 6
+  readyReplicas: 1
+  replicas: 1
+  unavailableReplicas: 0
+  updatedReplicas: 1

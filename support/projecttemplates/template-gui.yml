@@ -1,0 +1,54 @@
+apiVersion: v1
+items:
+- apiVersion: v1
+  kind: BuildConfig
+  metadata:
+    annotations:
+      openshift.io/generated-by: OpenShiftWebConsole
+    creationTimestamp: 2017-05-30T17:21:48Z
+    labels:
+      app: fisdemogui
+    name: fisdemogui
+    namespace: gui
+    resourceVersion: "1437829"
+    selfLink: /oapi/v1/namespaces/gui/buildconfigs/fisdemogui
+    uid: 76c2a6c5-455c-11e7-9ec7-0e776ebaa6e2
+  spec:
+    nodeSelector: null
+    output:
+      to:
+        kind: ImageStreamTag
+        name: fisdemogui:latest
+    postCommit: {}
+    resources: {}
+    runPolicy: Serial
+    source:
+      contextDir: fisdemogui
+      git:
+        ref: summitimprovement
+        uri: https://github.com/jbossdemocentral/fuse-financial-cicd.git
+      type: Git
+    strategy:
+      sourceStrategy:
+        from:
+          kind: ImageStreamTag
+          name: nodejs:4
+          namespace: openshift
+      type: Source
+    triggers:
+    - generic:
+        secret: 918d04ef7dcd5fa4
+      type: Generic
+    - github:
+        secret: 477e1630977c8e56
+      type: GitHub
+    - imageChange:
+        lastTriggeredImageID: registry.access.redhat.com/rhscl/nodejs-4-rhel7@sha256:c5b21dc08cf5da8b6b0485147d946d8202f2be211c17bcef3a0fc26570217dd3
+      type: ImageChange
+    - type: ConfigChange
+  status:
+    lastVersion: 2
+kind: List
+metadata: {}
+resourceVersion: ""
+selfLink: ""
