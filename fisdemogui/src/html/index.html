@@ -2,7 +2,7 @@
 <html>
   <head>
     <meta charset="utf-8">
-    <title>Patternfly Demo App</title>
+    <title>Red Hat Integration</title>
 
     <!-- webpack bundled css -->
     <link rel="stylesheet" href="css/patternfly.min.css">
@@ -10,11 +10,8 @@
 
     <!-- webpack bundled dependencies -->
     <script src="main.bundle.js"></script>
-
-    <!-- c3.js d3.js bundled dependencies -->
-    <script src="charts.bundle.js"></script>
   </head>
-  <body class="cards-pf">
+  <body>
 
 <!-- nav -->
 <nav class="navbar navbar-default navbar-pf" role="navigation">
@@ -26,404 +23,153 @@
       <span class="icon-bar"></span>
     </button>
     <a class="navbar-brand" href="/">
-      <img src="img/brand.svg" alt="Patternfly Demo App" />
+      Red Hat Integration
     </a>
   </div>
-  <div class="collapse navbar-collapse navbar-collapse-1">
-    <ul class="nav navbar-nav navbar-utility">
-      <li>
-        <a href="#">Status</a>
-      </li>
-      <li class="dropdown">
-        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-          <span class="pficon pficon-user"></span>
-          Brian Johnson <b class="caret"></b>
-        </a>
-        <ul class="dropdown-menu">
-          <li>
-            <a href="#">Settings</a>
-          </li>
-          <li>
-            <a href="#">Another link</a>
-          </li>
-          <li>
-            <a href="#">Something else here</a>
-          </li>
-          <li class="divider"></li>
-          <li class="dropdown-submenu">
-            <a tabindex="-1" href="#">More options</a>
-            <ul class="dropdown-menu">
-              <li>
-                <a href="#">Link</a>
-              </li>
-              <li>
-                <a href="#">Another link</a>
-              </li>
-              <li>
-                <a href="#">Something else here</a>
-              </li>
-              <li class="divider"></li>
-              <li class="dropdown-header">Nav header</li>
-              <li>
-                <a href="#">Separated link</a>
-              </li>
-              <li class="divider"></li>
-              <li>
-                <a href="#">One more separated link</a>
-              </li>
-            </ul>
-          </li>
-          <li class="divider"></li>
-          <li>
-            <a href="login.html">Logout</a>
-          </li>
-        </ul>
-      </li>
-    </ul>
-    <ul class="nav navbar-nav navbar-primary">
-      <li class="active">
-        <a href="index.html">Dashboard</a>
-      </li>
-      <li>
-        <a href="list.html">List View</a>
-      </li>
-      <li>
-        <a href="empty.html">Empty State</a>
-      </li>
-    </ul>
-  </div>
+  
 </nav>
 
-<div class="container-fluid container-cards-pf">
+<div class="container-fluid">
 
-  <!-- status cards -->
-   <div class="row row-cards-pf">
-     <div class="col-xs-6 col-md-2">
-       <div class="card-pf card-pf-accented card-pf-aggregate-status">
-         <h2 class="card-pf-title">
-           <span class="fa fa-shield"></span><span class="card-pf-aggregate-status-count">0</span> Ipsum
-         </h2>
-         <div class="card-pf-body">
-           <p class="card-pf-aggregate-status-notifications">
-             <span class="card-pf-aggregate-status-notification"><a href="#" class="add" data-toggle="tooltip" data-placement="top" title="Add Ipsum"><span class="pficon pficon-add-circle-o"></span></a></span>
-           </p>
-         </div>
-       </div>
-     </div>
-     <div class="col-xs-12 col-md-2">
-       <div class="card-pf card-pf-accented card-pf-aggregate-status">
-         <h2 class="card-pf-title">
-           <a href="#"><span class="fa fa-shield"></span><span class="card-pf-aggregate-status-count">20</span> Amet</a>
-         </h2>
-         <div class="card-pf-body">
-           <p class="card-pf-aggregate-status-notifications">
-             <span class="card-pf-aggregate-status-notification"><a href="#"><span class="pficon pficon-error-circle-o"></span>4</a></span>
-             <span class="card-pf-aggregate-status-notification"><a href="#"><span class="pficon pficon-warning-triangle-o"></span>1</a></span>
-           </p>
-         </div>
-       </div>
-     </div>
-     <div class="col-xs-12 col-md-2">
-       <div class="card-pf card-pf-accented card-pf-aggregate-status">
-         <h2 class="card-pf-title">
-           <a href="#"><span class="fa fa-shield"></span><span class="card-pf-aggregate-status-count">9</span> Adipiscing</a>
-         </h2>
-         <div class="card-pf-body">
-           <p class="card-pf-aggregate-status-notifications">
-             <span class="card-pf-aggregate-status-notification"><span class="pficon pficon-ok"></span></span>
-           </p>
-         </div>
-       </div>
-     </div>
-     <div class="col-xs-12 col-md-2">
-       <div class="card-pf card-pf-accented card-pf-aggregate-status">
-         <h2 class="card-pf-title">
-           <span class="fa fa-shield"></span><span class="card-pf-aggregate-status-count">0</span> Ipsum
-         </h2>
-         <div class="card-pf-body">
-           <p class="card-pf-aggregate-status-notifications">
-             <span class="card-pf-aggregate-status-notification"><a href="#" class="add" data-toggle="tooltip" data-placement="top" title="Add Ipsum"><span class="pficon pficon-add-circle-o"></span></a></span>
-           </p>
-         </div>
-       </div>
-     </div>
-     <div class="col-xs-12 col-md-2">
-       <div class="card-pf card-pf-accented card-pf-aggregate-status">
-         <h2 class="card-pf-title">
-           <a href="#"><span class="fa fa-shield"></span><span class="card-pf-aggregate-status-count">20</span> Amet</a>
-         </h2>
-         <div class="card-pf-body">
-           <p class="card-pf-aggregate-status-notifications">
-             <span class="card-pf-aggregate-status-notification"><a href="#"><span class="pficon pficon-error-circle-o"></span>4</a></span>
-             <span class="card-pf-aggregate-status-notification"><a href="#"><span class="pficon pficon-warning-triangle-o"></span>1</a></span>
-           </p>
-         </div>
-       </div>
-     </div>
-     <div class="col-xs-12 col-md-2">
-       <div class="card-pf card-pf-accented card-pf-aggregate-status">
-         <h2 class="card-pf-title">
-           <a href="#"><span class="fa fa-shield"></span><span class="card-pf-aggregate-status-count">9</span> Adipiscing</a>
-         </h2>
-         <div class="card-pf-body">
-           <p class="card-pf-aggregate-status-notifications">
-             <span class="card-pf-aggregate-status-notification"><span class="pficon pficon-ok"></span></span>
-           </p>
-         </div>
-       </div>
-     </div>
-   </div>
+    <div class="row">
+      <div class="col-md-12">
 
+        <div class="page-header">
+          <h1>Financial Agile Integration Demo</h1>
+        </div>
 
+        <div class="blank-slate-pf">
+          <div class="blank-slate-pf-icon">
+            <img src="img/redhat-logo.png" alt="OpenShift" />
+          </div>
+          <h1>Simple Banking Demo</h1>
+          <p>This simple gui interface allows you to do day to day personal banking from your bank account and Bitcoin account</p>
+          <p>Source of this Demo is available <a href="https://github.com/jbossdemocentral/fuse-financial-cicd">here</a>.</p>
+          <div class="form-group">
+						<label class="col-sm-2 control-label" for="exampleInput">API Address <a tabindex="0" role="button" data-toggle="popover" data-trigger="focus" data-html="true" title="" data-content=" Your Application URL, either from Apicast or your route" data-placement="top"><span class="fa fa-info-circle"></span></a></label>
+							<div class="col-sm-10">
+						  	<input type="text" id="ipaddress" class="form-control" value="apicast-fisdemoprod.apps.mkt2go.com">
+						  </div>
+					</div>
+          <BR/>
+          <BR/>
+					<div class="col-sm-20">
+						<form class="form-horizontal">
+						  <div class="form-group">
+						    <label class="col-sm-2 control-label" for="exampleInput">Account Number <a tabindex="0" role="button" data-toggle="popover" data-trigger="focus" data-html="true" title="" data-content=" Here are the avaliable account numbers: <BR/> 123456 <BR/>234567 <BR/>345678 <BR/>223455 " data-placement="top"><span class="fa fa-info-circle"></span></a></label>
+						    
+						    <div class="col-sm-10">
+						      <input type="text" id="accountid" class="form-control" value="123456">
+						    </div>
+						  </div>
+						  <div class="form-group">
+						    <label class="col-sm-2 control-label" for="exampleInputDisabled">Account Type</label>
+						    <div class="col-sm-10">
+						      <input type="radio" name="moneysource" value="traditional" checked> Taditional Banking &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;     
+						      <input type="radio" name="moneysource" value="bitcoin"> Bitcoin
+						    </div>
+						  </div>
+						  <div>
+							  <ul class="nav nav-tabs">
+								  <li class="active"><a href="#balance" aria-controls="balance" role="tab" data-toggle="balance">Balance</a></a>
+								  </li>
+								  <li><a href="#transfer" aria-controls="transfer" role="tab" data-toggle="transfer">Transfer</a></li>
+								</ul>
+								
+								<div class="tab-content">
+							    <div role="tabpanel" class="tab-pane active" id="balance">
+							    	<BR/>
+							    	<BR/>
+							    	<div class="form-group">
+									    <label class="col-sm-2 control-label" for="exampleInputDisabled">Result:</label>
+									    <div class="col-sm-10">
+									      <input type="text" id="resultbalance" class="form-control">
+									    </div>
+									  </div>
+									  <div class="form-group">
+									    <div class="col-sm-offset-2 col-sm-10">
+									      <button id="submitbalance" class="btn btn-primary" >Get Balance</button>
+									    </div>
+									  </div>
+							    </div>
+							    <div role="tabpanel" class="tab-pane" id="transfer">
+							    	<BR/>
+							    	<BR/>
+							    	<div class="form-group">
+									    <label class="col-sm-2 control-label" for="exampleInputDisabled">Recipient Account Number <a tabindex="0" role="button" data-toggle="popover" data-trigger="focus" data-html="true" title="" data-content=" Here are the avaliable account numbers: <BR/> 123456 <BR/>234567 <BR/>345678 <BR/>223455" data-placement="top"><span class="fa fa-info-circle"></span></a></label>
+									    <div class="col-sm-10">
+									      <input type="text" id="recptid" class="form-control">
+									    </div>
+									  </div>
+									  <div class="form-group">
+									    <label class="col-sm-2 control-label" for="exampleInputDisabled">Transfer amount</label>
+									    <div class="col-sm-10">
+									      <input type="text" id="amt" class="form-control">
+									    </div>
+									  </div>
+									  <div class="form-group">
+									    <label class="col-sm-2 control-label" for="exampleInputDisabled">Result:</label>
+									    <div class="col-sm-10">
+									      <input type="text" id="resulttransfer" class="form-control">
+									    </div>
+									  </div>
+									  <div class="form-group">
+									    <div class="col-sm-offset-2 col-sm-10">
+									      <button class="btn btn-primary" id="submitTransfer">Do Transfer</button>
+									    </div>
+									  </div>
+							    </div>
+							  </div>
+							  <div>
+						  
+						</form>
+         </div> 
 
-
-   <div class="row row-cards-pf">
-         <div class="col-md-8">
-           <div class="card-pf card-pf-utilization">
-             <div class="card-pf-heading">
-               <p class="card-pf-heading-details">Last 30 days</p>
-               <h2 class="card-pf-title">
-                 Utilization
-               </h2>
-             </div>
-             <div class="card-pf-body">
-               <div class="row">
-                 <div class="col-xs-12 col-sm-4 col-md-4">
-                   <h3 class="card-pf-subtitle">CPU</h3>
-                   <p class="card-pf-utilization-details">
-                     <span class="card-pf-utilization-card-details-count">50</span>
-                     <span class="card-pf-utilization-card-details-description">
-                       <span class="card-pf-utilization-card-details-line-1">Available</span>
-                       <span class="card-pf-utilization-card-details-line-2">of 1000 MHz</span>
-                     </span>
-                   </p>
-                   <div id="chart-pf-donut-1"></div>
-                   <div class="chart-pf-sparkline" id="chart-pf-sparkline-1"></div>
-                   <script>
-                     var donutChartConfig = jQuery().c3ChartDefaults().getDefaultDonutConfig('A');
-                     donutChartConfig.bindto = '#chart-pf-donut-1';
-                     donutChartConfig.data = {
-                       type: "donut",
-                         columns: [
-                           ["Used", 95],
-                           ["Available", 5]
-                         ],
-                         groups: [
-                           ["used", "available"]
-                         ],
-                       order: null
-                     };
-                     donutChartConfig.color = {
-                         pattern: ["#cc0000","#D1D1D1"]
-                     };
-                     donutChartConfig.tooltip = {
-                       contents: function (d) {
-                           return '<span class="donut-tooltip-pf" style="white-space: nowrap;">' +
-                                   Math.round(d[0].ratio * 100) + '%' + ' MHz ' + d[0].name +
-                                   '</span>';
-                       }
-                     };
-                     var chart1 = c3.generate(donutChartConfig);
-
-                     var donutChartTitle = d3.select("#chart-pf-donut-1").select('text.c3-chart-arcs-title');
-                     donutChartTitle.text("");
-                     donutChartTitle.insert('tspan').text("950").classed('donut-title-big-pf', true).attr('dy', 0).attr('x', 0);
-                     donutChartTitle.insert('tspan').text("MHz Used").classed('donut-title-small-pf', true).attr('dy', 20).attr('x', 0);
-
-                     var sparklineChartConfig = jQuery().c3ChartDefaults().getDefaultSparklineConfig();
-                     sparklineChartConfig.bindto = '#chart-pf-sparkline-1';
-                     sparklineChartConfig.data = {
-                       columns: [
-                           ['%', 10, 50, 28, 20, 31, 27, 60, 36, 52, 55, 62, 68, 69, 88, 74, 88, 95],
-                       ],
-                       type: 'area'
-                     };
-                     var chart2 = c3.generate(sparklineChartConfig);
-                   </script>
-                 </div>
-                 <div class="col-xs-12 col-sm-4 col-md-4">
-                   <h3 class="card-pf-subtitle">Memory</h3>
-                   <p class="card-pf-utilization-details">
-                     <span class="card-pf-utilization-card-details-count">256</span>
-                     <span class="card-pf-utilization-card-details-description">
-                       <span class="card-pf-utilization-card-details-line-1">Available</span>
-                       <span class="card-pf-utilization-card-details-line-2">of 432 GB</span>
-                     </span>
-                   </p>
-                   <div id="chart-pf-donut-2"></div>
-                   <div class="chart-pf-sparkline" id="chart-pf-sparkline-2"></div>
-                   <script>
-                     var donutChartConfig = jQuery().c3ChartDefaults().getDefaultDonutConfig('A');
-                     donutChartConfig.bindto = '#chart-pf-donut-2';
-                     donutChartConfig.data = {
-                       type: "donut",
-                         columns: [
-                           ["Used", 41],
-                           ["Available", 59]
-                         ],
-                         groups: [
-                           ["used", "available"]
-                         ],
-                       order: null
-                     };
-                     donutChartConfig.color = {
-                         pattern: ["#3f9c35","#D1D1D1"]
-                     };
-                     donutChartConfig.tooltip = {
-                       contents: function (d) {
-                           return '<span class="donut-tooltip-pf" style="white-space: nowrap;">' +
-                                   Math.round(d[0].ratio * 100) + '%' + ' GB ' + d[0].name +
-                                   '</span>';
-                       }
-                     };
-                     var chart3 = c3.generate(donutChartConfig);
-
-                     var donutChartTitle = d3.select("#chart-pf-donut-2").select('text.c3-chart-arcs-title');
-                     donutChartTitle.text("");
-                     donutChartTitle.insert('tspan').text("176").classed('donut-title-big-pf', true).attr('dy', 0).attr('x', 0);
-                     donutChartTitle.insert('tspan').text("GB Used").classed('donut-title-small-pf', true).attr('dy', 20).attr('x', 0);
-
-                     var sparklineChartConfig = jQuery().c3ChartDefaults().getDefaultSparklineConfig();
-                     sparklineChartConfig.bindto = '#chart-pf-sparkline-2';
-                     sparklineChartConfig.data = {
-                       columns: [
-                           ['%', 35, 36, 20, 30, 31, 22, 44, 36, 40, 41, 55, 52, 48, 48, 50, 40, 41],
-                       ],
-                       type: 'area'
-                     };
-                     var chart4 = c3.generate(sparklineChartConfig);
-                   </script>
-                 </div>
-                 <div class="col-xs-12 col-sm-4 col-md-4">
-                   <h3 class="card-pf-subtitle">Network</h3>
-                   <p class="card-pf-utilization-details">
-                     <span class="card-pf-utilization-card-details-count">200</span>
-                     <span class="card-pf-utilization-card-details-description">
-                       <span class="card-pf-utilization-card-details-line-1">Available</span>
-                       <span class="card-pf-utilization-card-details-line-2">of 1300 Gbps</span>
-                     </span>
-                   </p>
-                   <div id="chart-pf-donut-3"></div>
-                   <div class="chart-pf-sparkline" id="chart-pf-sparkline-3"></div>
-                   <script>
-                     var donutChartConfig = jQuery().c3ChartDefaults().getDefaultDonutConfig('A');
-                     donutChartConfig.bindto = '#chart-pf-donut-3';
-                     donutChartConfig.data = {
-                       type: "donut",
-                         columns: [
-                           ["Used", 85],
-                           ["Available", 15]
-                         ],
-                         groups: [
-                           ["used", "available"]
-                         ],
-                       order: null
-                     };
-                     donutChartConfig.color = {
-                         pattern: ["#EC7A08","#D1D1D1"]
-                     };
-                     donutChartConfig.tooltip = {
-                       contents: function (d) {
-                           return '<span class="donut-tooltip-pf" style="white-space: nowrap;">' +
-                                   Math.round(d[0].ratio * 100) + '%' + ' Gbps ' + d[0].name +
-                                   '</span>';
-                       }
-                     };
-                     var chart5 = c3.generate(donutChartConfig);
-
-                     var donutChartTitle = d3.select("#chart-pf-donut-3").select('text.c3-chart-arcs-title');
-                     donutChartTitle.text("");
-                     donutChartTitle.insert('tspan').text("1100").classed('donut-title-big-pf', true).attr('dy', 0).attr('x', 0);
-                     donutChartTitle.insert('tspan').text("Gbps Used").classed('donut-title-small-pf', true).attr('dy', 20).attr('x', 0);
-
-                     var sparklineChartConfig = jQuery().c3ChartDefaults().getDefaultSparklineConfig();
-                     sparklineChartConfig.bindto = '#chart-pf-sparkline-3';
-                     sparklineChartConfig.data = {
-                       columns: [
-                           ['%', 60, 55, 70, 44, 31, 67, 54, 46, 58, 75, 62, 68, 69, 88, 74, 88, 85],
-                       ],
-                       type: 'area'
-                     };
-                     var chart6 = c3.generate(sparklineChartConfig);
-                   </script>
-                 </div>
-               </div>
-             </div>
-           </div>
-         </div>
+      </div>
 
 
-
-         <div class="col-xs-12 col-md-4">
-                 <div class="card-pf">
-                   <div class="card-pf-heading">
-                     <h2 class="card-pf-title">
-                       Top Utilized Clusters
-                     </h2>
-                   </div>
-                   <div class="card-pf-body">
-                     <div class="progress-description">
-                       RHOS6-Controller
-                     </div>
-                     <div class="progress progress-label-top-right">
-                       <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100" style="width: 95%;"  data-toggle="tooltip" title="95% Used">
-                         <span><strong>190.0 of 200.0 GB</strong> Used</span>
-                       </div>
-                       <div class="progress-bar progress-bar-remaining" role="progressbar" aria-valuenow="5" aria-valuemin="0" aria-valuemax="100" style="width: 5%;" data-toggle="tooltip" title="5% Available">
-                         <span class="sr-only">5% Available</span>
-                       </div>
-                     </div>
-                     <div class="progress-description">
-                       CFMEQE-Cluster
-                     </div>
-                     <div class="progress progress-label-top-right">
-                       <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;"  data-toggle="tooltip" title="50% Used">
-                         <span><strong>100.0 of 200.0 GB</strong> Used</span>
-                       </div>
-                       <div class="progress-bar progress-bar-remaining" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;" data-toggle="tooltip" title="50% Available">
-                         <span class="sr-only">50% Available</span>
-                       </div>
-                     </div>
-                     <div class="progress-description">
-                       RHOS-Undercloud
-                     </div>
-                     <div class="progress progress-label-top-right">
-                       <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width: 70%;"  data-toggle="tooltip" title="70% Used">
-                         <span><strong>140.0 of 200.0 GB</strong> Used</span>
-                       </div>
-                       <div class="progress-bar progress-bar-remaining" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" style="width: 30%;" data-toggle="tooltip" title="30% Available">
-                         <span class="sr-only">30% Available</span>
-                       </div>
-                     </div>
-                     <div class="progress-description">
-                       RHEL6-Controller
-                     </div>
-                     <div class="progress progress-label-top-right">
-                       <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="76.5" aria-valuemin="0" aria-valuemax="100" style="width: 76.5%;"  data-toggle="tooltip" title="76.5% Used">
-                         <span><strong>153.0 of 200.0 GB</strong> Used</span>
-                       </div>
-                       <div class="progress-bar progress-bar-remaining" role="progressbar" aria-valuenow="23.5" aria-valuemin="0" aria-valuemax="100" style="width: 23.5%;" data-toggle="tooltip" title="23.5% Available">
-                         <span class="sr-only">23.5% Available</span>
-                       </div>
-                     </div>
-                   </div>
-                 </div>
-               </div>
-
-       </div><!-- /row -->
-
+  </div>
 </div><!-- container -->
 
-
 <script>
-    $(function() {
-      // matchHeight the contents of each .card-pf and then the .card-pf itself
-      $(".row-cards-pf > [class*='col'] > .card-pf .card-pf-title").matchHeight();
-      $(".row-cards-pf > [class*='col'] > .card-pf > .card-pf-body").matchHeight();
-      $(".row-cards-pf > [class*='col'] > .card-pf > .card-pf-footer").matchHeight();
-      $(".row-cards-pf > [class*='col'] > .card-pf").matchHeight();
+  // Initialize Popovers
+  $(document).ready(function() {
+    $('[data-toggle=popover]').popovers();
+    
+    $(".nav-tabs a").click(function(){
+      $(this).tab('show');
     });
-  </script>
-
+    
+    $("#submitbalance").click(function(){
+    		ipaddress = $('#ipaddress').val();
+    		accountid = $('#accountid').val();
+    		moneysource = $("input[name='moneysource']:checked").val();
+		    $.get("http://"+ipaddress+"/demos/sourcegateway/balance/"+accountid+"?moneysource="+moneysource+"&user_key=15b4fc0ef23b76f19c12e532ab088dff", function(data, status){
+		        $("#resultbalance").val(data);
+		    });
+		});
+		
+    $("#submitTransfer").click(function(){
+		    ipaddress = $('#ipaddress').val();
+    		accountid = $('#accountid').val();
+    		recptid = $('#recptid').val();
+    		amt = $('#amt').val();
+    		moneysource = $("input[name='moneysource']:checked").val();
+		    $.post(
+		    	"http://"+ipaddress+"/demos/sourcegateway/transfer?moneysource="+moneysource+"&user_key=15b4fc0ef23b76f19c12e532ab088dff",
+			  	{
+        		"recptid": recptid,
+        		"acctid": accountid,
+        		"amt": amt
+    			},
+	     		function(data, status){
+			        $("#resulttransfer").val(data);
+			    });
+		});
+    
+    
+  });
+  
+</script>
   </body>
 </html>
