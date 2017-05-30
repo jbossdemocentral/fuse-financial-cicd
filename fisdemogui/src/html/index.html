@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Patternfly Demo App</title>
+
+    <!-- webpack bundled css -->
+    <link rel="stylesheet" href="css/patternfly.min.css">
+    <link rel="stylesheet" href="css/patternfly-additions.min.css">
+
+    <!-- webpack bundled dependencies -->
+    <script src="main.bundle.js"></script>
+
+    <!-- c3.js d3.js bundled dependencies -->
+    <script src="charts.bundle.js"></script>
+  </head>
+  <body class="cards-pf">
+
+<!-- nav -->
+<nav class="navbar navbar-default navbar-pf" role="navigation">
+  <div class="navbar-header">
+    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse-1">
+      <span class="sr-only">Toggle navigation</span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+      <span class="icon-bar"></span>
+    </button>
+    <a class="navbar-brand" href="/">
+      <img src="img/brand.svg" alt="Patternfly Demo App" />
+    </a>
+  </div>
+  <div class="collapse navbar-collapse navbar-collapse-1">
+    <ul class="nav navbar-nav navbar-utility">
+      <li>
+        <a href="#">Status</a>
+      </li>
+      <li class="dropdown">
+        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+          <span class="pficon pficon-user"></span>
+          Brian Johnson <b class="caret"></b>
+        </a>
+        <ul class="dropdown-menu">
+          <li>
+            <a href="#">Settings</a>
+          </li>
+          <li>
+            <a href="#">Another link</a>
+          </li>
+          <li>
+            <a href="#">Something else here</a>
+          </li>
+          <li class="divider"></li>
+          <li class="dropdown-submenu">
+            <a tabindex="-1" href="#">More options</a>
+            <ul class="dropdown-menu">
+              <li>
+                <a href="#">Link</a>
+              </li>
+              <li>
+                <a href="#">Another link</a>
+              </li>
+              <li>
+                <a href="#">Something else here</a>
+              </li>
+              <li class="divider"></li>
+              <li class="dropdown-header">Nav header</li>
+              <li>
+                <a href="#">Separated link</a>
+              </li>
+              <li class="divider"></li>
+              <li>
+                <a href="#">One more separated link</a>
+              </li>
+            </ul>
+          </li>
+          <li class="divider"></li>
+          <li>
+            <a href="login.html">Logout</a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+    <ul class="nav navbar-nav navbar-primary">
+      <li class="active">
+        <a href="index.html">Dashboard</a>
+      </li>
+      <li>
+        <a href="list.html">List View</a>
+      </li>
+      <li>
+        <a href="empty.html">Empty State</a>
+      </li>
+    </ul>
+  </div>
+</nav>
+
+<div class="container-fluid container-cards-pf">
+
+  <!-- status cards -->
+   <div class="row row-cards-pf">
+     <div class="col-xs-6 col-md-2">
+       <div class="card-pf card-pf-accented card-pf-aggregate-status">
+         <h2 class="card-pf-title">
+           <span class="fa fa-shield"></span><span class="card-pf-aggregate-status-count">0</span> Ipsum
+         </h2>
+         <div class="card-pf-body">
+           <p class="card-pf-aggregate-status-notifications">
+             <span class="card-pf-aggregate-status-notification"><a href="#" class="add" data-toggle="tooltip" data-placement="top" title="Add Ipsum"><span class="pficon pficon-add-circle-o"></span></a></span>
+           </p>
+         </div>
+       </div>
+     </div>
+     <div class="col-xs-12 col-md-2">
+       <div class="card-pf card-pf-accented card-pf-aggregate-status">
+         <h2 class="card-pf-title">
+           <a href="#"><span class="fa fa-shield"></span><span class="card-pf-aggregate-status-count">20</span> Amet</a>
+         </h2>
+         <div class="card-pf-body">
+           <p class="card-pf-aggregate-status-notifications">
+             <span class="card-pf-aggregate-status-notification"><a href="#"><span class="pficon pficon-error-circle-o"></span>4</a></span>
+             <span class="card-pf-aggregate-status-notification"><a href="#"><span class="pficon pficon-warning-triangle-o"></span>1</a></span>
+           </p>
+         </div>
+       </div>
+     </div>
+     <div class="col-xs-12 col-md-2">
+       <div class="card-pf card-pf-accented card-pf-aggregate-status">
+         <h2 class="card-pf-title">
+           <a href="#"><span class="fa fa-shield"></span><span class="card-pf-aggregate-status-count">9</span> Adipiscing</a>
+         </h2>
+         <div class="card-pf-body">
+           <p class="card-pf-aggregate-status-notifications">
+             <span class="card-pf-aggregate-status-notification"><span class="pficon pficon-ok"></span></span>
+           </p>
+         </div>
+       </div>
+     </div>
+     <div class="col-xs-12 col-md-2">
+       <div class="card-pf card-pf-accented card-pf-aggregate-status">
+         <h2 class="card-pf-title">
+           <span class="fa fa-shield"></span><span class="card-pf-aggregate-status-count">0</span> Ipsum
+         </h2>
+         <div class="card-pf-body">
+           <p class="card-pf-aggregate-status-notifications">
+             <span class="card-pf-aggregate-status-notification"><a href="#" class="add" data-toggle="tooltip" data-placement="top" title="Add Ipsum"><span class="pficon pficon-add-circle-o"></span></a></span>
+           </p>
+         </div>
+       </div>
+     </div>
+     <div class="col-xs-12 col-md-2">
+       <div class="card-pf card-pf-accented card-pf-aggregate-status">
+         <h2 class="card-pf-title">
+           <a href="#"><span class="fa fa-shield"></span><span class="card-pf-aggregate-status-count">20</span> Amet</a>
+         </h2>
+         <div class="card-pf-body">
+           <p class="card-pf-aggregate-status-notifications">
+             <span class="card-pf-aggregate-status-notification"><a href="#"><span class="pficon pficon-error-circle-o"></span>4</a></span>
+             <span class="card-pf-aggregate-status-notification"><a href="#"><span class="pficon pficon-warning-triangle-o"></span>1</a></span>
+           </p>
+         </div>
+       </div>
+     </div>
+     <div class="col-xs-12 col-md-2">
+       <div class="card-pf card-pf-accented card-pf-aggregate-status">
+         <h2 class="card-pf-title">
+           <a href="#"><span class="fa fa-shield"></span><span class="card-pf-aggregate-status-count">9</span> Adipiscing</a>
+         </h2>
+         <div class="card-pf-body">
+           <p class="card-pf-aggregate-status-notifications">
+             <span class="card-pf-aggregate-status-notification"><span class="pficon pficon-ok"></span></span>
+           </p>
+         </div>
+       </div>
+     </div>
+   </div>
+
+
+
+
+   <div class="row row-cards-pf">
+         <div class="col-md-8">
+           <div class="card-pf card-pf-utilization">
+             <div class="card-pf-heading">
+               <p class="card-pf-heading-details">Last 30 days</p>
+               <h2 class="card-pf-title">
+                 Utilization
+               </h2>
+             </div>
+             <div class="card-pf-body">
+               <div class="row">
+                 <div class="col-xs-12 col-sm-4 col-md-4">
+                   <h3 class="card-pf-subtitle">CPU</h3>
+                   <p class="card-pf-utilization-details">
+                     <span class="card-pf-utilization-card-details-count">50</span>
+                     <span class="card-pf-utilization-card-details-description">
+                       <span class="card-pf-utilization-card-details-line-1">Available</span>
+                       <span class="card-pf-utilization-card-details-line-2">of 1000 MHz</span>
+                     </span>
+                   </p>
+                   <div id="chart-pf-donut-1"></div>
+                   <div class="chart-pf-sparkline" id="chart-pf-sparkline-1"></div>
+                   <script>
+                     var donutChartConfig = jQuery().c3ChartDefaults().getDefaultDonutConfig('A');
+                     donutChartConfig.bindto = '#chart-pf-donut-1';
+                     donutChartConfig.data = {
+                       type: "donut",
+                         columns: [
+                           ["Used", 95],
+                           ["Available", 5]
+                         ],
+                         groups: [
+                           ["used", "available"]
+                         ],
+                       order: null
+                     };
+                     donutChartConfig.color = {
+                         pattern: ["#cc0000","#D1D1D1"]
+                     };
+                     donutChartConfig.tooltip = {
+                       contents: function (d) {
+                           return '<span class="donut-tooltip-pf" style="white-space: nowrap;">' +
+                                   Math.round(d[0].ratio * 100) + '%' + ' MHz ' + d[0].name +
+                                   '</span>';
+                       }
+                     };
+                     var chart1 = c3.generate(donutChartConfig);
+
+                     var donutChartTitle = d3.select("#chart-pf-donut-1").select('text.c3-chart-arcs-title');
+                     donutChartTitle.text("");
+                     donutChartTitle.insert('tspan').text("950").classed('donut-title-big-pf', true).attr('dy', 0).attr('x', 0);
+                     donutChartTitle.insert('tspan').text("MHz Used").classed('donut-title-small-pf', true).attr('dy', 20).attr('x', 0);
+
+                     var sparklineChartConfig = jQuery().c3ChartDefaults().getDefaultSparklineConfig();
+                     sparklineChartConfig.bindto = '#chart-pf-sparkline-1';
+                     sparklineChartConfig.data = {
+                       columns: [
+                           ['%', 10, 50, 28, 20, 31, 27, 60, 36, 52, 55, 62, 68, 69, 88, 74, 88, 95],
+                       ],
+                       type: 'area'
+                     };
+                     var chart2 = c3.generate(sparklineChartConfig);
+                   </script>
+                 </div>
+                 <div class="col-xs-12 col-sm-4 col-md-4">
+                   <h3 class="card-pf-subtitle">Memory</h3>
+                   <p class="card-pf-utilization-details">
+                     <span class="card-pf-utilization-card-details-count">256</span>
+                     <span class="card-pf-utilization-card-details-description">
+                       <span class="card-pf-utilization-card-details-line-1">Available</span>
+                       <span class="card-pf-utilization-card-details-line-2">of 432 GB</span>
+                     </span>
+                   </p>
+                   <div id="chart-pf-donut-2"></div>
+                   <div class="chart-pf-sparkline" id="chart-pf-sparkline-2"></div>
+                   <script>
+                     var donutChartConfig = jQuery().c3ChartDefaults().getDefaultDonutConfig('A');
+                     donutChartConfig.bindto = '#chart-pf-donut-2';
+                     donutChartConfig.data = {
+                       type: "donut",
+                         columns: [
+                           ["Used", 41],
+                           ["Available", 59]
+                         ],
+                         groups: [
+                           ["used", "available"]
+                         ],
+                       order: null
+                     };
+                     donutChartConfig.color = {
+                         pattern: ["#3f9c35","#D1D1D1"]
+                     };
+                     donutChartConfig.tooltip = {
+                       contents: function (d) {
+                           return '<span class="donut-tooltip-pf" style="white-space: nowrap;">' +
+                                   Math.round(d[0].ratio * 100) + '%' + ' GB ' + d[0].name +
+                                   '</span>';
+                       }
+                     };
+                     var chart3 = c3.generate(donutChartConfig);
+
+                     var donutChartTitle = d3.select("#chart-pf-donut-2").select('text.c3-chart-arcs-title');
+                     donutChartTitle.text("");
+                     donutChartTitle.insert('tspan').text("176").classed('donut-title-big-pf', true).attr('dy', 0).attr('x', 0);
+                     donutChartTitle.insert('tspan').text("GB Used").classed('donut-title-small-pf', true).attr('dy', 20).attr('x', 0);
+
+                     var sparklineChartConfig = jQuery().c3ChartDefaults().getDefaultSparklineConfig();
+                     sparklineChartConfig.bindto = '#chart-pf-sparkline-2';
+                     sparklineChartConfig.data = {
+                       columns: [
+                           ['%', 35, 36, 20, 30, 31, 22, 44, 36, 40, 41, 55, 52, 48, 48, 50, 40, 41],
+                       ],
+                       type: 'area'
+                     };
+                     var chart4 = c3.generate(sparklineChartConfig);
+                   </script>
+                 </div>
+                 <div class="col-xs-12 col-sm-4 col-md-4">
+                   <h3 class="card-pf-subtitle">Network</h3>
+                   <p class="card-pf-utilization-details">
+                     <span class="card-pf-utilization-card-details-count">200</span>
+                     <span class="card-pf-utilization-card-details-description">
+                       <span class="card-pf-utilization-card-details-line-1">Available</span>
+                       <span class="card-pf-utilization-card-details-line-2">of 1300 Gbps</span>
+                     </span>
+                   </p>
+                   <div id="chart-pf-donut-3"></div>
+                   <div class="chart-pf-sparkline" id="chart-pf-sparkline-3"></div>
+                   <script>
+                     var donutChartConfig = jQuery().c3ChartDefaults().getDefaultDonutConfig('A');
+                     donutChartConfig.bindto = '#chart-pf-donut-3';
+                     donutChartConfig.data = {
+                       type: "donut",
+                         columns: [
+                           ["Used", 85],
+                           ["Available", 15]
+                         ],
+                         groups: [
+                           ["used", "available"]
+                         ],
+                       order: null
+                     };
+                     donutChartConfig.color = {
+                         pattern: ["#EC7A08","#D1D1D1"]
+                     };
+                     donutChartConfig.tooltip = {
+                       contents: function (d) {
+                           return '<span class="donut-tooltip-pf" style="white-space: nowrap;">' +
+                                   Math.round(d[0].ratio * 100) + '%' + ' Gbps ' + d[0].name +
+                                   '</span>';
+                       }
+                     };
+                     var chart5 = c3.generate(donutChartConfig);
+
+                     var donutChartTitle = d3.select("#chart-pf-donut-3").select('text.c3-chart-arcs-title');
+                     donutChartTitle.text("");
+                     donutChartTitle.insert('tspan').text("1100").classed('donut-title-big-pf', true).attr('dy', 0).attr('x', 0);
+                     donutChartTitle.insert('tspan').text("Gbps Used").classed('donut-title-small-pf', true).attr('dy', 20).attr('x', 0);
+
+                     var sparklineChartConfig = jQuery().c3ChartDefaults().getDefaultSparklineConfig();
+                     sparklineChartConfig.bindto = '#chart-pf-sparkline-3';
+                     sparklineChartConfig.data = {
+                       columns: [
+                           ['%', 60, 55, 70, 44, 31, 67, 54, 46, 58, 75, 62, 68, 69, 88, 74, 88, 85],
+                       ],
+                       type: 'area'
+                     };
+                     var chart6 = c3.generate(sparklineChartConfig);
+                   </script>
+                 </div>
+               </div>
+             </div>
+           </div>
+         </div>
+
+
+
+         <div class="col-xs-12 col-md-4">
+                 <div class="card-pf">
+                   <div class="card-pf-heading">
+                     <h2 class="card-pf-title">
+                       Top Utilized Clusters
+                     </h2>
+                   </div>
+                   <div class="card-pf-body">
+                     <div class="progress-description">
+                       RHOS6-Controller
+                     </div>
+                     <div class="progress progress-label-top-right">
+                       <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="95" aria-valuemin="0" aria-valuemax="100" style="width: 95%;"  data-toggle="tooltip" title="95% Used">
+                         <span><strong>190.0 of 200.0 GB</strong> Used</span>
+                       </div>
+                       <div class="progress-bar progress-bar-remaining" role="progressbar" aria-valuenow="5" aria-valuemin="0" aria-valuemax="100" style="width: 5%;" data-toggle="tooltip" title="5% Available">
+                         <span class="sr-only">5% Available</span>
+                       </div>
+                     </div>
+                     <div class="progress-description">
+                       CFMEQE-Cluster
+                     </div>
+                     <div class="progress progress-label-top-right">
+                       <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;"  data-toggle="tooltip" title="50% Used">
+                         <span><strong>100.0 of 200.0 GB</strong> Used</span>
+                       </div>
+                       <div class="progress-bar progress-bar-remaining" role="progressbar" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100" style="width: 50%;" data-toggle="tooltip" title="50% Available">
+                         <span class="sr-only">50% Available</span>
+                       </div>
+                     </div>
+                     <div class="progress-description">
+                       RHOS-Undercloud
+                     </div>
+                     <div class="progress progress-label-top-right">
+                       <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="70" aria-valuemin="0" aria-valuemax="100" style="width: 70%;"  data-toggle="tooltip" title="70% Used">
+                         <span><strong>140.0 of 200.0 GB</strong> Used</span>
+                       </div>
+                       <div class="progress-bar progress-bar-remaining" role="progressbar" aria-valuenow="30" aria-valuemin="0" aria-valuemax="100" style="width: 30%;" data-toggle="tooltip" title="30% Available">
+                         <span class="sr-only">30% Available</span>
+                       </div>
+                     </div>
+                     <div class="progress-description">
+                       RHEL6-Controller
+                     </div>
+                     <div class="progress progress-label-top-right">
+                       <div class="progress-bar progress-bar-warning" role="progressbar" aria-valuenow="76.5" aria-valuemin="0" aria-valuemax="100" style="width: 76.5%;"  data-toggle="tooltip" title="76.5% Used">
+                         <span><strong>153.0 of 200.0 GB</strong> Used</span>
+                       </div>
+                       <div class="progress-bar progress-bar-remaining" role="progressbar" aria-valuenow="23.5" aria-valuemin="0" aria-valuemax="100" style="width: 23.5%;" data-toggle="tooltip" title="23.5% Available">
+                         <span class="sr-only">23.5% Available</span>
+                       </div>
+                     </div>
+                   </div>
+                 </div>
+               </div>
+
+       </div><!-- /row -->
+
+</div><!-- container -->
+
+
+<script>
+    $(function() {
+      // matchHeight the contents of each .card-pf and then the .card-pf itself
+      $(".row-cards-pf > [class*='col'] > .card-pf .card-pf-title").matchHeight();
+      $(".row-cards-pf > [class*='col'] > .card-pf > .card-pf-body").matchHeight();
+      $(".row-cards-pf > [class*='col'] > .card-pf > .card-pf-footer").matchHeight();
+      $(".row-cards-pf > [class*='col'] > .card-pf").matchHeight();
+    });
+  </script>
+
+  </body>
+</html>
