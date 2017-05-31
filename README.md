@@ -89,16 +89,48 @@ After successfully install the application, it's time to deploy the API Gateway.
 oc process -f support/projecttemplates/template-uat.yml | oc create -f -
 ```
 
-# TODO startign up GUI
-
 Congradulations! You can now start playing with the demo! 
 And here are some of the ways you can play with it! 
 In your browser test the following links
 
 ```
-http://fisgateway-service-fisdemo.192.168.99.100.xip.io/demos/sourcegateway/balance/234567?moneysource=bitcoin
-http://fisgateway-service-fisdemo.192.168.99.100.xip.io/demos/sourcegateway/balance/234567
+http://fisgateway-service-fisdemo.<OPENSHIFT_HOST>/demos/sourcegateway/balance/234567?moneysource=bitcoin
+http://fisgateway-service-fisdemo.<OPENSHIFT_HOST>o/demos/sourcegateway/balance/234567
 ```
+
+## Starting up Banking GUI
+
+If you want something fancy, try installing the GUI for the application.
+
+![alt text](images/bankinggui.png "Banking GUI")
+
+```
+cd ../fisdemogui
+oc new-project fisdemo --display-name="Fuse Banking Demo - GUI" --description="Web GUI for Banking demo, does transfer and balance enquiry"
+oc new-build --image-stream=nodejs --binary=true --name=fisdemogui
+oc start-build fisdemogui --from-dir=fisdemogui/
+oc new-app fisdemogui
+oc expose svc fisdemogui
+```
+Once the application is running, set the your API IP Address to *fisgateway-service-fisdemo.<OPENSHIFT_HOST>* and play around with it.
+
+
+## Setting Up Production Environment
+Create a Production project for FISDEMO
+
+```
+oc new-project fisdemoprod --display-name="Fuse Banking Demo - PROD" --description="Production environment for Agile Integration Banking Demo - Power by Red Hat Fuse"
+```
+
+Add setup the environment including supporting microservices and configurations (deployment configs/service/route) in production
+
+```
+./support/setupProd.sh 
+oc process -f support/projecttemplates/template-prod.yml | oc create -f -
+oc process -f support/kubeflix.yml | oc create -f -
+```
+
+
 ## API resiliency with Hystrix 
 
 Spin up the Hystrix dashboard and Turbine server using the provided kubeflix.json template
@@ -211,19 +243,6 @@ Here is where we tell Apicast where to look for our APIs and how the APIs can be
 
 ![alt text](images/cicd.png "CI/CD pipelines")
 
-Create a Production project for FISDEMO
-
-```
-oc new-project fisdemoprod --display-name="Fuse Banking Demo - PROD" --description="Production environment for Agile Integration Banking Demo - Power by Red Hat Fuse"
-```
-
-Add setup the environment including supporting microservices and configurations (deployment configs/service/route) in production
-
-```
-./support/setupProd.sh 
-oc process -f support/projecttemplates/template-prod.yml | oc create -f -
-oc process -f support/kubeflix.yml | oc create -f -
-```
 
 Create a project to all pipelines
 
@@ -263,6 +282,7 @@ oc new-app pipeline-allprod \
 --param=API_LIMITS=50 \
 --param=OPENSHIFT_HOST=<OPENSHIFT_HOST>
 ```
+
 The Banking pipeline project includes 3 pipelines demonstrate the possible flow of an integration application of Fuse. 
 
 A. The pre-built UAT pipeline builds the image from SCM (github). and deploy a testing instance onto the platform. Then a pre-UAT test is done by a QA (you), after verification, you can choose to reject the change or promote it to UAT, by tagging the image with uatready flag. When promoted, the pipeline will deploy the uat tagged image on openshift, with UAT route linked to it. 
@@ -276,6 +296,9 @@ C. Ready for full release. The all production pipeline will do the rolling updat
 
 
 ## Version update notes, and TODOs
-- REMOVE UAT pipeline from UAT project into the pipeline Project
-- TODO: Add configmaps and secrets
-- TODO: UI Instructions
+- V2 . REMOVE UAT pipeline from UAT project into the pipeline Project
+- V2 . Added Hystrix
+- V2 . Added 3scale API management
+- V2 . Added CICD for Production
+- V2 . Added Banking GUI
+- TODO: Configmaps and secrets
