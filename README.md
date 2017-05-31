@@ -18,12 +18,12 @@ There are many aspect with this demo,
 but first, let's start with setting up the application. 
 
 ## Setting up OpenShift 
-[Install OpenShift Container Platform 3.4] (https://github.com/redhatdemocentral/ocp-install-demo) 
+[Install OpenShift Container Platform 3.5] (https://github.com/redhatdemocentral/ocp-install-demo) 
 
 Start up your local OpenShift environment by running 
 	
 ```
-oc cluster up 
+minishift start / oc cluster up 
 ```
 
 Then login as system admin to install the FIS 2.0 image stream.
@@ -95,7 +95,7 @@ In your browser test the following links
 
 ```
 http://fisgateway-service-fisdemo.<OPENSHIFT_HOST>/demos/sourcegateway/balance/234567?moneysource=bitcoin
-http://fisgateway-service-fisdemo.<OPENSHIFT_HOST>o/demos/sourcegateway/balance/234567
+http://fisgateway-service-fisdemo.<OPENSHIFT_HOST>/demos/sourcegateway/balance/234567
 ```
 
 ## Starting up Banking GUI
@@ -106,12 +106,14 @@ If you want something fancy, try installing the GUI for the application.
 
 ```
 cd ../fisdemogui
-oc new-project fisdemo --display-name="Fuse Banking Demo - GUI" --description="Web GUI for Banking demo, does transfer and balance enquiry"
+oc new-project fisdemogui --display-name="Fuse Banking Demo - GUI" --description="Web GUI for Banking demo, does transfer and balance enquiry"
 oc new-build --image-stream=nodejs --binary=true --name=fisdemogui
-oc start-build fisdemogui --from-dir=fisdemogui/
+oc start-build fisdemogui --from-dir=.
 oc new-app fisdemogui
 oc expose svc fisdemogui
 ```
+
+In your browser http://fisdemogui-fisdemogui.<OPENSHIFT_HOST>/
 Once the application is running, set the your API IP Address to *fisgateway-service-fisdemo.<OPENSHIFT_HOST>* and play around with it.
 
 
