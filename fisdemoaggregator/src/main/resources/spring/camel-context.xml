@@ -4,31 +4,43 @@
     <bean
         class="org.apache.camel.component.servlet.CamelHttpTransportServlet" id="camelHttpTransportServlet"/>
     <bean
+        class="org.apache.camel.component.hystrix.metrics.servlet.HystrixEventStreamServlet" id="hystrixEventStreamServlet"/>
+    <bean
         class="org.springframework.boot.web.servlet.ServletRegistrationBean" id="servlet">
         <property name="name" value="CamelServlet"/>
         <property name="servlet" ref="camelHttpTransportServlet"/>
         <property name="urlMappings" value="/demos/*"/>
     </bean>
+    <bean
+        class="org.springframework.boot.web.servlet.ServletRegistrationBean" id="hystrixservlet">
+        <property name="name" value="HystrixServlet"/>
+        <property name="servlet" ref="hystrixEventStreamServlet"/>
+        <property name="urlMappings" value="/hystrix.stream"/>
+    </bean>
     <camelContext id="camelContext-a73e7fe1-456e-4e15-9926-fae906325f11" xmlns="http://camel.apache.org/schema/spring">
         <restConfiguration apiContextPath="api-docs" bindingMode="json"
-            component="servlet" contextPath="/demos">
+            component="servlet" contextPath="/demos" enableCORS="true">
             <apiProperty key="cors" value="true"/>
             <apiProperty key="api.title" value="FIS Gateway"/>
             <apiProperty key="api.version" value="1.0.0"/>
-            <corsHeaders key="Access-Control-Allow-Origin" value="*"/>
+            <corsHeaders key="Access-Control-Allow-Origin" value=""/>
             <corsHeaders key="Access-Control-Allow-Methods" value="GET, HEAD, POST, PUT, DELETE, TRACE, OPTIONS, CONNECT, PATCH"/>
             <corsHeaders key="Access-Control-Allow-Headers" value="Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers"/>
         </restConfiguration>
         <rest path="/sourcegateway">
+            <description>Banking Gateway</description>
             <get uri="balance/{acctid}">
                 <to uri="direct:getbalance"/>
             </get>
             <get uri="profile/{acctid}">
                 <to uri="direct:getprofile"/>
             </get>
-            <get uri="transfer">
+            <post uri="transfer">
                 <to uri="direct:dotransfer"/>
-            </get>
+            </post>
+            <post uri="transferwithjson">
+                <to uri="direct:transferwithjson"/>
+            </post>
         </rest>
         <route id="gatewaybalance">
             <from id="_from1" uri="direct:getbalance"/>
@@ -40,49 +52,88 @@
             <choice id="_choice1">
                 <when id="_when1">
                     <simple>${header.moneysource} == 'bitcoin'</simple>
-                    <log id="_log3" message="Bitcoin it is!"/>
-                    <recipientList id="_recipientList1">
-                        <simple>http://fisblockchain-service/demos/bitcoinaccount/balance/${header.acctid}?bridgeEndpoint=true</simple>
-                    </recipientList>
+                    <log id="_log2" message="Bitcoin it is!"/>
+                    <hystrix id="_hystrix1">
+                        <hystrixConfiguration
+                            circuitBreakerSleepWindowInMilliseconds="10000" executionTimeoutInMilliseconds="5000"/>
+                        <recipientList id="_recipientList1">
+                            <simple>http://fisblockchain-service/demos/bitcoinaccount/balance/${header.acctid}?bridgeEndpoint=true</simple>
+                        </recipientList>
+                        <onFallback id="_onFallback1">
+                            <to id="_handelerro01" uri="direct:doNoresponse"/>
+                        </onFallback>
+                    </hystrix>
                     <convertBodyTo id="_convertBodyTo1" type="java.lang.String"/>
-                    <log id="_log4" message="${body}"/>
+                    <unmarshal id="_unmarshal2">
+                        <json library="Jackson"/>
+                    </unmarshal>
+                    <log id="_log3" message="${body}"/>
                 </when>
                 <otherwise id="_otherwise1">
                     <log id="_log4" message="Traditional money source"/>
-                    <recipientList id="_recipientList2">
-                        <simple>http://fisaccount-service/demos/account/profile/${header.acctid}?bridgeEndpoint=true</simple>
-                    </recipientList>
-                    <convertBodyTo id="_convertBodyTo3" type="java.lang.String"/>
-                    <unmarshal >
-                    	<json library="Jackson"/>
-                    </unmarshal>
-                    <setBody>
-                     <simple>Account ${header.acctid} has balance of :${body['balance']}</simple>
-                    </setBody>
+                    <hystrix id="_hystrix2">
+                        <hystrixConfiguration
+                            circuitBreakerSleepWindowInMilliseconds="10000" executionTimeoutInMilliseconds="5000"/>
+                        <recipientList id="_recipientList2">
+                            <simple>http://fisaccount-service/demos/account/profile/${header.acctid}?bridgeEndpoint=true</simple>
+                        </recipientList>
+                        <convertBodyTo id="_convertBodyTo3" type="java.lang.String"/>
+                        <unmarshal id="_unmarshal1">
+                            <json library="Jackson"/>
+                        </unmarshal>
+                        <setBody id="_setBody2">
+                            <simple>Account ${header.acctid} has balance of :${body['balance']}</simple>
+                        </setBody>
+                        <onFallback id="_onFallback2">
+                            <to id="_handelerro02" uri="direct:doNoresponse"/>
+                        </onFallback>
+                    </hystrix>
                 </otherwise>
             </choice>
         </route>
         <route id="gatewaytransfer">
             <from id="_from2" uri="direct:dotransfer"/>
-            <log id="_log2" message="do balance ${header.acctid} ${header.amt} ${header.recptid} ${header.moneysource}"/>
+            <log id="_log5" message="do balance ${header.acctid} ${header.amt} ${header.recptid} ${header.moneysource}"/>
             <removeHeaders id="_removeHeaders2" pattern="Camel*"/>
+            <setHeader headerName="CamelHttpMethod" id="_setHeader8">
+                <constant>GET</constant>
+            </setHeader>
             <choice id="_choice2">
                 <when id="_when2">
                     <simple>${header.moneysource} == 'bitcoin'</simple>
                     <log id="_log6" message="Bitcoin transfer "/>
-                    <recipientList id="_recipientList3">
-                        <simple>http://fisblockchain-service/demos/bitcoinaccount/transfer/${header.acctid}/${header.amt}/${header.recptid}?bridgeEndpoint=true</simple>
-                    </recipientList>
-                    <convertBodyTo id="_convertBodyTo2" type="java.lang.String"/>
-                    <log id="_log7" message="${body}"/>
+                    <hystrix id="_hystrix3">
+                        <hystrixConfiguration
+                            circuitBreakerSleepWindowInMilliseconds="10000" executionTimeoutInMilliseconds="5000"/>
+                        <recipientList id="_recipientList3">
+                            <simple>http://fisblockchain-service/demos/bitcoinaccount/transfer/${header.acctid}/${header.amt}/${header.recptid}?bridgeEndpoint=true</simple>
+                        </recipientList>
+                        <convertBodyTo id="_convertBodyTo2" type="java.lang.String"/>
+                        <log id="_log7" message="${body}"/>
+                        <onFallback id="_onFallback3">
+                            <to id="_handelerro03" uri="direct:doNoresponse"/>
+                        </onFallback>
+                    </hystrix>
                 </when>
                 <otherwise id="_otherwise2">
                     <log id="_log8" message="Traditional banking"/>
-                    <recipientList id="_recipientList4">
-                        <simple>http://fisaccount-service/demos/account/transfer/${header.acctid}/${header.amt}/${header.recptid}?bridgeEndpoint=true</simple>
-                    </recipientList>
-                    <convertBodyTo id="_convertBodyTo4" type="java.lang.String"/>
-                    <log id="_log7" message="${body}"/>
+                    <hystrix id="_hystrix4">
+                        <hystrixConfiguration
+                            circuitBreakerSleepWindowInMilliseconds="10000" executionTimeoutInMilliseconds="5000"/>
+                        <recipientList id="_recipientList4">
+                            <simple>http://fisaccount-service/demos/account/transfer/${header.acctid}/${header.amt}/${header.recptid}?bridgeEndpoint=true</simple>
+                        </recipientList>
+                        <convertBodyTo id="_convertBodyTo4" type="java.lang.String"/>
+                        <unmarshal id="_unmarshal4">
+                            <json library="Jackson"/>
+                        </unmarshal>
+                        <setBody id="_setBody4">
+                            <simple>Transfer completed, account ${header.acctid} has balance of :${body['balance']}</simple>
+                        </setBody>
+                     <onFallback id="_onFallback4">
+                            <to id="_handelerro04" uri="direct:doNoresponse"/>
+                        </onFallback>
+                    </hystrix>
                 </otherwise>
             </choice>
         </route>
@@ -100,12 +151,50 @@
                     </setBody>
                 </when>
                 <otherwise id="_otherwise3">
-                    <recipientList id="_recipientList5">
-                        <simple>http://fisaccount-service/demos/account/profile/${header.acctid}?bridgeEndpoint=true</simple>
-                    </recipientList>
-                    <convertBodyTo id="_convertBodyTo5" type="java.lang.String"/>
+                    <hystrix id="_hystrix5">
+                        <hystrixConfiguration
+                            circuitBreakerSleepWindowInMilliseconds="10000" executionTimeoutInMilliseconds="5000"/>
+                        <recipientList id="_recipientList5">
+                            <simple>http://fisaccount-service/demos/account/profile/${header.acctid}?bridgeEndpoint=true</simple>
+                        </recipientList>
+                        <convertBodyTo id="_convertBodyTo5" type="java.lang.String"/>
+                        <onFallback id="_onFallback5">
+                            <to id="_handelerro05" uri="direct:doNoresponse"/>
+                        </onFallback>
+                    </hystrix>
                 </otherwise>
             </choice>
+        </route>
+        <route id="noresponseroute">
+            <from id="noresponse" uri="direct:doNoresponse"/>
+            <log id="_log10" message="Fallback because backend services not responding"/>
+            <setHeader headerName="Exchange.HTTP_RESPONSE_CODE" id="_setHeader2">
+                <constant>503</constant>
+            </setHeader>
+            <setBody id="_setBody3">
+                <constant/>
+            </setBody>
+        </route>
+        <route id="transferwithjsonroute">
+            <from id="noresponse" uri="direct:transferwithjson"/>
+            <log id="_log11" message="${body}"/>
+            <marshal id="_marshal1">
+                <json library="Jackson" prettyPrint="true"/>
+            </marshal>
+            <setHeader headerName="acctid" id="_setHeader4">
+                <jsonpath>acctid</jsonpath>
+            </setHeader>
+            <setHeader headerName="amt" id="_setHeader5">
+                <jsonpath>amt</jsonpath>
+            </setHeader>
+            <setHeader headerName="recepid" id="_setHeader6">
+                <jsonpath>recepid</jsonpath>
+            </setHeader>
+            <setHeader headerName="moneysource" id="_setHeader7">
+                <jsonpath>moneysource</jsonpath>
+            </setHeader>
+            <log id="_log12" message="moneysource-- ${headers.moneysource}, acctid-- ${headers.acctid}, recepid-- {headers.recepid}, amt-- {headers.amt}"/>
+            <to id="_to1" uri="direct:dotransfer"/>
         </route>
     </camelContext>
 </beans>

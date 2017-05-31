@@ -66,6 +66,15 @@
       <artifactId>spring-boot-starter-test</artifactId>
       <scope>test</scope>
     </dependency>
+    <!--  For Hystrix -->
+    <dependency>
+      <groupId>org.apache.camel</groupId>
+      <artifactId>camel-hystrix-starter</artifactId>
+	</dependency>
+	<dependency>
+      <groupId>org.apache.camel</groupId>
+      <artifactId>camel-jsonpath-starter</artifactId>  
+    </dependency>
     <!-- For Testing -->
 	<dependency>
 	    <groupId>org.apache.httpcomponents</groupId>

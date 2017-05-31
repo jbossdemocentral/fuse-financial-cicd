@@ -22,12 +22,9 @@
             <get uri="balance/{acctid}">
                 <to uri="direct:getBalance"/>
             </get>
-            <post uri="transfer/{acctid}">
+            <get uri="transfer/{acctid}/{amt}/{recptid}">
                 <to uri="direct:dotransfer"/>
-            </post>
-            <post uri="test/{acctid}/">
-                <to uri="direct:doTest"/>
-            </post>
+            </get>
         </rest>
         <!-- Camel Routes -->
         <route id="balanceRoute">
@@ -83,12 +80,6 @@
             <from id="_from3" uri="amq:queue:transfer"/>
             <log id="log_4" message="Tokenized ${body}"/>
             <bean id="_bean1" method="transfer(${body})" ref="mockBitcoinApp"/>
-        </route>
-        <route id="doTest">
-            <from id="_from3" uri="direct:doTest"/>
-            <log id="log_10" message="body ${body}"/>
-            <log id="log_11" message="amt ${header.amt}"/>
-            <log id="log_11" message="recptid ${header.recptid}"/>
         </route>
     </camelContext>
 </beans>

@@ -1,7 +1,7 @@
 echo "Create fisdemo project to work in, and load the A-MQ 6.2 template"
 echo 
-oc login -u developer
-oc new-project fisdemo
+#oc login -u developer
+oc new-project fisdemo --display-name="Fuse Banking Demo - Dev and UAT" --description="Development and UAT environment for Agile Integration Banking Demo - Power by Red Hat Fuse"
 oc create -f https://raw.githubusercontent.com/jboss-openshift/application-templates/master/amq/amq62-basic.json
 
 echo "Setup the surrounding softwate and environment"
@@ -14,3 +14,13 @@ echo "Start up Broker for bitcoin gateway"
 oc new-app --template=amq62-basic --param=MQ_USERNAME=admin --param=MQ_PASSWORD=admin
 
 
+echo "Create Traditional Banking instance"
+cd ../fisdemoaccount/
+mvn fabric8:deploy -Dmysql-service-username=dbuser -Dmysql-service-password=password
+
+echo "Create Block Chain Banking instance"
+cd ../fisdemoblockchain/
+mvn fabric8:deploy
+
+cd ..
+oc process -f template-uat.yml | oc create -f -

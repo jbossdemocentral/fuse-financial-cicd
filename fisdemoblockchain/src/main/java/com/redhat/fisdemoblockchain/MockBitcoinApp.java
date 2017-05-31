@@ -66,7 +66,7 @@ public class MockBitcoinApp {
 			return "Transfer: ONE of the account NOT FOUND!";
 		}
 		ledger.transfer(acctid, amt, recptid);
-		return "Successfully transfered $"+amt+"from "+acctid+"to "+recptid+" remaining balance are: $"+(acctBalance-amt);
+		return "Transfered Completed! $"+amt+" from "+acctid+" to "+recptid+" the remaining balance is: $"+(acctBalance-amt);
 	}
 
 }

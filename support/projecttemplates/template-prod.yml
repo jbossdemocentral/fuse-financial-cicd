@@ -1,0 +1,231 @@
+apiVersion: v1
+kind: Template
+metadata:
+  annotations:
+    description: Fuse Integration Service 2.0 demo. Finance pipeline demo PRODUCTION
+    tags: demo,java,springboot,fis,jenkins
+    iconClass: icon-jenkins
+    version: '2.0'
+  name: fisgateway-service-prod
+labels:
+  template: fisgateway-service-prod
+parameters:
+- name: APP_NAME
+  displayName: Application Name
+  required: true
+  value: fisgateway-service
+  description: The name assigned to the application.
+- name: APP_VERSION
+  displayName: Application Version
+  value: 1.0.0
+  description: The application version.
+objects:
+- kind: Route
+  apiVersion: v1
+  metadata:
+    name: "${APP_NAME}"
+    labels:
+      app: "${APP_NAME}"
+      component: "${APP_NAME}"
+      group: quickstarts
+      project: "${APP_NAME}"
+      provider: s2i
+      template: "${APP_NAME}"
+      version: 1.0.0
+    annotations:
+      openshift.io/host.generated: 'true'
+  spec:
+    alternateBackends:
+    - kind: Service
+      name: ${APP_NAME}-new
+      weight: 0
+    to:
+      kind: Service
+      name: ${APP_NAME}-stable
+      weight: 256
+    wildcardPolicy: None
+- kind: Service
+  apiVersion: v1
+  metadata:
+    annotations: {}
+    labels:
+      component: ${APP_NAME}-new
+      provider: s2i
+      project: ${APP_NAME}-new
+      version: ${APP_VERSION}
+      group: quickstarts
+    name: ${APP_NAME}-new
+  spec:
+    clusterIP: None
+    deprecatedPublicIPs: []
+    ports:
+    - port: 8080
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      project: ${APP_NAME}-new
+      component: ${APP_NAME}-new
+      provider: s2i
+      group: quickstarts
+- kind: Service
+  apiVersion: v1
+  metadata:
+    annotations: {}
+    labels:
+      component: ${APP_NAME}-stable
+      provider: s2i
+      project: ${APP_NAME}-stable
+      version: ${APP_VERSION}
+      group: quickstarts
+    name: ${APP_NAME}-stable
+  spec:
+    clusterIP: None
+    deprecatedPublicIPs: []
+    ports:
+    - port: 8080
+      protocol: TCP
+      targetPort: 8080
+    selector:
+      project: ${APP_NAME}-stable
+      component: ${APP_NAME}-stable
+      provider: s2i
+      group: quickstarts
+- kind: DeploymentConfig
+  apiVersion: v1
+  metadata:
+    name: ${APP_NAME}-new
+    creationTimestamp: 
+    labels:
+      component: ${APP_NAME}-new
+      group: quickstarts
+      project: ${APP_NAME}-new
+      provider: s2i
+      version: ${APP_VERSION}
+  spec:
+    strategy:
+      resources: {}
+    triggers:
+    - type: ConfigChange
+    - type: ImageChange
+      imageChangeParams:
+        automatic: true
+        containerNames:
+        - ${APP_NAME}-new
+        from:
+          kind: ImageStreamTag
+          name: ${APP_NAME}:latest
+    replicas: 1
+    selector:
+      component: ${APP_NAME}-new
+      deploymentconfig: ${APP_NAME}-new
+      group: quickstarts
+      project: ${APP_NAME}-new
+      provider: s2i
+      version: ${APP_VERSION}
+    template:
+      metadata:
+        creationTimestamp: 
+        labels:
+          component: ${APP_NAME}-new
+          deploymentconfig: ${APP_NAME}-new
+          group: quickstarts
+          project: ${APP_NAME}-new
+          provider: s2i
+          version: ${APP_VERSION}
+      spec:
+        containers:
+        - name: ${APP_NAME}-new
+          image: library/${APP_NAME}:latest
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8081
+            initialDelaySeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8081
+            initialDelaySeconds: 180
+          ports:
+          - containerPort: 8778
+            name: jolokia
+          - containerPort: 8080
+            name: tcp
+          - containerPort: 9779
+            name: prometheus
+          env:
+          - name: KUBERNETES_NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+          resources: {}
+  status: {}
+- kind: DeploymentConfig
+  apiVersion: v1
+  metadata:
+    name: ${APP_NAME}-stable
+    labels:
+      component: ${APP_NAME}-stable
+      group: quickstarts
+      project: ${APP_NAME}-stable
+      provider: s2i
+      version: ${APP_VERSION}
+  spec:
+    strategy:
+      resources: {}
+    triggers:
+    - type: ConfigChange
+    - type: ImageChange
+      imageChangeParams:
+        automatic: true
+        containerNames:
+        - ${APP_NAME}-stable
+        from:
+          kind: ImageStreamTag
+          name: ${APP_NAME}-stable:latest
+    replicas: 1
+    selector:
+      component: ${APP_NAME}-stable
+      deploymentconfig: ${APP_NAME}-stable
+      group: quickstarts
+      project: ${APP_NAME}-stable
+      provider: s2i
+      version: ${APP_VERSION}
+    template:
+      metadata:
+        creationTimestamp: 
+        labels:
+          component: ${APP_NAME}-stable
+          deploymentconfig: ${APP_NAME}-stable
+          group: quickstarts
+          project: ${APP_NAME}-stable
+          provider: s2i
+          version: ${APP_VERSION}
+      spec:
+        containers:
+        - name: ${APP_NAME}-stable
+          image: library/${APP_NAME}-stable:latest
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 8081
+            initialDelaySeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 8081
+            initialDelaySeconds: 180
+          ports:
+          - containerPort: 8778
+            name: jolokia
+          - containerPort: 8080
+            name: tcp
+          - containerPort: 9779
+            name: prometheus
+          env:
+          - name: KUBERNETES_NAMESPACE
+            valueFrom:
+              fieldRef:
+                fieldPath: metadata.namespace
+          resources: {}
+        status: {}
