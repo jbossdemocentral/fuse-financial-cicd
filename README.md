@@ -40,7 +40,7 @@ And log back in as developer, install the messaging template that we will use la
 ```
 oc login -u developer
 oc new-project fisdemo --display-name="Fuse Banking Demo - Dev and UAT" --description="Development and UAT environment for Agile Integration Banking Demo - Power by Red Hat Fuse"
-oc create -f support/projecttemplates/amq62-openshift.json
+oc import-image amq62-openshift --from=registry.access.redhat.com/jboss-amq-6/amq62-openshift --confirm
 ```
 
 ## Setup MySql database, A-MQ broker and Jenkins 
@@ -51,7 +51,7 @@ You can either setup all of them using GUI on OpenShift console, or using comman
 ```
 oc create -f https://raw.githubusercontent.com/openshift/origin/master/examples/db-templates/mysql-ephemeral-template.json
 oc new-app --template=mysql-ephemeral --param=MYSQL_PASSWORD=password --param=MYSQL_USER=dbuser --param=MYSQL_DATABASE=sampledb
-oc new-app --template=amq62-basic --param=MQ_USERNAME=admin --param=MQ_PASSWORD=admin
+oc create -f projecttemplates/amq62-openshift.json
 ```
 
 ## Pushing application to OpenShift 
