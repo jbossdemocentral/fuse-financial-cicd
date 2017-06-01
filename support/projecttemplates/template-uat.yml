@@ -314,7 +314,7 @@ parameters:
     are not using the default branch.
   displayName: Git Reference
   name: GIT_REF
-  value: summitimprovement
+  value: master 
 - description: The version of the FIS S2I builder image to use.
   displayName: Builder version
   name: BUILDER_VERSION
