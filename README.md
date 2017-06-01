@@ -17,32 +17,39 @@ There are many aspect with this demo,
 
 but first, let's start with setting up the application. 
 
-## Setting up OpenShift 
-[Install OpenShift Container Platform 3.5] (https://github.com/redhatdemocentral/ocp-install-demo) 
+## Setting up DEV and UAT Environemnt 
+***Install OpenShift Container Platform 3.5 in [CDK 3.0](https://developers.redhat.com/products/cdk/overview/)***
 
-Start up your local OpenShift environment by running 
+Download the git repository by either forking it, or simply cloning it. 
+(My suggesting is to fork it, if you want to play with the code)
 	
 ```
-minishift start / oc cluster up 
+git https://github.com/YOUR_RPEO/fuse-financial-cicd.git
 ```
 
-Then login as system admin to install the FIS 2.0 image stream.
+Start up your OpenShift environment by running 
 	
 ```
-oc login -u system:admin
-oc project openshift
-oc create -f https://raw.githubusercontent.com/jboss-fuse/application-templates/master/fis-image-streams.json
+minishift start --username <USERNAME> --password <PASSWORD>
 ```
+
 
 And log back in as developer, install the messaging template that we will use later in the process. 
 
 	
 ```
 oc login -u developer
+
+# Create DEV/UAT deployment pace
 oc new-project fisdemo --display-name="Fuse Banking Demo - Dev and UAT" --description="Development and UAT environment for Agile Integration Banking Demo - Power by Red Hat Fuse"
+
+# Import AMQ image for later 
 oc import-image amq62-openshift --from=registry.access.redhat.com/jboss-amq-6/amq62-openshift --confirm
-oc new-app --template=amq62-basic --param=MQ_USERNAME=admin --param=MQ_PASSWORD=admin --param=IMAGE_STREAM_NAMESPACE=fisdemo
-oc new-app --template=amq62-basic --param=MQ_USERNAME=admin --param=MQ_PASSWORD=admin --param=IMAGE_STREAM_NAMESPACE=fisdemo
+
+cd support
+# Create template for AMQ
+oc create -f projecttemplates/amq62-openshift.json
+
 ```
 
 ## Setup MySql database, A-MQ broker and Jenkins 
@@ -52,17 +59,14 @@ You can either setup all of them using GUI on OpenShift console, or using comman
 	
 ```
 oc create -f https://raw.githubusercontent.com/openshift/origin/master/examples/db-templates/mysql-ephemeral-template.json
+
 oc new-app --template=mysql-ephemeral --param=MYSQL_PASSWORD=password --param=MYSQL_USER=dbuser --param=MYSQL_DATABASE=sampledb
-oc create -f projecttemplates/amq62-openshift.json
+
+oc new-app --template=amq62-basic --param=MQ_USERNAME=admin --param=MQ_PASSWORD=admin --param=IMAGE_STREAM_NAMESPACE=fisdemo
+
 ```
 
 ## Pushing application to OpenShift 
-Download the git repository by either forking it, or simply cloning it. 
-(My suggesting is to fork it, if you want to play with the code)
-	
-```
-git https://github.com/YOUR_RPEO/fuse-financial-cicd.git
-```
 For the two microservice 
  - Traditional Bankling
  - Bitcoin Gateway
@@ -71,6 +75,7 @@ Go to your traditional banking account project folder, and run
 
 	
 ```
+cd ..
 cd fisdemoaccount
 mvn fabric8:deploy -Dmysql-service-username=dbuser -Dmysql-service-password=password
 ```
@@ -88,6 +93,7 @@ mvn fabric8:deploy
 After successfully install the application, it's time to deploy the API Gateway. This time, we are going to build a pipeline, that goes through and automated the CI/CD process from staging to UAT. 
 
 ```
+cd ..
 oc process -f support/projecttemplates/template-uat.yml | oc create -f -
 ```
 
@@ -107,7 +113,7 @@ If you want something fancy, try installing the GUI for the application.
 ![alt text](images/bankinggui.png "Banking GUI")
 
 ```
-cd ../fisdemogui
+cd fisdemogui
 oc new-project fisdemogui --display-name="Fuse Banking Demo - GUI" --description="Web GUI for Banking demo, does transfer and balance enquiry"
 oc new-build --image-stream=nodejs --binary=true --name=fisdemogui
 oc start-build fisdemogui --from-dir=.
@@ -129,9 +135,8 @@ oc new-project fisdemoprod --display-name="Fuse Banking Demo - PROD" --descripti
 Add setup the environment including supporting microservices and configurations (deployment configs/service/route) in production
 
 ```
-./support/setupProd.sh 
-oc process -f support/projecttemplates/template-prod.yml | oc create -f -
-oc process -f support/kubeflix.yml | oc create -f -
+cd support
+./setupProd.sh 
 ```
 
 
@@ -140,7 +145,7 @@ oc process -f support/kubeflix.yml | oc create -f -
 Spin up the Hystrix dashboard and Turbine server using the provided kubeflix.json template
 
 ```
-oc process -f support/kubeflix.yml | oc create -f -
+oc process -f kubeflix.yml | oc create -f -
 ```
 
 
@@ -164,8 +169,7 @@ You will receive a administration domain to manage APIs.
 	```
    B.  Setup persistence volume (if you are running with CDK V3/Minishift V1, this is optional)
 	```
-	oc new-project threescaleonprem
-	```
+	oc new-app -f support/amptemplates/pv.yml 	```
    C.  Install 3scale into the project by excuting following command. The WILDCARD_DOMAIN parameter set to the domain of the OpenShift for your CDK:
    
 	```
