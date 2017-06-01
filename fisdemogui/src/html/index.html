@@ -161,7 +161,6 @@
 		    $.get("http://"+ipaddress+"/demos/sourcegateway/balance/"+accountid+"?moneysource="+moneysource+"&user_key="+apitoken, 
 		    
 		    	function(data, status){
-		    		alert(status);
 		        if(status != "success"){
 	     					alert("Problem occured during API Call to gateway!");
 	     			}
