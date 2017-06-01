@@ -23,7 +23,7 @@
             <apiProperty key="cors" value="true"/>
             <apiProperty key="api.title" value="FIS Gateway"/>
             <apiProperty key="api.version" value="1.0.0"/>
-            <corsHeaders key="Access-Control-Allow-Origin" value=""/>
+            <corsHeaders key="Access-Control-Allow-Origin" value="*"/>
             <corsHeaders key="Access-Control-Allow-Methods" value="GET, HEAD, POST, PUT, DELETE, TRACE, OPTIONS, CONNECT, PATCH"/>
             <corsHeaders key="Access-Control-Allow-Headers" value="Origin, Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers"/>
         </restConfiguration>
@@ -130,7 +130,7 @@
                         <setBody id="_setBody4">
                             <simple>Transfer completed, account ${header.acctid} has balance of :${body['balance']}</simple>
                         </setBody>
-                     <onFallback id="_onFallback4">
+                        <onFallback id="_onFallback4">
                             <to id="_handelerro04" uri="direct:doNoresponse"/>
                         </onFallback>
                     </hystrix>
