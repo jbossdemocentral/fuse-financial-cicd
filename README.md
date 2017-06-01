@@ -219,7 +219,7 @@ You will receive a administration domain to manage APIs.
 5. Install APICast to UAT and PROD projects, with your access token and 3scale admin domain name
 
 	```
-	oc project fisdemo
+	oc project fisdemoprod
 	oc secret new-basicauth apicast-configuration-url-secret --password=https://<ACCESS_TOKEN>@<DOMAIN>-admin.3scale.net
 
 	oc new-app -f support/amptemplates/apicast.yml
