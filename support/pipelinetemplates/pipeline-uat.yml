@@ -1,0 +1,60 @@
+apiVersion: v1
+kind: Template
+metadata:
+  annotations:
+    description: UAT Pipeline for Agile Integration
+    tags: demo,java,springboot,fis,jenkins
+    iconClass: icon-jenkins
+    version: '2.0'
+  name: pipeline-uat
+labels:
+  template: pipeline-uat
+parameters:
+- name: UAT_PROJECT_NAMESPACE
+  displayName: UAT project namespace
+  required: true
+  value: fisdemo
+  description: The UAT project namespace
+objects:
+- kind: BuildConfig
+  apiVersion: v1
+  metadata:
+    annotations:
+      pipeline.alpha.openshift.io/uses: '[{"name": "uat-pipeline", "kind": "DeploymentConfig"}]'
+    labels:
+      name: uat-pipeline
+      template: uat-pipeline
+    name: uat-pipeline
+  spec:
+    nodeSelector: null
+    output: {}
+    postCommit: {}
+    resources: {}
+    runPolicy: Serial
+    source:
+      type: None
+    strategy:
+      jenkinsPipelineStrategy:
+        jenkinsfile: "node('maven') { \n  env.uatnamespace = \"${UAT_PROJECT_NAMESPACE}\";     \n  stage('build')
+          { \n    print 'build'\n     openshiftBuild(namespace: \"${env.uatnamespace}\",
+          buildConfig: \"fisgateway-service\", showBuildLogs: \"true\")\n  }           \n
+          \ stage('staging') {\n    print 'stage' \n    openshiftDeploy(namespace: \"${env.uatnamespace}\",
+          deploymentConfig: \"fisgateway-service\")\n  } \n  stage ('promotionCheck')
+          { \n      def userInput = input( id: \"userInput\", message: \"Promote to
+          UAT?\", parameters: [ [$class: \"TextParameterDefinition\", defaultValue:
+          \"Comments?\", description: \"comments\", name: \"comments\"] ])  \n      print
+          'promotionCheck' \n  \t\topenshiftTag(namespace: \"${env.uatnamespace}\",
+          sourceStream: \"fisgateway-service\",  sourceTag: \"latest\", destinationnamespace:
+          \"${env.uatnamespace}\", destinationStream: \"fisgateway-service-uat\", destinationTag:
+          \"uatready\")   \n  } \n  \n  stage('UAT') { \n    print 'UAT'\n    openshiftDeploy(namespace:
+          \"${env.uatnamespace}\", deploymentConfig: \"fisgateway-service-uat\")\n\t}
+          \ \n}"
+      type: JenkinsPipeline
+    triggers:
+    - github:
+        secret: secret101
+      type: GitHub
+    - generic:
+        secret: secret101
+      type: Generic
+

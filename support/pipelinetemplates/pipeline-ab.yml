@@ -1,0 +1,117 @@
+apiVersion: v1
+kind: Template
+metadata:
+  annotations:
+    description: AB Testing Pipeline for Agile Integration
+    tags: demo,java,springboot,fis,jenkins
+    iconClass: icon-jenkins
+    version: '2.0'
+  name: pipeline-ab
+labels:
+  template: pipeline-ab
+parameters:
+- name: UAT_PROJECT_NAMESPACE
+  displayName: UAT project namespace
+  required: true
+  value: "fisdemo"
+  description: The UAT project namespace
+- name: PROD_PROJECT_NAMESPACE
+  displayName: Production project namespace
+  required: true
+  value: "fisdemoprod"
+  description: The Production project namespace
+- name: THREESCALE_URL
+  displayName: Admin URL of Threescale
+  required: true
+  value: "https://fusedemo-admin.3scale.net"
+  description: Admin URL of Threescale
+- name: API_TOKEN
+  displayName: Access token from 3scale 
+  required: true
+  value: "143d1a90ea5d369a88ec35310f06b86fec8569a1c34c21eaffc9f9906947962a"
+  description: Access token from 3scale for calling management API
+- name: APP_PLAN_ID
+  displayName: Application plan ID in threescale
+  required: true
+  value: "2357355891901"
+  description: Application plan ID for accessing your APIs on threescale
+- name: METRICS_ID
+  displayName: Metrics ID in 3scale
+  required: true
+  value: "2555417998898"
+  description: The metrics ID in 3scale
+- name: API_LIMITS
+  displayName: Number of APIs call limits per min
+  required: true
+  value: "25"
+  description: Number of APIs call limits per min setting in 3scale
+- name: OPENSHIFT_HOST
+  displayName: Name of your OpenShift Host
+  required: true
+  value: "apps.mkt2go.com"
+  description: Name of your OpenShift Host
+objects:
+- kind: BuildConfig
+  apiVersion: v1
+  metadata:
+    annotations:
+      pipeline.alpha.openshift.io/uses: '[{"name": "ab-pipeline",  "kind": "DeploymentConfig"}]'
+    labels:
+      name: ab-pipeline
+      template: ab-pipeline
+    name: ab-pipeline
+  spec:
+    nodeSelector: null
+    output: {}
+    postCommit: {}
+    resources: {}
+    runPolicy: Serial
+    source:
+      type: None
+    strategy:
+      jenkinsPipelineStrategy:
+        jenkinsfile: "node('maven') {\n  env.threescaleurl = \"${THREESCALE_URL}\";
+          \   \n  env.apiaccesstoken = \"${API_TOKEN}\";
+          \   \n  env.appplanid = \"${APP_PLAN_ID}\";\n  env.metricsid = \"${METRICS_ID}\";\n
+          \ env.ablimit = ${API_LIMITS};\n  \n  \n  env.uatnamespace = \"${UAT_PROJECT_NAMESPACE}\";\n  env.prodnamespace
+          = \"${PROD_PROJECT_NAMESPACE}\";\n  \n  stage('moveToProd'){\n    echo \"UAT at ${env.uatnamespace}
+          and PROD at ${env.prodnamespace}\"\n    openshiftTag alias: \"false\",  destStream:
+          \"fisgateway-service\", destTag: \"latest\", destinationNamespace: \"${env.prodnamespace}\",
+          namespace: \"${env.uatnamespace}\", srcStream: \"fisgateway-service-uat\",
+          srcTag: \"uatready\", verbose: \"true\"\n  }\n  \n  stage('StartNewServices')
+          {\n    print 'Start new service with one pod running' \n    openshiftScale
+          depCfg: \"fisgateway-service-new\", namespace: \"${env.prodnamespace}\", replicaCount:
+          \"1\", verifyReplicaCount: \"true\", verbose: \"true\"\n  }\n  \n  stage('UpdateRouteToAB')
+          { \n    print 'deleteroute' \n    openshiftDeleteResourceByKey keys: \"fisgateway-service\",
+          namespace: \"${env.prodnamespace}\", types: \"route\", verbose: \"true\"\n
+          \   \n    print 'Update Route to only point to both new and stable service'
+          \n    openshiftCreateResource jsonyaml: \"{    'apiVersion': 'v1',    'kind':
+          'Route',    'metadata': {        'labels': {            'component': 'fisgateway-service-stable',
+          \           'group': 'quickstarts',            'project': 'fisgateway-service-stable',
+          \           'provider': 's2i',            'template': 'fisgateway-service',
+          \           'version': '1.0.0'        },        'name': 'fisgateway-service',
+          \       'namespace': '${env.prodnamespace}'    },    'spec': {        'alternateBackends':
+          [            {                'kind': 'Service',                'name': 'fisgateway-service-new',
+          \               'weight': 30            }        ],        'host': 'fisgateway-service-${env.prodnamespace}.${OPENSHIFT_HOST}',
+          \       'to': {            'kind': 'Service',            'name': 'fisgateway-service-stable',
+          \           'weight': 70        },        'wildcardPolicy': 'None'    }}\",
+          namespace: \"${env.prodnamespace}\", verbose: \"false\"\n  }\n  \n  stage('GetCurrentLimitId')
+          { \n    print 'Get Current Limit Id'\n    env.LIMIT_ID = sh (\n      script:
+          \"curl --silent -X GET \\\"${env.threescaleurl}/admin/api/application_plans/${env.appplanid}/metrics/${env.metricsid}/limits.xml?access_token=${env.apiaccesstoken}\\\"
+          --stderr - | sed -e 's,.*<id>\\\\([^<]*\\\\)</id>.*,\\\\1,g' \", \n      returnStdout:
+          true\n    ).trim()\n    echo env.LIMIT_ID\n  }\n  \n  stage('UpdateLimitToAB')
+          { \n    print 'Update 3scale Limit back to AB Testing mode'  \n    sh  \"echo
+          Updating Id ${env.LIMIT_ID} to less request ${env.ablimit} per min because
+          of AB Testing\"\n    sh  \"curl -s -o /dev/null -w \\\"%{http_code}\\\\n\\\"
+          -X PUT  \\\"${env.threescaleurl}/admin/api/application_plans/${env.appplanid}/metrics/${env.metricsid}/limits/${env.LIMIT_ID}.xml\\\"
+          -d \\'access_token=${env.apiaccesstoken}&period=minute&value=${env.ablimit}\\'\"
+          \ \n  }\n}"
+      type: JenkinsPipeline
+    triggers:
+    - github:
+        secret: secret101
+      type: GitHub
+    - generic:
+        secret: secret101
+      type: Generic
+      
