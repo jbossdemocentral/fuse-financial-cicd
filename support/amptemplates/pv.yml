@@ -1,0 +1,60 @@
+apiVersion: v1
+kind: List
+items:
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    name: pv01
+  spec:
+    accessModes:
+    - ReadWriteOnce
+    - ReadWriteMany
+    - ReadOnlyMany
+    capacity:
+      storage: 10Gi
+    hostPath:
+      path: /var/lib/minishift/pv/pv01
+    persistentVolumeReclaimPolicy: Recycle
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    name: pv02
+  spec:
+    accessModes:
+    - ReadWriteOnce
+    - ReadWriteMany
+    - ReadOnlyMany
+    capacity:
+      storage: 1Gi
+    hostPath:
+      path: /var/lib/minishift/pv/pv02
+    persistentVolumeReclaimPolicy: Recycle
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    name: pv03
+  spec:
+    accessModes:
+    - ReadWriteOnce
+    - ReadWriteMany
+    - ReadOnlyMany
+    capacity:
+      storage: 10Gi
+    hostPath:
+      path: /var/lib/minishift/pv/pv03
+    persistentVolumeReclaimPolicy: Recycle
+- apiVersion: v1
+  kind: PersistentVolume
+  metadata:
+    name: pv04
+  spec:
+    accessModes:
+    - ReadWriteOnce
+    - ReadWriteMany
+    - ReadOnlyMany
+    capacity:
+      storage: 10Gi
+    hostPath:
+      path: /var/lib/minishift/pv/pv04
+    persistentVolumeReclaimPolicy: Recycle
+
