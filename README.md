@@ -106,6 +106,9 @@ http://fisgateway-service-fisdemo.<OPENSHIFT_HOST>/demos/sourcegateway/balance/2
 http://fisgateway-service-fisdemo.<OPENSHIFT_HOST>/demos/sourcegateway/balance/234567
 ```
 
+[![Installing UAT and DEV project video](images/video01-0.png)](https://vimeo.com/219952887 "Fuse Banking Agile Integration Demo - Installing UAT and DEV project")
+
+
 ## Starting up Banking GUI
 
 If you want something fancy, try installing the GUI for the application.
@@ -117,6 +120,8 @@ cd fisdemogui
 oc new-project fisdemogui --display-name="Fuse Banking Demo - GUI" --description="Web GUI for Banking demo, does transfer and balance enquiry"
 oc new-build --image-stream=nodejs --binary=true --name=fisdemogui
 oc start-build fisdemogui --from-dir=.
+
+#Wait until Build finished
 oc new-app fisdemogui
 oc expose svc fisdemogui
 ```
@@ -124,14 +129,10 @@ oc expose svc fisdemogui
 In your browser http://fisdemogui-fisdemogui.<OPENSHIFT_HOST>/
 Once the application is running, set the your API IP Address to *fisgateway-service-fisdemo.<OPENSHIFT_HOST>* and play around with it.
 
+[![Installing Banking GUI](images/video02-0.png)](https://vimeo.com/219955921 "Fuse Banking Agile Integration Demo - Installing Banking GUI")
 
 ## Setting Up Production Environment
 Create a Production project for FISDEMO
-
-```
-oc new-project fisdemoprod --display-name="Fuse Banking Demo - PROD" --description="Production environment for Agile Integration Banking Demo - Power by Red Hat Fuse"
-```
-
 Add setup the environment including supporting microservices and configurations (deployment configs/service/route) in production
 
 ```
@@ -147,6 +148,8 @@ Spin up the Hystrix dashboard and Turbine server using the provided kubeflix.jso
 ```
 oc process -f kubeflix.yml | oc create -f -
 ```
+
+[![Installing PROD project video](images/video03-0.png)](https://vimeo.com/219957939 "Fuse Banking Agile Integration Demo - Installing PROD project")
 
 
 ## Setting up 3scale API Management 
@@ -244,6 +247,7 @@ Here is where we tell Apicast where to look for our APIs and how the APIs can be
 
 ![alt text](images/threescaleapicastconfig.png "3scale APICast Config") 
 
+[![Setup 3scale API management video](images/video04-0.png)](https://vimeo.com/220360925 "Fuse Banking Agile Integration Demo - Setup 3scale API management")
 
 ## CI/CD across integration solution
 
@@ -301,6 +305,7 @@ C. Ready for full release. The all production pipeline will do the rolling updat
 
 ![alt text](images/allpipelines.png "allpipelines")
 
+[![Setup CI/CD pipelines video](images/video05-0.png)](https://vimeo.com/220360925 "Fuse Banking Agile Integration Demo - Setup CI/CD pipelines")
 
 
 ## Version update notes, and TODOs
