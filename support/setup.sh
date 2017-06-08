@@ -1,5 +1,5 @@
 echo "Install the FIS 2.0 image stream"
-echo 
+echo
 
 #oc login -u system:admin
 #oc project openshift
@@ -7,8 +7,8 @@ echo
 #oc import-image amq62-openshift --from=registry.access.redhat.com/jboss-amq-6/amq62-openshift -n openshift --confirm
 
 
-echo "Create fisdemo project to work in, and load the A-MQ 6.2 template"
-echo 
+echo "Create fisdemo project to work in, and load the AMQ 6.2 template"
+echo
 
 
 oc login -u developer
