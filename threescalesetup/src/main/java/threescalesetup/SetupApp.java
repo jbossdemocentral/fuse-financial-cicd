@@ -23,6 +23,11 @@ public class SetupApp {
 		Boolean isSelfmanageBoolean = false;
 		String applicationplanname = args[5];
 		String description = args[6];
+		String calledSystem = "normalcall";
+		if(args.length >= 8){
+			calledSystem = args[7];
+		}
+		
 		
 		String serviceid="2555417742499";
 		String applicationplanid="2357355894898";
@@ -44,14 +49,16 @@ public class SetupApp {
 		LimitOperation limitOperation = new LimitOperation(threescalehost,applicationplanid,hitsMetricsid);
 		String limitid =  limitOperation.create(accessToken);
 		
-		log.info("-----------------IMPROTANT REFERENCE-------------------");
-		log.info("--Successfully setup 3scale Service API..");
-		log.log(Level.INFO,"--Created service [{0}] id: [{1}]....",new Object[]{ name, serviceid });
-		log.log(Level.INFO,"--Created application plan [{0}] id: [{1}]....",new Object[]{ applicationplanname, applicationplanid });
-		log.log(Level.INFO,"--Created limit for Hits Metrics [{0}] id: [{1}]....",new Object[]{ hitsMetricsid, limitid });
-		log.info("-----------------IMPROTANT REFERENCE-------------------");
-		
-		
+		if(calledSystem != null && "ansible".equals(calledSystem)){
+			System.out.println("serviceid:"+serviceid+"\n"+"applicationplanid:"+applicationplanid+"\n"+"metricsid:"+hitsMetricsid+"\n"+"limitid:"+limitid+"\n");
+		}else{
+			log.info("-----------------IMPROTANT REFERENCE-------------------");
+			log.info("--Successfully setup 3scale Service API..");
+			log.log(Level.INFO,"--Created service [{0}] id: [{1}]....",new Object[]{ name, serviceid });
+			log.log(Level.INFO,"--Created application plan [{0}] id: [{1}]....",new Object[]{ applicationplanname, applicationplanid });
+			log.log(Level.INFO,"--Created Metrics and limits. Metrics id [{0}] Limite id: [{1}]....",new Object[]{ hitsMetricsid, limitid });
+			log.info("-----------------IMPROTANT REFERENCE-------------------");
+		}
 	}
 
 }
