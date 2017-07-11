@@ -119,9 +119,7 @@ If you want something fancy, try installing the GUI for the application.
 cd fisdemogui
 oc new-project fisdemogui --display-name="Fuse Banking Demo - GUI" --description="Web GUI for Banking demo, does transfer and balance enquiry"
 oc new-build --image-stream=nodejs --binary=true --name=fisdemogui
-oc start-build fisdemogui --from-dir=.
-
-#Wait until Build finished
+oc start-build fisdemogui --from-dir=. --follow
 oc new-app fisdemogui
 oc expose svc fisdemogui
 ```
@@ -137,7 +135,7 @@ Add setup the environment including supporting microservices and configurations 
 
 ```
 cd support
-./setupProd.sh
+./setupprod.sh
 ```
 
 
@@ -155,7 +153,7 @@ oc process -f kubeflix.yml | oc create -f -
 ## Setting up 3scale API Management
 There are two ways for you to setup 3scale
 
-1. **Option ONE:** (RECOMMANDED) Sign up for a 45 day trial version online, go to
+1. **Option ONE:** (RECOMMENDED) Sign up for a 45 day trial version online, go to
 ```
 https://www.3scale.net/signup/
 ```
@@ -163,7 +161,7 @@ You will receive a administration domain to manage APIs.
 
    **Option TWO:** Spin up local 3scale environment
 
-   **WARNING!!! You need at LEAST 16 GB of memories assgined to CDK**
+   **WARNING!!! You need at LEAST 16 GB of memory assgined to CDK**
 
    A.  Create a project
 
