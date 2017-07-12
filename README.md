@@ -183,9 +183,9 @@ You will receive a administration domain to manage APIs.
 
 	**Option ONE:**
 
-	A. In admin console, top right hand corner, select *Personal Setting*, click on Tokens on the top tab, and click on **Add Access Token**.
+	A. In admin console, top right hand corner, select *Personal Settings*, click on Tokens on the top tab, and click on **Add Access Token**.
 
-	B. Crate the token by settin the following information
+	B. Create the token by setting the following information
 
 	- **Name**: demomgmttoken
 	- **Scopes**: Account Management API
