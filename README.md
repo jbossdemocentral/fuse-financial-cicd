@@ -95,6 +95,7 @@ After successfully install the application, it's time to deploy the API Gateway.
 ```
 cd ..
 oc process -f support/projecttemplates/template-uat.yml | oc create -f -
+oc start-build fisgateway-service
 ```
 
 Congradulations! You can now start playing with the demo!
