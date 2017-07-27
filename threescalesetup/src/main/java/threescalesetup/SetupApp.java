@@ -57,6 +57,7 @@ public class SetupApp {
 			log.log(Level.INFO,"--Created service [{0}] id: [{1}]....",new Object[]{ name, serviceid });
 			log.log(Level.INFO,"--Created application plan [{0}] id: [{1}]....",new Object[]{ applicationplanname, applicationplanid });
 			log.log(Level.INFO,"--Created Metrics and limits. Metrics id [{0}] Limite id: [{1}]....",new Object[]{ hitsMetricsid, limitid });
+			log.log(Level.INFO,"--param=THREESCALE_URL=https://{0}-admin.3scale.net \n --param=API_TOKEN={1} \n --param=APP_PLAN_ID={2} \n --param=METRICS_ID={3}",new Object[]{ threescalehost, accessToken, applicationplanid, hitsMetricsid });
 			log.info("-----------------IMPROTANT REFERENCE-------------------");
 		}
 	}

@@ -29,7 +29,7 @@ mvn fabric8:deploy
 
 
 cd ..
-oc process -f support/projecttemplates/template-prod.yml | oc create -f -
+oc process -f support/projecttemplates/template-prod.yml | oc apply -f -
 
-oc secret new-basicauth apicast-configuration-url-secret --password=https://143d1a90ea5d369a88ec35310f06b86fec8569a1c34c21eaffc9f9906947962a@fusedemo-admin.3scale.net
-oc new-app -f support/amptemplates/apicast.yml
+#oc secret new-basicauth apicast-configuration-url-secret --password=https://223b7a0983bc7a596a2bcd067ec7bab7399ee2637228274997632d346a198642@fusedemo-admin.3scale.net
+#oc new-app -f support/amptemplates/apicast.yml

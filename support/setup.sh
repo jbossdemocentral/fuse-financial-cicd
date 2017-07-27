@@ -11,9 +11,9 @@ echo "Create fisdemo project to work in, and load the AMQ 6.2 template"
 echo
 
 
-oc login -u developer
+#oc login -u developer
 oc new-project fisdemo --display-name="Fuse Banking Demo - Dev and UAT" --description="Development and UAT environment for Agile Integration Banking Demo - Power by Red Hat Fuse"
-
+oc project fisdemo
 
 echo "Setup the surrounding softwate and environment"
 echo
