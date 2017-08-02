@@ -28,6 +28,8 @@ import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = WebEnvironment.RANDOM_PORT)
@@ -43,44 +45,61 @@ public class ApplicationTest {
     @Test
     public void balanceTest() throws Exception {
     	
-    	String responseMsg = "Tested!";
+    	
+    	String accountMsg = "\"Account 123456 has balance of : 3000\"";
+    	String profileMsg = "{\"id\":123456,\"acctname\":\"Simon C\",\"balance\":5000,\"ssn\":\"987655663\",\"phone\":\"7264947276\",\"addr\":\"43 SLIVER EAGLE ST, RIVER\",\"state\":\"MA\"}";
 
-        camelContext.getRouteDefinition("gatewaybalance").adviceWith(camelContext, new AdviceWithRouteBuilder() {
+    	camelContext.getRouteDefinition("gatewaybalance").adviceWith(camelContext, new AdviceWithRouteBuilder() {
 			@Override
 			public void configure() throws Exception {
-				interceptSendToEndpoint("http*").skipSendToOriginalEndpoint().setBody(constant(responseMsg));
+				interceptSendToEndpoint("http://fisblockchain-service/demos/bitcoinaccount/balance*").skipSendToOriginalEndpoint().setBody(constant(accountMsg));
+				interceptSendToEndpoint("http://fisaccount-service/demos/account/profile*").skipSendToOriginalEndpoint().setBody(constant(profileMsg));
 			}
 		});
         
        
         ResponseEntity<String> balanceResponse = restTemplate.getForEntity("/demos/sourcegateway/balance/123456?moneysource=bitcoin", String.class);
         assertThat(balanceResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(balanceResponse.getBody()).isEqualTo("\""+responseMsg+"\"");
+        assertThat(balanceResponse.getBody()).isEqualTo(accountMsg);
         
         balanceResponse = restTemplate.getForEntity("/demos/sourcegateway/balance/123456", String.class);
         assertThat(balanceResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(balanceResponse.getBody()).isEqualTo("\""+responseMsg+"\"");
+        assertThat(balanceResponse.getBody()).isEqualTo("\"Account 123456 has balance of :5000\"");
     }
     
     @Test
     public void transferTest() throws Exception {
-    	String responseMsg = "Tested!";
-
+    	
+    	String accountMsg = "{\"id\":123456,\"acctname\":\"Simon C\",\"balance\":4990,\"ssn\":\"987655663\",\"phone\":\"7264947276\",\"addr\":\"43 SLIVER EAGLE ST, RIVER\",\"state\":\"MA\"}";
+    	String blockchainMsg = "Transfered Completed! $10 from 123456 to 234567 the remaining balance is: $2990";
+    	
         camelContext.getRouteDefinition("gatewaytransfer").adviceWith(camelContext, new AdviceWithRouteBuilder() {
 			@Override
 			public void configure() throws Exception {
-				interceptSendToEndpoint("http*").skipSendToOriginalEndpoint().setBody(constant(responseMsg));
+				interceptSendToEndpoint("http://fisblockchain-service/demos/bitcoinaccount/transfer*").skipSendToOriginalEndpoint().setBody(constant(blockchainMsg));
+				interceptSendToEndpoint("http://fisaccount-service/demos/account/transfer*").skipSendToOriginalEndpoint().setBody(constant(accountMsg));
 			}
 		});
-        
        
-        ResponseEntity<String> balanceResponse = restTemplate.getForEntity("/demos/sourcegateway/transfer/123456/50/345678?moneysource=bitcoin", String.class);
-        assertThat(balanceResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(balanceResponse.getBody()).isEqualTo("\""+responseMsg+"\"");
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<String, String>();
         
-        balanceResponse = restTemplate.getForEntity("/demos/sourcegateway/transfer/123456/50/345678", String.class);
+        params.set("acctid", "123456");
+        params.set("amt", "10");
+        params.set("recptid", "234567");
+        params.set("moneysource", "bitcoin");
+        
+        ResponseEntity<String> balanceResponse = restTemplate.postForEntity("/demos/sourcegateway/transfer", params, String.class);
         assertThat(balanceResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
-        assertThat(balanceResponse.getBody()).isEqualTo("\""+responseMsg+"\"");
+        assertThat(balanceResponse.getBody()).isEqualTo(blockchainMsg);
+
+        params = new LinkedMultiValueMap<String, String>();
+        params.set("acctid", "123456");
+        params.set("amt", "10");
+        params.set("recptid", "234567");
+        
+        balanceResponse =  restTemplate.postForEntity("/demos/sourcegateway/transfer", params, String.class);
+        assertThat(balanceResponse.getStatusCode()).isEqualTo(HttpStatus.OK);
+        assertThat(balanceResponse.getBody()).isEqualTo("Transfer completed, account 123456 has balance of :4990");
     }
     
 }
