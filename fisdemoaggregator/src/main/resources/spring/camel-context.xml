@@ -101,7 +101,7 @@
             <choice id="_choice2">
                 <when id="_when2">
                     <simple>${header.moneysource} == 'bitcoin'</simple>
-                    <log id="_log6" message="Bitcoin transfer "/>
+                    <log id="_log6" message="Bitcoin transfer ${header.acctid}/${header.amt}/${header.recptid}"/>
                     <hystrix id="_hystrix3">
                         <hystrixConfiguration
                             circuitBreakerSleepWindowInMilliseconds="10000" executionTimeoutInMilliseconds="5000"/>
@@ -116,7 +116,7 @@
                     </hystrix>
                 </when>
                 <otherwise id="_otherwise2">
-                    <log id="_log8" message="Traditional banking"/>
+                    <log id="_log8" message="Traditional banking ${header.acctid}/${header.amt}/${header.recptid}"/>
                     <hystrix id="_hystrix4">
                         <hystrixConfiguration
                             circuitBreakerSleepWindowInMilliseconds="10000" executionTimeoutInMilliseconds="5000"/>
@@ -172,7 +172,7 @@
                 <constant>503</constant>
             </setHeader>
             <setBody id="_setBody3">
-                <constant/>
+                <constant>"End Service not available try again later"</constant>
             </setBody>
         </route>
         <route id="transferwithjsonroute">
@@ -187,13 +187,13 @@
             <setHeader headerName="amt" id="_setHeader5">
                 <jsonpath>amt</jsonpath>
             </setHeader>
-            <setHeader headerName="recepid" id="_setHeader6">
-                <jsonpath>recepid</jsonpath>
+            <setHeader headerName="recptid" id="_setHeader6">
+                <jsonpath>recptid</jsonpath>
             </setHeader>
             <setHeader headerName="moneysource" id="_setHeader7">
                 <jsonpath>moneysource</jsonpath>
             </setHeader>
-            <log id="_log12" message="moneysource-- ${headers.moneysource}, acctid-- ${headers.acctid}, recepid-- {headers.recepid}, amt-- {headers.amt}"/>
+            <log id="_log12" message="moneysource-- ${headers.moneysource}, acctid-- ${headers.acctid}, recepid-- {headers.recptid}, amt-- {headers.amt}"/>
             <to id="_to1" uri="direct:dotransfer"/>
         </route>
     </camelContext>
