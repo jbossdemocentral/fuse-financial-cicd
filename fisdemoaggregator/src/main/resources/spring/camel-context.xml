@@ -35,6 +35,9 @@
             <get uri="profile/{acctid}">
                 <to uri="direct:getprofile"/>
             </get>
+            <get uri="logo">
+                <to uri="direct:getlogo"/>
+            </get>
             <post uri="transfer">
                 <to uri="direct:dotransfer"/>
             </post>
@@ -195,6 +198,13 @@
             </setHeader>
             <log id="_log12" message="moneysource-- ${headers.moneysource}, acctid-- ${headers.acctid}, recepid-- {headers.recptid}, amt-- {headers.amt}"/>
             <to id="_to1" uri="direct:dotransfer"/>
+        </route>
+        <route id="logoroute">
+            <from id="logostarts" uri="direct:getlogo"/>
+            <log id="_log13" message="Get Logo color"/>
+            <setBody id="_setBody5">
+                <constant>blue</constant>
+            </setBody>
         </route>
     </camelContext>
 </beans>
