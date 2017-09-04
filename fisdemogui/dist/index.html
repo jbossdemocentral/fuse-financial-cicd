@@ -46,9 +46,17 @@
           <p>This simple gui interface allows you to do day to day personal banking from your bank account and Bitcoin account</p>
           <p>Source of this Demo is available <a href="https://github.com/jbossdemocentral/fuse-financial-cicd">here</a>.</p>
           <div class="form-group">
-						<label class="col-sm-2 control-label" for="exampleInput">API Address <a tabindex="0" role="button" data-toggle="popover" data-trigger="focus" data-html="true" title="" data-content=" Your Application URL, either from Apicast or your route" data-placement="top"><span class="fa fa-info-circle"></span></a></label>
+						<label class="col-sm-2 control-label" for="exampleInput">API Host <a tabindex="0" role="button" data-toggle="popover" data-trigger="focus" data-html="true" title="" data-content=" Your Application URL, either from Apicast or your route" data-placement="top"><span class="fa fa-info-circle"></span></a></label>
 							<div class="col-sm-10">
-						  	<input type="text" id="ipaddress" class="form-control" value="apicast-fisdemoprod.apps.mkt2go.com">
+						  	<input type="text" id="ipaddress" class="form-control" value="">
+						  </div>
+					</div>
+					<BR/>
+          <BR/>
+					<div class="form-group">
+						<label class="col-sm-2 control-label" for="exampleInput">API key <a tabindex="0" role="button" data-toggle="popover" data-trigger="focus" data-html="true" title="" data-content=" Your 3scale API access key" data-placement="top"><span class="fa fa-info-circle"></span></a></label>
+							<div class="col-sm-10">
+						  	<input type="text" id="apitoken" class="form-control" value="">
 						  </div>
 					</div>
           <BR/>
@@ -88,7 +96,7 @@
 									  </div>
 									  <div class="form-group">
 									    <div class="col-sm-offset-2 col-sm-10">
-									      <button id="submitbalance" class="btn btn-primary" >Get Balance</button>
+									      <input type="button" id="submitbalance" class="btn btn-primary" value="Get Balance" ></input>
 									    </div>
 									  </div>
 							    </div>
@@ -115,7 +123,7 @@
 									  </div>
 									  <div class="form-group">
 									    <div class="col-sm-offset-2 col-sm-10">
-									      <button class="btn btn-primary" id="submitTransfer">Do Transfer</button>
+									      <input type="button" class="btn btn-primary" id="submitTransfer" value="Do Transfer"></input>
 									    </div>
 									  </div>
 							    </div>
@@ -132,48 +140,69 @@
 </div><!-- container -->
 
 <script>
-	
   // Initialize Popovers
   $(document).ready(function() {
-  	
-  	
-  	$("#rh_logo").click(function(){
-  			$.get("http://"+ipaddress+"/demos/sourcegateway/logo/"+accountid+"?moneysource="+moneysource+"&user_key=15b4fc0ef23b76f19c12e532ab088dff", function(data, status){
-		        $('#rh_logo').attr('src','img/redhat-logo-'+data+'.png');
-		    });
-		});
-  	
     $('[data-toggle=popover]').popovers();
     
     $(".nav-tabs a").click(function(){
       $(this).tab('show');
     });
     
+    
+    $("#rh_logo").click(function(){
+    		ipaddress = $('#ipaddress').val();
+  			$.get("http://"+ipaddress+"/demos/sourcegateway/logo/?user_key="+apitoken, function(data, status){
+		        $('#rh_logo').attr('src','img/redhat-logo-'+data+'.png');
+		    });
+		});
+		
+		
     $("#submitbalance").click(function(){
     		ipaddress = $('#ipaddress').val();
+    		if(ipaddress == null || ipaddress.trim() ==""){
+		    	alert ("Place specify an API Host");
+		    	return;
+		    }
+    		apitoken = $('#apitoken').val();
     		accountid = $('#accountid').val();
+    		
     		moneysource = $("input[name='moneysource']:checked").val();
-		    $.get("http://"+ipaddress+"/demos/sourcegateway/balance/"+accountid+"?moneysource="+moneysource+"&user_key=15b4fc0ef23b76f19c12e532ab088dff", function(data, status){
+		    $.get("http://"+ipaddress+"/demos/sourcegateway/balance/"+accountid+"?moneysource="+moneysource+"&user_key="+apitoken, 
+		    
+		    	function(data, status){
+		        if(status != "success"){
+	     					alert("Problem occured during API Call to gateway!");
+	     			}
 		        $("#resultbalance").val(data);
-		    });
+		    }).fail(function(error) { alert("Problem occured during API Call to gateway!"); });
 		});
 		
     $("#submitTransfer").click(function(){
 		    ipaddress = $('#ipaddress').val();
+		    if(ipaddress == null || ipaddress.trim() ==""){
+		    	alert ("Place specify an API Host");
+		    	return;
+		    }
+		    apitoken = $('#apitoken').val();
     		accountid = $('#accountid').val();
     		recptid = $('#recptid').val();
     		amt = $('#amt').val();
+    		
     		moneysource = $("input[name='moneysource']:checked").val();
+    		
 		    $.post(
-		    	"http://"+ipaddress+"/demos/sourcegateway/transfer?moneysource="+moneysource+"&user_key=15b4fc0ef23b76f19c12e532ab088dff",
+		    	"http://"+ipaddress+"/demos/sourcegateway/transfer?moneysource="+moneysource+"&user_key="+apitoken,
 			  	{
         		"recptid": recptid,
         		"acctid": accountid,
         		"amt": amt
     			},
 	     		function(data, status){
+	     				if(status!="success"){
+	     					alert("Problem occured during API Call to gateway!");
+	     				}
 			        $("#resulttransfer").val(data);
-			    });
+			    }).fail(function(error) { alert("Problem occured during API Call to gateway!"); });
 		});
     
     

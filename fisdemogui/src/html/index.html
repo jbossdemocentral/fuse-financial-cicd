@@ -40,7 +40,7 @@
 
         <div class="blank-slate-pf">
           <div class="blank-slate-pf-icon">
-            <img src="img/redhat-logo.png" alt="OpenShift" />
+            <img id="rh_logo" src="img/redhat-logo.png" />
           </div>
           <h1>Simple Banking Demo</h1>
           <p>This simple gui interface allows you to do day to day personal banking from your bank account and Bitcoin account</p>
@@ -148,6 +148,15 @@
       $(this).tab('show');
     });
     
+    
+    $("#rh_logo").click(function(){
+    		ipaddress = $('#ipaddress').val();
+  			$.get("http://"+ipaddress+"/demos/sourcegateway/logo/?user_key="+apitoken, function(data, status){
+		        $('#rh_logo').attr('src','img/redhat-logo-'+data+'.png');
+		    });
+		});
+		
+		
     $("#submitbalance").click(function(){
     		ipaddress = $('#ipaddress').val();
     		if(ipaddress == null || ipaddress.trim() ==""){
