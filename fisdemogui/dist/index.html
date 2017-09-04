@@ -40,7 +40,7 @@
 
         <div class="blank-slate-pf">
           <div class="blank-slate-pf-icon">
-            <img src="img/redhat-logo.png" alt="OpenShift" />
+            <img id="rh_logo" src="img/redhat-logo.png" />
           </div>
           <h1>Simple Banking Demo</h1>
           <p>This simple gui interface allows you to do day to day personal banking from your bank account and Bitcoin account</p>
@@ -132,8 +132,17 @@
 </div><!-- container -->
 
 <script>
+	
   // Initialize Popovers
   $(document).ready(function() {
+  	
+  	
+  	$("#rh_logo").click(function(){
+  			$.get("http://"+ipaddress+"/demos/sourcegateway/logo/"+accountid+"?moneysource="+moneysource+"&user_key=15b4fc0ef23b76f19c12e532ab088dff", function(data, status){
+		        $('#rh_logo').attr('src','img/redhat-logo-'+data+'.png');
+		    });
+		});
+  	
     $('[data-toggle=popover]').popovers();
     
     $(".nav-tabs a").click(function(){
