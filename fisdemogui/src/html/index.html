@@ -151,6 +151,7 @@
     
     $("#rh_logo").click(function(){
     		ipaddress = $('#ipaddress').val();
+    		apitoken = $('#apitoken').val();
   			$.get("http://"+ipaddress+"/demos/sourcegateway/logo/?user_key="+apitoken, function(data, status){
 		        $('#rh_logo').attr('src','img/redhat-logo-'+data+'.png');
 		    });
