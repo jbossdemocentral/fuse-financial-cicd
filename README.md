@@ -1,17 +1,17 @@
 # FIS 2.0 Financial Agile Integration Demo
 
-This Financial demo is a simple gateway that redirect the incoming request of
+This Financial demo is a simple gateway that redirects the incoming request of
  - Checking balance
  - Transfer money
-to different money source, one pass to a traditional banking microservice app, which interact directly with MySQL database, and pass the bitcoin request to the other microservice application connecting to a mock-blockchain through messaging broker.
+to different money sources, one passes to a traditional banking microservice app, which interacts directly with MySQL database, and passes the bitcoin request to the other microservice application connecting to a mock-blockchain through a messaging broker.
 
 ![alt text](images/outline.png "outline")
 
-There are many aspect with this demo,
+There are many aspects with this demo,
 1. Source to Image (S2i) build and deploy process
 2. Building a pipeline to support automated CI/CD
-3. Exposing RESTAPI using Camel, and export API doc to swagger
-4. Manage API through 3scale API management
+3. Exposing a REST API using Camel, and export API doc to swagger
+4. Manage the API through 3scale API management
 5. Running Hystrix among APIs
 
 
@@ -20,8 +20,8 @@ but first, let's start with setting up the application.
 ## Setting up DEV and UAT Environemnt
 ***Install OpenShift Container Platform 3.5 in [CDK 3.0](https://developers.redhat.com/products/cdk/overview/)***
 
-Download the git repository by either forking it, or simply cloning it.
-(My suggesting is to fork it, if you want to play with the code)
+Download the git repository by either forking, or simply cloning it.
+(My suggestion is forking it, so you can play with the code)
 
 ```
 git https://github.com/YOUR_RPEO/fuse-financial-cicd.git
@@ -34,7 +34,7 @@ minishift start --username <USERNAME> --password <PASSWORD>
 ```
 
 
-And log back in as developer, install the messaging template that we will use later in the process.
+And log back in as user 'developer', install the messaging template that we will use later in the process.
 
 
 ```
@@ -54,7 +54,7 @@ oc create -f projecttemplates/amq62-openshift.json
 
 ## Setup MySql database, AMQ broker and Jenkins 
 
-You can either setup all of them using GUI on OpenShift console, or using command line as follows
+You can either setup all of them using the OpenShift web console, or using the command line as follows
 
 
 ```
@@ -67,8 +67,8 @@ oc new-app --template=amq62-basic --param=MQ_USERNAME=admin --param=MQ_PASSWORD=
 ```
 
 ## Pushing application to OpenShift
-For the two microservice
- - Traditional Bankling
+For the two microservices
+ - Traditional Banking
  - Bitcoin Gateway
 We will using the Binary S2i to upload the application.
 Go to your traditional banking account project folder, and run
@@ -81,7 +81,7 @@ mvn fabric8:deploy -Dmysql-service-username=dbuser -Dmysql-service-password=pass
 ```
 
 
-Do the same to the bitcoin gateway under it's project folder
+Do the same to the bitcoin gateway under its project folder
 
 
 ```
@@ -90,7 +90,7 @@ cd fisdemoblockchain
 mvn fabric8:deploy
 ```
 
-After successfully install the application, it's time to deploy the API Gateway. This time, we are going to build a pipeline, that goes through and automated the CI/CD process from staging to UAT.
+After successfully installing the application, it's time to deploy the API Gateway. This time, we are going to build a pipeline, that goes through an automated CI/CD process from staging to UAT.
 
 ```
 cd ..
@@ -100,7 +100,7 @@ oc start-build fisgateway-service
 
 Congradulations! You can now start playing with the demo!
 And here are some of the ways you can play with it!
-In your browser test the following links
+In your browser, test the following links
 
 ```
 http://fisgateway-service-fisdemo.<OPENSHIFT_HOST>/demos/sourcegateway/balance/234567?moneysource=bitcoin
@@ -131,7 +131,7 @@ Once the application is running, set the your API IP Address to *fisgateway-serv
 [![Installing Banking GUI](images/video02-0.png)](https://vimeo.com/219955921 "Fuse Banking Agile Integration Demo - Installing Banking GUI")
 
 ## Setting Up Production Environment
-Create a Production project for FISDEMO
+Create a production project for FISDEMO
 Add setup the environment including supporting microservices and configurations (deployment configs/service/route) in production
 
 ```
@@ -178,13 +178,13 @@ You will receive a administration domain to manage APIs.
 	oc new-app -f support/amptemplates/amp.yml --param WILDCARD_DOMAIN=<WILDCARD_DOMAIN>
 	```
 
-   For detail installation, please visit the official installation page.
+   For detailed installation instructions, please visit the official installation page (https://access.redhat.com/documentation/en-us/red_hat_3scale/2.0/html/infrastructure/onpremises-installation).
 
 2. Retreive Access token
 
 	**Option ONE:**
 
-	A. In admin console, top right hand corner, select *Personal Settings*, click on Tokens on the top tab, and click on **Add Access Token**.
+	A. In the admin console, top right hand corner, select *Personal Settings*, click on *Tokens* on the top tab, and click on **Add Access Token**.
 
 	B. Create the token by setting the following information
 
@@ -197,10 +197,10 @@ You will receive a administration domain to manage APIs.
 
 	**Option TWO:**
 
-	After successfully installing 3scale backend system on OpenShift, should be provided as part of the result output on the execution console.
+	After successfully installing the 3scale backend system on OpenShift, the generated token should be provided as part of the result output on the execution console.
 
 
-3. Configure 3scale setting, run following script along with your credentials to setup 3scale
+3. Configure 3scale settings and run the following script along with your credentials to setup 3scale
 
 	```
 	cd threescalesetup
@@ -230,17 +230,17 @@ You will receive a administration domain to manage APIs.
 
 	![alt text](images/threescaleinstall.png "3scale install")
 
-6. Update 3scale Integration configuration address
+6. Update 3scale integration configuration address
 
-	Now, these setups can only be set manually, go to your 3scale admin page, login, Select **API** tab on top, and click onto *Fuse Financial Agile Integration Demo Service*. On the left tabs, choose **Integration**, and delete **edit Apicast Configuration**
+	Now, these setups can only be set manually, go to your 3scale admin page, login. Select **API** tab on top, and click onto *Fuse Financial Agile Integration Demo Service*. On the left tabs, choose **Integration**, and delete **edit Apicast Configuration**
 
 ![alt text](images/threescaleapicastconfigmenu.png "3scale APICast Config")
 
-Here is where we tell Apicast where to look for our APIs and how the APIs can be accessed.
+Here is where we tell APIcast where to look for our APIs and how the APIs can be accessed.
 
 - Set Private Base URL to : **http://fisgateway-service-stable:8080**
 - Set both your Public Basic URL to : **http://apicast-fisdemoprod.<OPENSHIFT_HOST>**
-- Set the three API endpoints accrodingly:
+- Set the three API endpoints accordingly:
 	- GET /demos/sourcegateway/balance
 	- GET /demos/sourcegateway/profile
 	- POST /demos/sourcegateway/transfer
@@ -251,7 +251,7 @@ Here is where we tell Apicast where to look for our APIs and how the APIs can be
 
 ## CI/CD across integration solution
 
-### IMPORTANT!!! Please make sure you have 3scale account setup Following CI/CD A-B Testing pipeline to work.
+### IMPORTANT!!! Please make sure you have a 3scale account setup following CI/CD A-B Testing pipeline to work.
 
 ![alt text](images/cicd.png "CI/CD pipelines")
 
@@ -262,7 +262,7 @@ Create a project to all pipelines
 oc new-project fisdemocicd --display-name="Fuse Banking Pipeline" --description="All CI/CD Pipeline for Banking Demo"
 ```
 
-Grant access to cicd project user so it can operate on UAT and PROD env
+Grant access to the cicd project user so it can operate on UAT and PROD env
 
 ```
 oc policy add-role-to-group edit system:serviceaccounts:fisdemocicd -n fisdemo
@@ -295,13 +295,13 @@ oc new-app pipeline-allprod \
 --param=OPENSHIFT_HOST=<OPENSHIFT_HOST>
 ```
 
-The Banking pipeline project includes 3 pipelines demonstrate the possible flow of an integration application of Fuse.
+The Banking pipeline project includes 3 pipelines demonstrating the possible flow of an integration application of Fuse.
 
-A. The pre-built UAT pipeline builds the image from SCM (github). and deploy a testing instance onto the platform. Then a pre-UAT test is done by a QA (you), after verification, you can choose to reject the change or promote it to UAT, by tagging the image with uatready flag. When promoted, the pipeline will deploy the uat tagged image on openshift, with UAT route linked to it.
+A. The pre-built UAT pipeline builds the image from SCM (GitHub). and deploys a testing instance onto the platform. Then a pre-UAT test is done by a QA (you), after verification, you can choose to reject the change or promote it to UAT, by tagging the image with uatready flag. When promoted, the pipeline will deploy the uat tagged image on OpenShift, with a UAT route linked to it.
 
-B. A/B Testing pipeline will move UAT image from the UAT project to Production project by tagging and deploying the image, and allocate 30% of traffic to the new service and 70% to existing stable service. Also updates all traffics from API management layer to 25 calls per minutes.
+B. The A/B testing pipeline will move the UAT image from the UAT project to the production project by tagging and deploying the image, and allocate 30% of traffic to the new service and 70% to the existing stable service. It also updates all traffic from the API management layer to 25 calls per minutes.
 
-C. Ready for full release. The all production pipeline will do the rolling update, old service will be replace by the new service as now become the stable version. All traffic will then redirect to the stable new version of running instance.
+C. Ready for full release. The all production pipeline will do the rolling update, the old service will be replace by the new service as this has now become the stable version. All traffic will then be redirected to the stable new version of the running instance.
 
 ![alt text](images/allpipelines.png "allpipelines")
 
