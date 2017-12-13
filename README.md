@@ -214,7 +214,7 @@ You will receive a administration domain to manage APIs.
 
 	```
 	cd threescalesetup
-	mvn exec:java -Dexec.mainClass=threescalesetup.SetupAccount -Dexec.args=<3SCALE_HOST_DOMAIN> <ACCESS_TOKEN> <APPLICATION_PLAN_ID> financedemoapp 'The Finance Demo Application'
+	mvn exec:java -Dexec.mainClass=threescalesetup.SetupAccount -Dexec.args="<3SCALE_HOST_DOMAIN> <ACCESS_TOKEN> <APPLICATION_PLAN_ID> financedemoapp 'The Finance Demo Application'"
 	cd ..
 	```
 
