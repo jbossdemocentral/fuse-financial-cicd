@@ -214,7 +214,7 @@ You will receive a administration domain to manage APIs.
 
 	```
 	cd threescalesetup
-	mvn exec:java -Dexec.mainClass=threescalesetup.SetupAccount -Dexec.args=<3SCALE_HOST_DOMAIN> <ACCESS_TOKEN> <APPLICATION_PLAN_ID> financedemoapp 'The Finance Demo Application'
+	mvn exec:java -Dexec.mainClass=threescalesetup.SetupAccount -Dexec.args="<3SCALE_HOST_DOMAIN> <ACCESS_TOKEN> <APPLICATION_PLAN_ID> financedemoapp 'The Finance Demo Application'"
 	cd ..
 	```
 
@@ -305,7 +305,7 @@ C. Ready for full release. The all production pipeline will do the rolling updat
 
 ![alt text](images/allpipelines.png "allpipelines")
 
-[![Setup CI/CD pipelines video](images/video05-0.png)](https://vimeo.com/220360925 "Fuse Banking Agile Integration Demo - Setup CI/CD pipelines")
+[![Setup CI/CD pipelines video](images/video05-0.png)](https://vimeo.com/220361481 "Fuse Banking Agile Integration Demo - Setup CI/CD pipelines")
 
 
 ## Version update notes, and TODOs
