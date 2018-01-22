@@ -203,7 +203,7 @@
             <from id="logostarts" uri="direct:getlogo"/>
             <log id="_log13" message="Get Logo color"/>
             <setBody id="_setBody5">
-                <constant>green</constant>
+                <constant>blue</constant>
             </setBody>
         </route>
     </camelContext>
